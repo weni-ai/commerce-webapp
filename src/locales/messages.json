@@ -1,0 +1,263 @@
+{
+  "title": {
+    "pt-br": "Weni Commerce",
+    "en-us": "Weni Commerce",
+    "es": "Weni Commerce"
+  },
+
+  "description": {
+    "pt-br": "Simplifique a gestão do seu negócio, maximize suas vendas e melhore a experiência do cliente com ferramentas integradas.",
+    "en-us": "Simplify the management of your business, maximize your sales and improve the customer experience with integrated tools.",
+    "es": "Simplifique la gestión de su negocio, maximice sus ventas y mejore la experiencia del cliente con herramientas integradas."
+  },
+
+  "discovery": {
+    "title": {
+      "pt-br": "Descoberta",
+      "en-us": "Discovery",
+      "es": "Descubrimiento"
+    }
+  },
+
+  "integrated_solutions": {
+    "title": {
+      "pt-br": "Soluções configuradas",
+      "en-us": "Configured solutions",
+      "es": "Soluciones configuradas"
+    }
+  },
+
+  "active_notifications": {
+    "title": {
+      "pt-br": "Notificações ativas",
+      "en-us": "Active notifications",
+      "es": "Notificaciones activas"
+    }
+  },
+
+  "passive_service": {
+    "title": {
+      "pt-br": "Atendimento passivo",
+      "en-us": "Passive service",
+      "es": "Servicio pasivo"
+    }
+  },
+
+  "solutions": {
+    "integrate": {
+      "button_label": {
+        "pt-br": "Integrar recurso",
+        "en-us": "Integrate resource",
+        "es": "Integrar recurso"
+      }
+    },
+    
+    "abandoned_cart": {
+      "title": {
+        "pt-br": "Carrinho abandonado",
+        "en-us": "Abandoned cart",
+        "es": "Carrito abandonado"
+      },
+
+      "short_description": {
+        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
+      },
+
+      "description": {
+        "pt-br": "Reengaje automaticamente seus clientes enviando lembretes personalizados quando eles deixarem produtos no carrinho sem finalizar a compra.",
+        "en-us": "Automatically re-engage your customers by sending personalized reminders when they leave products in the cart without completing the purchase.",
+        "es": "Vuelva a captar automáticamente a sus clientes enviándoles recordatorios personalizados cuando dejen productos en la cesta sin finalizar la compra."
+      },
+
+      "tip": {
+        "pt-br": "Com essa solução, você aumenta suas chances de conversão, mantendo seu cliente próximo e incentivando a conclusão do pedido.",
+        "en-us": "With this solution, you increase your chances of conversion by keeping your customer close and encouraging them to complete their order.",
+        "es": "Con esta solución, aumentará sus posibilidades de conversión manteniendo a su cliente cerca y animándole a completar su pedido."
+      }
+    },
+
+    "order_status": {
+      "title": {
+        "pt-br": "Status do pedido",
+        "en-us": "Order status",
+        "es": "Estado del pedido"
+      },
+
+      "short_description": {
+        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
+      },
+
+      "description": {
+        "pt-br": "",
+        "en-us": "",
+        "es": ""
+      },
+
+      "tip": {
+        "pt-br": "",
+        "en-us": "",
+        "es": ""
+      }
+    },
+
+    "order_tracking": {
+      "title": {
+        "pt-br": "Tracking de pedido",
+        "en-us": "Order tracking",
+        "es": "Seguimiento del pedido"
+      },
+
+      "short_description": {
+        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
+      },
+
+      "description": {
+        "pt-br": "",
+        "en-us": "",
+        "es": ""
+      },
+
+      "tip": {
+        "pt-br": "",
+        "en-us": "",
+        "es": ""
+      }
+    },
+
+    "product_replacement": {
+      "title": {
+        "pt-br": "Substituição do produto",
+        "en-us": "Product replacement",
+        "es": "Sustitución del producto"
+      },
+
+      "short_description": {
+        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
+      },
+
+      "description": {
+        "pt-br": "",
+        "en-us": "",
+        "es": ""
+      },
+
+      "tip": {
+        "pt-br": "",
+        "en-us": "",
+        "es": ""
+      }
+    },
+
+    "product_exchange_and_return": {
+      "title": {
+        "pt-br": "Troca e devolução de produto",
+        "en-us": "Product exchange and return",
+        "es": "Cambio y devolución del producto"
+      },
+
+      "short_description": {
+        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
+      },
+
+      "description": {
+        "pt-br": "",
+        "en-us": "",
+        "es": ""
+      },
+
+      "tip": {
+        "pt-br": "",
+        "en-us": "",
+        "es": ""
+      }
+    },
+
+    "FAQ": {
+      "title": {
+        "pt-br": "FAQ",
+        "en-us": "FAQ",
+        "es": "FAQ"
+      },
+
+      "short_description": {
+        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
+      },
+
+      "description": {
+        "pt-br": "",
+        "en-us": "",
+        "es": ""
+      },
+
+      "tip": {
+        "pt-br": "",
+        "en-us": "",
+        "es": ""
+      }
+    },
+
+    "order_invoice_inquiry": {
+      "title": {
+        "pt-br": "Consulta de pedido / nota fiscal",
+        "en-us": "Order / invoice inquiry",
+        "es": "Solicitud de pedido / factura"
+      },
+
+      "short_description": {
+        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
+      },
+
+      "description": {
+        "pt-br": "",
+        "en-us": "",
+        "es": ""
+      },
+
+      "tip": {
+        "pt-br": "",
+        "en-us": "",
+        "es": ""
+      }
+    },
+
+    "transfer_to_human_care": {
+      "title": {
+        "pt-br": "Transferência para atendimento humano",
+        "en-us": "Transfer to human care",
+        "es": "Transferir a servicios humanos"
+      },
+
+      "short_description": {
+        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
+        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
+      },
+
+      "description": {
+        "pt-br": "",
+        "en-us": "",
+        "es": ""
+      },
+
+      "tip": {
+        "pt-br": "",
+        "en-us": "",
+        "es": ""
+      }
+    }
+  }
+}
