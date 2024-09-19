@@ -24,7 +24,7 @@
       @integrate="isOpen = true"
     />
 
-    <SolutionDrawer
+    <DrawerSolution
       v-model:isOpen="isOpen"
       :title="solutionToIntegrate.solution?.title || ''"
     />
@@ -37,7 +37,7 @@ import { useI18n } from 'vue-i18n';
 import Header from '@/components/Header.vue';
 import SolutionCard from '@/components/solutions/SolutionCard.vue';
 import ModalIntegrate from '@/components/solutions/ModalIntegrate.vue';
-import SolutionDrawer from '@/components/solutions/SolutionDrawer.vue';
+import DrawerSolution from '@/components/solutions/DrawerSolution.vue';
 
 const { t } = useI18n();
 

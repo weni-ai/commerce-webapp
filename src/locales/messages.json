@@ -18,6 +18,12 @@
       "es": "Finalizar y guardar"
     },
 
+    "confirm": {
+      "pt-br": "Confirmar",
+      "en-us": "Confirm",
+      "es": "Confirmar"
+    },
+
     "save": {
       "pt-br": "Salvar",
       "en-us": "Save",
@@ -76,6 +82,50 @@
   },
 
   "solutions": {
+    "actions": {
+      "see_details": {
+        "pt-br": "Ver detalhes",
+        "en-us": "See details",
+        "es": "Ver detalles"
+      },
+
+      "settings": {
+        "pt-br": "Configurações",
+        "en-us": "Settings",
+        "es": "Ajustes"
+      },
+
+      "disable_solution": {
+        "pt-br": "Desabilitar solução",
+        "en-us": "Disable solution",
+        "es": "Desactivar solución"
+      }
+    },
+
+    "disable": {
+      "confirmation": {
+        "title": {
+          "pt-br": "Desativar “{name}”",
+          "en-us": "Disable “{name}”",
+          "es": "Desactivar “{name}”"
+        },
+
+        "description": {
+          "container": {
+            "pt-br": "{0} Se desativada, essa ferramenta não funcionará mais em seu projeto.",
+            "en-us": "{0} If deactivated, this tool will no longer work in your project.",
+            "es": "{0} Si la desactiva, esta herramienta dejará de funcionar en su proyecto."
+          },
+
+          "0": {
+            "pt-br": "Deseja desativar a solução de “{name}”?",
+            "en-us": "Do you want to deactivate the “{name}” solution?",
+            "es": "¿Desea desactivar la solución “{name}”?"
+          }
+        }
+      }
+    },
+    
     "integrate": {
       "help": {
         "container": {
