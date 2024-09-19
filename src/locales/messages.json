@@ -1,4 +1,36 @@
 {
+  "common": {
+    "cancel": {
+      "pt-br": "Cancelar",
+      "en-us": "Cancel",
+      "es": "Cancelar"
+    },
+
+    "continue": {
+      "pt-br": "Continuar",
+      "en-us": "Continue",
+      "es": "Continuar"
+    },
+
+    "finish_and_save": {
+      "pt-br": "Finalizar e salvar",
+      "en-us": "Finish and save",
+      "es": "Finalizar y guardar"
+    },
+
+    "save": {
+      "pt-br": "Salvar",
+      "en-us": "Save",
+      "es": "Guardar"
+    },
+
+    "back": {
+      "pt-br": "Voltar",
+      "en-us": "Back",
+      "es": "Volver"
+    }
+  },
+
   "title": {
     "pt-br": "Weni Commerce",
     "en-us": "Weni Commerce",
@@ -45,10 +77,38 @@
 
   "solutions": {
     "integrate": {
+      "help": {
+        "container": {
+          "pt-br": "{0} Se tiver dúvidas sobre como preencher os campos abaixo, consulte a {1}.",
+          "en-us": "{0} If you have any questions about how to fill in the fields below, please consult the {1}.",
+          "es": "{0} Si tiene alguna duda sobre cómo rellenar los campos que aparecen a continuación, consulte la {1}."
+        },
+
+        "0": {
+          "pt-br": "Precisa de ajuda?",
+          "en-us": "Need help?",
+          "es": "¿Necesita ayuda?"
+        },
+
+        "1": {
+          "pt-br": "documentação de integração",
+          "en-us": "integration documentation",
+          "es": "documentación sobre la integración"
+        }
+      },
+      
       "button_label": {
         "pt-br": "Integrar recurso",
         "en-us": "Integrate resource",
         "es": "Integrar recurso"
+      },
+
+      "status": {
+        "created": {
+          "pt-br": "Solução configurada com sucesso",
+          "en-us": "Solution successfully configured",
+          "es": "Solución configurada correctamente"
+        }
       }
     },
     

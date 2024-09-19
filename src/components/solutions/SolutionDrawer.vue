@@ -1,10 +1,10 @@
 <template>
-  <Teleport to="body">
+  <Teleport to="#drawers">
     <Transition name="fade">
       <section
         v-if="isOpen"
         class="drawer__background"
-        @click.self="$emit('update:isOpen', false)"
+        @click.self="close"
       ></section>
     </Transition>
 
@@ -27,13 +27,73 @@
             type="tertiary"
             iconCenter="arrow_forward"
             size="small"
-            @click="$emit('update:isOpen', false)"
+            @click="close"
           />
         </header>
 
-        <section class="drawer__body"></section>
+        <section class="drawer__body">
+          <Scrollable>
+            <section class="help-box">
+              <UnnnicIcon
+                icon="info"
+                size="ant"
+                filled
+                scheme="feedback-blue"
+              />
 
-        <footer class="drawer__footer"></footer>
+              <I18nT
+                keypath="solutions.integrate.help.container"
+                tag="section"
+              >
+                <b>{{ $t('solutions.integrate.help.0') }}</b>
+
+                <a
+                  href="http://google.com"
+                  target="_blank"
+                >
+                  {{ $t('solutions.integrate.help.1') }}
+                </a>
+              </I18nT>
+            </section>
+
+            <section class="drawer__body__form-elements">
+              <UnnnicFormElement
+                v-for="i in 20"
+                :key="i"
+                label="API Token"
+              >
+                <UnnnicInput size="sm" />
+              </UnnnicFormElement>
+
+              <UnnnicFormElement label="Tags setor nome 1">
+                <SelectSmart
+                  v-model="val"
+                  size="sm"
+                  placeholder="Placeholder"
+                  :options="['Options 1', 'Option 2', 'Option 3']"
+                />
+              </UnnnicFormElement>
+
+              <UnnnicSwitch
+                v-model="val2"
+                textRight="Bloqueio por horário"
+              />
+            </section>
+          </Scrollable>
+        </section>
+
+        <footer class="drawer__footer">
+          <UnnnicButton
+            type="tertiary"
+            @click="close"
+          >
+            {{ $t('common.cancel') }}
+          </UnnnicButton>
+
+          <UnnnicButton @click="save">
+            {{ $t('common.finish_and_save') }}
+          </UnnnicButton>
+        </footer>
       </section>
     </Transition>
   </Teleport>
@@ -41,15 +101,56 @@
 
 <script setup lang="ts">
 import Header from '@/components/Header.vue';
+import SelectSmart from '@/components/SelectSmart.vue';
+import Scrollable from '@/components/Scrollable.vue';
+import { onUnmounted, ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useAlertStore } from '@/stores/Alert';
+import { useRouter } from 'vue-router';
 
-defineProps<{
+const { t } = useI18n();
+
+const router = useRouter();
+const alertStore = useAlertStore();
+
+const props = defineProps<{
   isOpen: boolean;
   title: string;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   'update:isOpen': [isOpen: boolean];
 }>();
+
+const val = ref('');
+const val2 = ref(false);
+
+function close() {
+  emit('update:isOpen', false);
+}
+
+function save() {
+  close();
+
+  alertStore.add({
+    type: 'success',
+    text: t('solutions.integrate.status.created'),
+  });
+
+  router.push({ name: 'integrated-solutions' });
+}
+
+watch(
+  () => props.isOpen,
+  (isOpen) => {
+    document.body.classList?.[isOpen ? 'add' : 'remove']('drawer-view');
+  },
+  { immediate: true },
+);
+
+onUnmounted(() => {
+  document.body.classList.remove('drawer-view');
+});
 </script>
 
 <style lang="scss" scoped>
@@ -70,7 +171,6 @@ defineEmits<{
 
 .drawer-enter-from,
 .drawer-leave-to {
-  // opacity: 0;
   transform: translateX(100%);
 }
 
@@ -114,12 +214,49 @@ defineEmits<{
   }
 
   &__body {
+    flex: 1;
     padding: $unnnic-spacing-md;
+
+    &__form-elements {
+      display: flex;
+      flex-direction: column;
+      row-gap: $unnnic-spacing-sm;
+    }
   }
 
   &__footer {
+    display: grid;
+    column-gap: $unnnic-spacing-ant;
+    grid-template-columns: 1fr 1fr;
+
     margin-top: auto;
     padding: 0 $unnnic-spacing-md $unnnic-spacing-md;
+  }
+}
+
+.help-box {
+  display: flex;
+  column-gap: $unnnic-spacing-xs;
+  padding: $unnnic-spacing-sm - $unnnic-border-width-thinner;
+  border: $unnnic-border-width-thinner solid $unnnic-color-neutral-soft;
+  background-color: $unnnic-color-neutral-lightest;
+  border-radius: $unnnic-border-radius-sm;
+  margin-bottom: $unnnic-spacing-md;
+
+  color: $unnnic-color-neutral-dark;
+  font-family: $unnnic-font-family-secondary;
+  font-weight: $unnnic-font-weight-regular;
+  font-size: $unnnic-font-size-body-gt;
+  line-height: $unnnic-font-size-body-gt + $unnnic-line-height-md;
+
+  b {
+    font-weight: $unnnic-font-weight-bold;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: $unnnic-spacing-nano;
   }
 }
 </style>
