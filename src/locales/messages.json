@@ -185,22 +185,16 @@
         "es": "Carrito abandonado"
       },
 
-      "short_description": {
-        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
-      },
-
       "description": {
-        "pt-br": "Reengaje automaticamente seus clientes enviando lembretes personalizados quando eles deixarem produtos no carrinho sem finalizar a compra.",
-        "en-us": "Automatically re-engage your customers by sending personalized reminders when they leave products in the cart without completing the purchase.",
-        "es": "Vuelva a captar automáticamente a sus clientes enviándoles recordatorios personalizados cuando dejen productos en la cesta sin finalizar la compra."
+        "pt-br": "Recupere vendas lembrando clientes de itens esquecidos no carrinho.",
+        "en-us": "Recover sales by reminding customers of items forgotten in the cart.",
+        "es": "Recuperar ventas recordando a los clientes los artículos olvidados en el carrito."
       },
 
       "tip": {
-        "pt-br": "Com essa solução, você aumenta suas chances de conversão, mantendo seu cliente próximo e incentivando a conclusão do pedido.",
-        "en-us": "With this solution, you increase your chances of conversion by keeping your customer close and encouraging them to complete their order.",
-        "es": "Con esta solución, aumentará sus posibilidades de conversión manteniendo a su cliente cerca y animándole a completar su pedido."
+        "pt-br": "Com essa solução, é possível aumentar suas chances de conversão, mantendo seu cliente próximo e incentivando a conclusão do pedido.",
+        "en-us": "With this solution, you can increase your chances of conversion by keeping your customer close and encouraging them to complete their order.",
+        "es": "Con esta solución, puede aumentar sus posibilidades de conversión manteniendo a su cliente cerca y animándole a completar su pedido."
       }
     },
 
@@ -211,178 +205,76 @@
         "es": "Estado del pedido"
       },
 
-      "short_description": {
-        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
-      },
-
       "description": {
-        "pt-br": "",
-        "en-us": "",
-        "es": ""
+        "pt-br": "Informe seus clientes sobre o andamento dos pedidos em tempo real.",
+        "en-us": "Inform your customers about the progress of their orders in real time.",
+        "es": "Informe a sus clientes sobre el progreso de sus pedidos en tiempo real."
       },
 
       "tip": {
-        "pt-br": "",
-        "en-us": "",
-        "es": ""
+        "pt-br": "Com essa solução, é possível melhorar a comunicação com o cliente e reduzir a incerteza sobre o processo de compra, aumentando a satisfação e a lealdade ao longo do tempo.",
+        "en-us": "With this solution, it is possible to improve communication with the customer and reduce uncertainty about the purchasing process, increasing satisfaction and loyalty over time.",
+        "es": "Con esta solución, es posible mejorar la comunicación con el cliente y reducir la incertidumbre sobre el proceso de compra, aumentando la satisfacción y la fidelidad a lo largo del tiempo."
       }
     },
 
-    "order_tracking": {
+    "recurring_purchase": {
       "title": {
-        "pt-br": "Tracking de pedido",
-        "en-us": "Order tracking",
-        "es": "Seguimiento del pedido"
-      },
-
-      "short_description": {
-        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
+        "pt-br": "Compra recorrente",
+        "en-us": "Recurring purchase",
+        "es": "Compra periódica"
       },
 
       "description": {
-        "pt-br": "",
-        "en-us": "",
-        "es": ""
+        "pt-br": "Facilite a compra automática de produtos com uma solução de assinatura.",
+        "en-us": "Facilitate the automatic purchase of products with a subscription solution.",
+        "es": "Facilite la compra automática de productos con una solución de suscripción."
       },
 
       "tip": {
-        "pt-br": "",
-        "en-us": "",
-        "es": ""
+        "pt-br": "Com essa solução, é possível aumentar a retenção de clientes e gerar vendas recorrentes, proporcionando uma experiência de compra sem esforço para o consumidor.",
+        "en-us": "With this solution, you can increase customer retention and generate recurring sales, providing an effortless shopping experience for the consumer.",
+        "es": "Con esta solución, puede aumentar la retención de clientes y generar ventas recurrentes, proporcionando una experiencia de compra sin esfuerzo para el consumidor."
       }
     },
 
-    "product_replacement": {
+    "order_status_passive": {
       "title": {
-        "pt-br": "Substituição do produto",
-        "en-us": "Product replacement",
-        "es": "Sustitución del producto"
-      },
-
-      "short_description": {
-        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
+        "pt-br": "Status do pedido (Passivo)",
+        "en-us": "Order status (Passive)",
+        "es": "Estado del pedido (Pasivo)"
       },
 
       "description": {
-        "pt-br": "",
-        "en-us": "",
-        "es": ""
+        "pt-br": "Ofereça aos clientes uma forma prática de consultar o status do pedido.",
+        "en-us": "Offer customers a practical way to check the status of their order.",
+        "es": "Ofrezca a los clientes una forma práctica de comprobar el estado de su pedido."
       },
 
       "tip": {
-        "pt-br": "",
-        "en-us": "",
-        "es": ""
+        "pt-br": "Com essa solução, você reduz o volume de consultas manuais e melhora a transparência, permitindo que o cliente se sinta sempre informado e no controle do processo de compra.",
+        "en-us": "With this solution, you reduce the volume of manual queries and improve transparency, allowing the customer to always feel informed and in control of the purchasing process.",
+        "es": "Con esta solución, se reduce el volumen de consultas manuales y se mejora la transparencia, lo que permite al cliente sentirse siempre informado y en control del proceso de compra."
       }
     },
 
-    "product_exchange_and_return": {
+    "refer_and_win": {
       "title": {
-        "pt-br": "Troca e devolução de produto",
-        "en-us": "Product exchange and return",
-        "es": "Cambio y devolución del producto"
-      },
-
-      "short_description": {
-        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
+        "pt-br": "Indique e ganhe",
+        "en-us": "Refer and win",
+        "es": "Recomiéndanos y gana"
       },
 
       "description": {
-        "pt-br": "",
-        "en-us": "",
-        "es": ""
+        "pt-br": "Incentive os clientes a recomendar sua loja para amigos e familiares com um programa de recompensas.",
+        "en-us": "Encourage customers to recommend your store to friends and family with a rewards program.",
+        "es": "Anime a los clientes a recomendar su tienda a amigos y familiares con un programa de recompensas."
       },
 
       "tip": {
-        "pt-br": "",
-        "en-us": "",
-        "es": ""
-      }
-    },
-
-    "FAQ": {
-      "title": {
-        "pt-br": "FAQ",
-        "en-us": "FAQ",
-        "es": "FAQ"
-      },
-
-      "short_description": {
-        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
-      },
-
-      "description": {
-        "pt-br": "",
-        "en-us": "",
-        "es": ""
-      },
-
-      "tip": {
-        "pt-br": "",
-        "en-us": "",
-        "es": ""
-      }
-    },
-
-    "order_invoice_inquiry": {
-      "title": {
-        "pt-br": "Consulta de pedido / nota fiscal",
-        "en-us": "Order / invoice inquiry",
-        "es": "Solicitud de pedido / factura"
-      },
-
-      "short_description": {
-        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
-      },
-
-      "description": {
-        "pt-br": "",
-        "en-us": "",
-        "es": ""
-      },
-
-      "tip": {
-        "pt-br": "",
-        "en-us": "",
-        "es": ""
-      }
-    },
-
-    "transfer_to_human_care": {
-      "title": {
-        "pt-br": "Transferência para atendimento humano",
-        "en-us": "Transfer to human care",
-        "es": "Transferir a servicios humanos"
-      },
-
-      "short_description": {
-        "pt-br": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "en-us": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat.",
-        "es": "Velit assumenda culpa sunt repellat omnis deserunt. Velit assumenda culpa sunt repellat."
-      },
-
-      "description": {
-        "pt-br": "",
-        "en-us": "",
-        "es": ""
-      },
-
-      "tip": {
-        "pt-br": "",
-        "en-us": "",
-        "es": ""
+        "pt-br": "Com essa solução, é possível ampliar a base de clientes de forma orgânica e aumentar o engajamento, transformando consumidores satisfeitos em promotores ativos da sua marca.",
+        "en-us": "With this solution, you can expand your customer base organically and increase engagement, turning satisfied consumers into active promoters of your brand.",
+        "es": "Con esta solución, puede ampliar su base de clientes de forma orgánica y aumentar el compromiso, convirtiendo a los consumidores satisfechos en promotores activos de su marca."
       }
     }
   }

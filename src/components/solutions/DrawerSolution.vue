@@ -71,12 +71,19 @@ import SelectSmart from '@/components/SelectSmart.vue';
 import { ref, useTemplateRef } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAlertStore } from '@/stores/Alert';
+import { useSolutionsStore } from '@/stores/Solutions';
 import { useRouter } from 'vue-router';
+
+const props = defineProps<{
+  id: string;
+  category: 'activeNotifications' | 'passiveService';
+}>();
 
 const { t } = useI18n();
 
 const router = useRouter();
 const alertStore = useAlertStore();
+const solutionsStore = useSolutionsStore();
 
 const drawerRef = useTemplateRef('drawer');
 
@@ -89,6 +96,10 @@ function close() {
 
 function save() {
   close();
+
+  solutionsStore.integrate({
+    id: props.id,
+  });
 
   alertStore.add({
     type: 'success',

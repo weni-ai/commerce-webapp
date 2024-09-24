@@ -16,8 +16,8 @@
         <header class="drawer__header">
           <Header
             :title="title"
-            icon="business_messages"
-            iconScheme="aux-orange-500"
+            :icon="icon"
+            :iconScheme="iconScheme"
             fontFamily="secondary"
             fontSize="title-md"
           />
@@ -53,6 +53,8 @@ import { onUnmounted, watch } from 'vue';
 const props = defineProps<{
   isOpen: boolean;
   title: string;
+  icon: string;
+  iconScheme: string;
 }>();
 
 const emit = defineEmits<{
