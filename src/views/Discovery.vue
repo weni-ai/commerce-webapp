@@ -26,13 +26,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SolutionsGroup from '@/components/solutions/SolutionsGroup.vue';
+import { useFeatureStore } from '@/stores/feature';
+import { useAuthStore } from '@/stores/auth';
 
 const { t } = useI18n();
+const featureStore = useFeatureStore();
+const auth = useAuthStore();
 
 const solutionName = ref('');
+
+onMounted(async () => {
+  await featureStore.getFeatures(auth.project);
+});
 
 const solutions = computed(() => [
   {
