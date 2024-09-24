@@ -8,7 +8,7 @@
 
     <section class="solutions__list">
       <SolutionCard
-        v-for="(solution, index) in filterSolutions(solutions)"
+        v-for="(solution, index) in solutions"
         :key="index"
         :title="solution.title"
         :description="solution.description"
@@ -49,11 +49,10 @@ type Solution = {
   description: string;
 };
 
-const props = defineProps<{
+defineProps<{
   title: string;
   icon: string;
   iconScheme: string;
-  filterText: string;
   solutions: Solution[];
 }>();
 
@@ -77,17 +76,6 @@ function openIntegrateSolutionModal(solution: Solution) {
     description: t(`solutions.${solution.id}.description`),
     tip: t(`solutions.${solution.id}.tip`),
   };
-}
-
-function filterSolutions(solutions: Solution[]) {
-  return solutions.filter(({ title, description }) => {
-    const name = props.filterText.toLowerCase().trim();
-
-    return (
-      title.toLowerCase().includes(name) ||
-      description.toLowerCase().includes(name)
-    );
-  });
 }
 </script>
 

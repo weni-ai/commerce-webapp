@@ -6,22 +6,17 @@
     iconLeft="search-1"
   />
 
-  <SolutionsGroup
-    class="solutions-group"
-    :title="$t('active_notifications.title')"
-    icon="business_messages"
-    iconScheme="aux-orange-500"
-    :filterText="solutionName"
-    :solutions="solutions"
-  />
+  <StateEmpty v-if="groups.length === 0" />
 
   <SolutionsGroup
+    v-for="(group, index) in groups"
+    v-else
+    :key="index"
     class="solutions-group"
-    :title="$t('passive_service.title')"
-    icon="forum"
-    iconScheme="aux-purple-700"
-    :filterText="solutionName"
-    :solutions="passiveServices"
+    :title="group.title"
+    :icon="group.icon"
+    :iconScheme="group.iconScheme"
+    :solutions="group.solutions"
   />
 </template>
 
@@ -29,6 +24,13 @@
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SolutionsGroup from '@/components/solutions/SolutionsGroup.vue';
+import StateEmpty from '@/components/solutions/StateEmpty.vue';
+
+type Solution = {
+  id: string;
+  title: string;
+  description: string;
+};
 
 const { t } = useI18n();
 
@@ -79,6 +81,37 @@ const passiveServices = computed(() => [
     description: t('solutions.transfer_to_human_care.short_description'),
   },
 ]);
+
+function filterSolutions({ title, description }: Solution) {
+  const name = solutionName.value.toLowerCase().trim();
+
+  return (
+    title.toLowerCase().includes(name) ||
+    description.toLowerCase().includes(name)
+  );
+}
+
+const groups = computed(() =>
+  [
+    {
+      title: t('active_notifications.title'),
+      icon: 'business_messages',
+      iconScheme: 'aux-orange-500',
+      solutions: solutions,
+    },
+    {
+      title: t('passive_service.title'),
+      icon: 'forum',
+      iconScheme: 'aux-purple-700',
+      solutions: passiveServices,
+    },
+  ]
+    .map((group) => ({
+      ...group,
+      solutions: group.solutions.value.filter(filterSolutions),
+    }))
+    .filter(({ solutions }) => solutions.length),
+);
 </script>
 
 <style scoped lang="scss">

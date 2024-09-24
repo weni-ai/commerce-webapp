@@ -82,6 +82,22 @@
   },
 
   "solutions": {
+    "states": {
+      "empty": {
+        "title": {
+          "pt-br": "Nenhum resultado encontrado",
+          "en-us": "No results found",
+          "es": "No se han encontrado resultados"
+        },
+        
+        "description": {
+          "pt-br": "Tente outra palavra-chave ou verifique a ortografia",
+          "en-us": "Try another keyword or check the spelling",
+          "es": "Pruebe con otra palabra clave o revise la ortografía"
+        }
+      }
+    },
+    
     "actions": {
       "see_details": {
         "pt-br": "Ver detalhes",
