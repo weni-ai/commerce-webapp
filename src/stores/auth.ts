@@ -13,7 +13,7 @@ interface AuthState {
   errorFlowToken: unknown | null;
 }
 
-export const auth_store = defineStore('auth', {
+export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
     token: null,
     org: null,
@@ -49,6 +49,13 @@ export const auth_store = defineStore('auth', {
       if (!flowOrg) return;
       this.flowOrg = flowOrg;
       setLocal('flowOrg', flowOrg);
+    },
+    async getFlowOrganization() {
+      if (!this.flowOrg && this.project) {
+        const data = await auth.getFlowOrganization(this.project);
+        this.flowOrg = data;
+        setLocal('flowOrg', data);
+      }
     },
     retriveAuthToken() {
       if (window.localStorage) {
