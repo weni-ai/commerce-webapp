@@ -26,27 +26,60 @@
       </section>
 
       <section class="form-elements">
-        <UnnnicFormElement
-          v-for="i in 20"
-          :key="i"
-          label="API Token"
+        <template
+          v-for="(field, index) in solution.globals"
+          :key="index"
         >
-          <UnnnicInput size="sm" />
-        </UnnnicFormElement>
+          <UnnnicSwitch
+            v-if="fieldType(field) === 'switch'"
+            :textRight="fieldLabel(field)"
+            :modelValue="currentValueField(field).value"
+            @update:model-value="updateField(field, $event)"
+          />
 
-        <UnnnicFormElement label="Tags setor nome 1">
+          <UnnnicFormElement
+            v-else
+            :label="fieldLabel(field)"
+          >
+            <UnnnicInput
+              v-if="fieldType(field) === 'text'"
+              size="sm"
+              :modelValue="currentValueField(field).value"
+              @update:model-value="updateField(field, $event)"
+            />
+
+            <template v-else-if="fieldType(field) === 'tags'">
+              <UnnnicInput
+                size="sm"
+                iconRight="add"
+                iconRightClickable
+                :modelValue="currentValueField(field).input"
+                @update:model-value="updateField(field, $event)"
+                @icon-right-click="iconRightClick(field)"
+                @keydown.enter.self="iconRightClick(field)"
+              />
+
+              <section class="tags">
+                <section
+                  v-for="(tag, tagIndex) in currentValueField(field).value"
+                  :key="tagIndex"
+                  class="tags__tag"
+                >
+                  {{ tag }}
+                </section>
+              </section>
+            </template>
+          </UnnnicFormElement>
+        </template>
+
+        <!-- <UnnnicFormElement label="Tags setor nome 1">
           <SelectSmart
             v-model="val"
             size="sm"
             placeholder="Placeholder"
             :options="['Options 1', 'Option 2', 'Option 3']"
           />
-        </UnnnicFormElement>
-
-        <UnnnicSwitch
-          v-model="val2"
-          textRight="Bloqueio por horário"
-        />
+        </UnnnicFormElement> -->
       </section>
     </template>
 
@@ -68,7 +101,7 @@
 <script setup lang="ts">
 import Drawer from '@/components/Drawer.vue';
 import SelectSmart from '@/components/SelectSmart.vue';
-import { ref, useTemplateRef } from 'vue';
+import { reactive, ref, useAttrs, useTemplateRef, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAlertStore } from '@/stores/Alert';
 import { useSolutionsStore } from '@/stores/Solutions';
@@ -77,9 +110,13 @@ import { useRouter } from 'vue-router';
 const props = defineProps<{
   id: string;
   category: 'activeNotifications' | 'passiveService';
+  solution: any;
+  values: any;
 }>();
 
 const { t } = useI18n();
+
+const attrs = useAttrs();
 
 const router = useRouter();
 const alertStore = useAlertStore();
@@ -87,8 +124,13 @@ const solutionsStore = useSolutionsStore();
 
 const drawerRef = useTemplateRef('drawer');
 
-const val = ref('');
-const val2 = ref(false);
+const formData = reactive<{
+  [key: string]: {
+    type: string;
+    value: string | boolean | string[];
+    input?: string;
+  };
+}>({});
 
 function close() {
   drawerRef.value?.close();
@@ -96,6 +138,10 @@ function close() {
 
 function save() {
   close();
+
+  if (Object.keys(props.values).length) {
+    return;
+  }
 
   solutionsStore.integrate({
     id: props.id,
@@ -108,9 +154,131 @@ function save() {
 
   router.push({ name: 'integrated-solutions' });
 }
+
+const types = ['switch', 'tags'];
+
+watch(
+  () => attrs.isOpen,
+  (isOpen) => {
+    if (isOpen) {
+      resetForm();
+    }
+  },
+);
+
+function resetForm() {
+  Object.keys(formData).forEach((key) => {
+    delete formData[key];
+  });
+
+  Object.entries(props.values).forEach(([key, value]) => {
+    const type = fieldType(key);
+    const label = fieldLabel(key);
+
+    if (type === 'text') {
+      formData[label] = { type: 'text', value };
+    } else if (type === 'switch') {
+      formData[label] = { type: 'switch', value };
+    } else if (type === 'tags') {
+      formData[label] = { type: 'tags', value, input: '' };
+    }
+  });
+}
+
+function iconRightClick(field: string) {
+  const tagField = currentValueField(field);
+
+  const tag = tagField.input.trim();
+
+  if (tagField.value.includes(tag)) {
+    return;
+  }
+
+  if (tag) {
+    tagField.value.push(tagField.input.trim());
+  }
+
+  tagField.input = '';
+}
+
+function currentValueField(field: string) {
+  const type = fieldType(field);
+  const label = fieldLabel(field);
+
+  if (type === 'text') {
+    return formData[label] || { type: 'text', value: '' };
+  } else if (type === 'switch') {
+    return formData[label] || { type: 'switch', value: false };
+  } else if (type === 'tags') {
+    return formData[label] || { type: 'tags', value: [], input: '' };
+  }
+}
+
+function updateField(field: string, value: string | boolean) {
+  const type = fieldType(field);
+  const label = fieldLabel(field);
+
+  let input;
+
+  if (formData[label]) {
+    input = formData[label];
+  } else {
+    input = {
+      type,
+    };
+
+    formData[label] = input;
+  }
+
+  if (type === 'text') {
+    input.value = value;
+  } else if (type === 'switch') {
+    input.value = value;
+  } else if (type === 'tags') {
+    if (!input.value) {
+      input.value = [];
+    }
+
+    input.input = value;
+  }
+}
+
+function fieldType(name: string) {
+  return types.find((type) => name.startsWith(type + ':')) || 'text';
+}
+
+function fieldLabel(name: string) {
+  const type = types.find((type) => name.startsWith(type + ':'));
+
+  if (type) {
+    return name.slice((type + ':').length);
+  } else {
+    return name;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
+.tags {
+  margin-top: $unnnic-spacing-xs;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $unnnic-spacing-xs;
+
+  &__tag {
+    user-select: none;
+    padding: $unnnic-spacing-nano $unnnic-spacing-ant;
+    border-radius: $unnnic-border-radius-pill;
+    background-color: $unnnic-color-neutral-light;
+
+    color: $unnnic-color-neutral-cloudy;
+    font-family: $unnnic-font-family-secondary;
+    font-weight: $unnnic-font-weight-regular;
+    font-size: $unnnic-font-size-body-md;
+    line-height: $unnnic-font-size-body-md + $unnnic-line-height-md;
+  }
+}
+
 .form-elements {
   display: flex;
   flex-direction: column;

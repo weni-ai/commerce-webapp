@@ -21,17 +21,30 @@
       v-if="solutionToIntegrate.solution"
       v-model="solutionToIntegrate.isOpen"
       v-bind="solutionToIntegrate.solution"
+      :status="
+        isSolutionIntegrated(solutionToIntegrate.solution.id)
+          ? 'integrated'
+          : 'available'
+      "
       @close="solutionToIntegrate.isOpen = false"
-      @integrate="isOpen = true"
+      @integrate="openDrawer(solutionToIntegrate.solution)"
+      @edit="
+        openDrawer(
+          solutionToIntegrate.solution,
+          solutionToIntegrate.solution?.mockedValues,
+        )
+      "
     />
 
     <DrawerSolution
-      :id="solutionToIntegrate.solution?.id || ''"
-      v-model:isOpen="isOpen"
+      :id="drawerSolution.solution?.id || ''"
+      v-model:isOpen="drawerSolution.isOpen"
       :title="solutionToIntegrate.solution?.title || ''"
       :category="category"
       :icon="icon"
       :iconScheme="iconScheme"
+      :solution="drawerSolution.solution"
+      :values="drawerSolution.solution?.values"
     />
 
     <UnnnicModalDialog
@@ -125,21 +138,40 @@ const solutionToIntegrate = reactive<{
   solution: null,
 });
 
-function getOptionsBySolution(solution) {
+const drawerSolution = reactive<{
+  isOpen: boolean;
+  solution: null | {
+    id: string;
+    title: string;
+    description: string;
+    globals: string[];
+  };
+}>({
+  isOpen: false,
+  solution: null,
+});
+
+function isSolutionIntegrated(solutionId: string) {
   const integrated = [
     solutionsStore.integrated.activeNotifications.data,
     solutionsStore.integrated.passiveService.data,
   ].flat();
 
-  if (integrated.some((integrated) => integrated.id === solution.id)) {
+  return integrated.some((integrated) => integrated.id === solutionId);
+}
+
+function getOptionsBySolution(solution) {
+  if (isSolutionIntegrated(solution.id)) {
     return [
       {
         icon: 'visibility',
         title: t('solutions.actions.see_details'),
+        onClick: openIntegrateSolutionModal.bind(this, solution),
       },
       {
         icon: 'settings',
         title: t('solutions.actions.settings'),
+        onClick: openDrawer.bind(this, solution, solution.mockedValues),
       },
       {
         type: 'separator',
@@ -159,12 +191,13 @@ function getOptionsBySolution(solution) {
 function openIntegrateSolutionModal(solution: Solution) {
   solutionToIntegrate.isOpen = true;
 
-  solutionToIntegrate.solution = {
-    id: solution.id,
-    title: t(`solutions.${solution.id}.title`),
-    description: t(`solutions.${solution.id}.description`),
-    tip: t(`solutions.${solution.id}.tip`),
-  };
+  solutionToIntegrate.solution = solution;
+}
+
+function openDrawer(solution, values = {}) {
+  drawerSolution.isOpen = true;
+  drawerSolution.solution = solution;
+  drawerSolution.solution.values = values;
 }
 
 function openDisable(solution) {

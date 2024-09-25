@@ -104,6 +104,9 @@ export const useSolutionsStore = defineStore('solutions', () => {
       id: solutionToIntegrate.id,
       title: solutionToIntegrate.title,
       description: solutionToIntegrate.description,
+      tip: solutionToIntegrate.tip,
+      globals: solutionToIntegrate.globals,
+      mockedValues: solutionToIntegrate.mockedValues,
     });
   }
 

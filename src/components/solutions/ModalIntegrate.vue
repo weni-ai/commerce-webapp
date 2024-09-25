@@ -10,6 +10,7 @@
         </p>
 
         <UnnnicButton
+          v-if="status === 'available'"
           class="modal-integrate-solution__integrate-button"
           size="small"
           @click="
@@ -18,6 +19,20 @@
           "
         >
           {{ $t('solutions.integrate.button_label') }}
+        </UnnnicButton>
+
+        <UnnnicButton
+          v-else-if="status === 'integrated'"
+          type="secondary"
+          class="modal-integrate-solution__integrate-button"
+          iconLeft="settings"
+          size="small"
+          @click="
+            $emit('close');
+            $emit('edit');
+          "
+        >
+          {{ $t('solutions.details.view_settings') }}
         </UnnnicButton>
 
         <section
@@ -47,11 +62,13 @@
 defineProps<{
   description: string;
   tip?: string;
+  status: 'available' | 'integrated';
 }>();
 
 defineEmits<{
   close: [];
   integrate: [];
+  edit: [];
 }>();
 
 import Chat from '@/assets/chat.png';
