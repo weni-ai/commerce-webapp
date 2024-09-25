@@ -2,12 +2,6 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import APISolutions from '@/api/solutions';
 
-type Solution = {
-  id: string;
-  title: string;
-  description: string;
-};
-
 function makeS({ request, category }) {
   const status = ref<null | string>(null);
   const alreadyCalledLoad = ref(false);

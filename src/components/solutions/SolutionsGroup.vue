@@ -39,7 +39,7 @@
     <DrawerSolution
       :id="drawerSolution.solution?.id || ''"
       v-model:isOpen="drawerSolution.isOpen"
-      :title="solutionToIntegrate.solution?.title || ''"
+      :title="drawerSolution.solution?.title || ''"
       :category="category"
       :icon="icon"
       :iconScheme="iconScheme"
