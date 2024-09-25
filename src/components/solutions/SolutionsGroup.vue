@@ -47,41 +47,12 @@
       :values="drawerSolution.solution?.values"
     />
 
-    <UnnnicModalDialog
+    <ModalDisintegrate
+      v-if="solutionToDisintegrate.solution"
       v-model="solutionToDisintegrate.isOpen"
-      class="modal-disable-solution"
-      type="warning"
-      :showCloseIcon="true"
-      :title="
-        $t('solutions.disable.confirmation.title', {
-          name: solutionToDisintegrate.solution?.title,
-        })
-      "
-      showActionsDivider
-      :secondaryButtonProps="{
-        text: $t('common.cancel'),
-      }"
-      :primaryButtonProps="{
-        text: $t('common.confirm'),
-      }"
-      @secondary-button-click="solutionToDisintegrate.isOpen = false"
-      @primary-button-click="disintegrate"
-    >
-      <I18nT
-        keypath="solutions.disable.confirmation.description.container"
-        tag="p"
-        scope="global"
-        class="modal-disable-solution__description"
-      >
-        <b>
-          {{
-            $t('solutions.disable.confirmation.description.0', {
-              name: solutionToDisintegrate.solution?.title,
-            })
-          }}
-        </b>
-      </I18nT>
-    </UnnnicModalDialog>
+      :solution="solutionToDisintegrate.solution"
+      @close="solutionToDisintegrate.isOpen = false"
+    />
   </section>
 </template>
 
@@ -93,12 +64,11 @@ import SolutionCard from '@/components/solutions/SolutionCard.vue';
 import ModalIntegrate from '@/components/solutions/ModalIntegrate.vue';
 import DrawerSolution from '@/components/solutions/DrawerSolution.vue';
 import { useSolutionsStore } from '@/stores/Solutions';
+import ModalDisintegrate from './ModalDisintegrate.vue';
 
 const { t } = useI18n();
 
 const solutionsStore = useSolutionsStore();
-
-const isOpen = ref(false);
 
 type Solution = {
   id: string;
@@ -204,14 +174,6 @@ function openDisable(solution) {
   solutionToDisintegrate.isOpen = true;
 
   solutionToDisintegrate.solution = solution;
-}
-
-function disintegrate() {
-  solutionToDisintegrate.isOpen = false;
-
-  solutionsStore.disintegrate({ id: solutionToDisintegrate.solution?.id });
-
-  solutionToDisintegrate.solution = null;
 }
 </script>
 
