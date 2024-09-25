@@ -16,10 +16,20 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import TestTranslations from '@/components/TestTranslations.vue';
 import { useAlertStore } from './stores/Alert';
+import { useAuthStore } from './stores/auth';
 
 const alertStore = useAlertStore();
+const authStore = useAuthStore();
+
+onMounted(() => {
+  authStore.retriveAuthToken();
+  authStore.retriveSelectedFlowOrg();
+  authStore.retriveSelectedOrg();
+  authStore.retriveSelectedProject();
+});
 </script>
 
 <style scoped lang="scss">
