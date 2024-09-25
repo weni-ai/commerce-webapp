@@ -69,17 +69,21 @@
                 </section>
               </section>
             </template>
+
+            <SelectSmart
+              v-else-if="fieldType(field) === 'select'"
+              :modelValue="currentValueField(field).value"
+              size="sm"
+              placeholder=" "
+              :options="[
+                'Inscrição evento',
+                'Fluxo exemplo 1',
+                'Fluxo exemplo 2',
+              ]"
+              @update:model-value="updateField(field, $event)"
+            />
           </UnnnicFormElement>
         </template>
-
-        <!-- <UnnnicFormElement label="Tags setor nome 1">
-          <SelectSmart
-            v-model="val"
-            size="sm"
-            placeholder="Placeholder"
-            :options="['Options 1', 'Option 2', 'Option 3']"
-          />
-        </UnnnicFormElement> -->
       </section>
     </template>
 
@@ -155,7 +159,7 @@ function save() {
   router.push({ name: 'integrated-solutions' });
 }
 
-const types = ['switch', 'tags'];
+const types = ['switch', 'tags', 'select'];
 
 watch(
   () => attrs.isOpen,
@@ -181,6 +185,8 @@ function resetForm() {
       formData[label] = { type: 'switch', value };
     } else if (type === 'tags') {
       formData[label] = { type: 'tags', value, input: '' };
+    } else if (type === 'select') {
+      formData[label] = { type: 'select', value };
     }
   });
 }
@@ -211,6 +217,8 @@ function currentValueField(field: string) {
     return formData[label] || { type: 'switch', value: false };
   } else if (type === 'tags') {
     return formData[label] || { type: 'tags', value: [], input: '' };
+  } else if (type === 'select') {
+    return formData[label] || { type: 'select', value: '' };
   }
 }
 
@@ -240,6 +248,8 @@ function updateField(field: string, value: string | boolean) {
     }
 
     input.input = value;
+  } else if (type === 'select') {
+    input.value = value;
   }
 }
 

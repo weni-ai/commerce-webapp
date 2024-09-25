@@ -39,7 +39,7 @@ export default {
             'Base URL do site da loja',
             'UTM da feature',
             'UUID do fluxo Template Message',
-            'Fluxo inicial:',
+            'select:Fluxo inicial:',
             'Categorias a serem bloqueadas (opcional)',
             'Valor minimo de carrinho abandonado',
             'tags:Tags setor nome 1',
@@ -59,7 +59,7 @@ export default {
               'https://www.seusite.com/pagina-de-produto?utm_source=facebook&utm_medium=social&utm_campaign=lancamento-produto&utm_content=post1',
             'UUID do fluxo Template Message':
               '550e8400-e29b-41d4-a716-446655440000',
-            'Fluxo inicial:': 'Inscrição evento',
+            'select:Fluxo inicial:': 'Inscrição evento',
             'Categorias a serem bloqueadas (opcional)': 'Lorem Ipsum',
             'Valor minimo de carrinho abandonado': 'R$ 350,00',
             'tags:Tags setor nome 1': ['Dúvida', 'Compra', 'Segunda via'],
