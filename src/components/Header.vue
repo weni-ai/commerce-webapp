@@ -6,6 +6,7 @@
         :icon="icon"
         :scheme="iconScheme"
         class="icon"
+        data-test="icon"
       />
 
       <h2
@@ -23,6 +24,7 @@
     <p
       v-if="!!$slots.description"
       class="header__description"
+      data-test="description-box"
     >
       <slot name="description" />
     </p>
