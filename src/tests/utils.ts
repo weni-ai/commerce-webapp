@@ -9,6 +9,8 @@ export const setup = (...args: Parameters<typeof mount>) => {
   return mount(component, {
     props: options?.props,
 
+    slots: { ...(options?.slots || {}) },
+
     global: {
       mocks: {
         $t: (key: string) => key,
