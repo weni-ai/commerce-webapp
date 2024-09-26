@@ -26,7 +26,6 @@
           ? 'integrated'
           : 'available'
       "
-      @close="solutionToIntegrate.isOpen = false"
       @integrate="openDrawer(solutionToIntegrate.solution)"
       @edit="
         openDrawer(
@@ -56,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Header from '@/components/Header.vue';
 import SolutionCard from '@/components/solutions/SolutionCard.vue';
