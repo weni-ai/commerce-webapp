@@ -1,5 +1,6 @@
 <template>
   <UnnnicModalDialog
+    v-model="modelValue"
     class="modal-disable-solution"
     type="warning"
     :showCloseIcon="true"
@@ -11,11 +12,13 @@
     showActionsDivider
     :secondaryButtonProps="{
       text: $t('common.cancel'),
+      'data-test': 'cancel-button',
     }"
     :primaryButtonProps="{
       text: $t('common.confirm'),
+      'data-test': 'confirm-button',
     }"
-    @secondary-button-click="$emit('close')"
+    @secondary-button-click="close"
     @primary-button-click="disintegrate"
   >
     <I18nT
@@ -38,20 +41,21 @@
 <script setup lang="ts">
 import { useSolutionsStore } from '@/stores/Solutions';
 
+const modelValue = defineModel<boolean>({ required: true });
+
 const props = defineProps<{
   solution: Pick<Solution, 'id' | 'title'>;
 }>();
 
-const emit = defineEmits<{
-  close: [];
-  disintegrate: [];
-}>();
-
 const solutionsStore = useSolutionsStore();
+
+function close() {
+  modelValue.value = false;
+}
 
 function disintegrate() {
   solutionsStore.disintegrate({ id: props.solution.id });
 
-  emit('close');
+  close();
 }
 </script>

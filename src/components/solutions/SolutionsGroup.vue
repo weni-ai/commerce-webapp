@@ -51,7 +51,6 @@
       v-if="solutionToDisintegrate.solution"
       v-model="solutionToDisintegrate.isOpen"
       :solution="solutionToDisintegrate.solution"
-      @close="solutionToDisintegrate.isOpen = false"
     />
   </section>
 </template>
