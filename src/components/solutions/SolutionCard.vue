@@ -17,6 +17,7 @@
                 isActivatedByClick ? 'neutral-darkest' : 'neutral-cloudy'
               "
               size="avatar-nano"
+              data-test="see-options-icon"
               v-bind="$attrs"
             />
           </section>
@@ -44,6 +45,7 @@
                 :class="[
                   action.scheme && `options__option--scheme-${action.scheme}`,
                 ]"
+                :data-test="action.title"
                 @click="clickOption(action)"
               >
                 <UnnnicIcon
@@ -63,6 +65,7 @@
         v-else
         icon="add-1"
         size="small"
+        data-test="add-button"
         @click="$emit('add')"
       />
     </header>
