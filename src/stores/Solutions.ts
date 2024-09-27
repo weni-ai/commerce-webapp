@@ -52,12 +52,12 @@ function makeSolutionsList({
 export const useSolutionsStore = defineStore('solutions', () => {
   const integratedActiveNotifications = makeSolutionsList({
     request: APISolutions.listIntegratedByCategory,
-    category: 'active',
+    category: 'ACTIVE',
   });
 
   const integratedPassiveService = makeSolutionsList({
     request: APISolutions.listIntegratedByCategory,
-    category: 'passive',
+    category: 'PASSIVE',
   });
 
   const integratedIds = computed(() =>
@@ -70,13 +70,13 @@ export const useSolutionsStore = defineStore('solutions', () => {
   );
 
   const activeNotifications = makeSolutionsList({
-    request: APISolutions.listByCategory,
-    category: 'active',
+    request: APISolutions.listSolutions,
+    category: 'ACTIVE',
   });
 
   const passiveService = makeSolutionsList({
-    request: APISolutions.listByCategory,
-    category: 'passive',
+    request: APISolutions.listSolutions,
+    category: 'PASSIVE',
   });
 
   function findSolution({ id }: { id: string }) {

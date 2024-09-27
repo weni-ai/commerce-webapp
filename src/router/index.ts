@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import Discovery from '@/views/Discovery.vue';
 import IntegratedSolutions from '@/views/IntegratedSolutions.vue';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/Auth';
 import { i18n } from '@/locales';
 
 const router = createRouter({
@@ -16,20 +16,21 @@ const router = createRouter({
         const { token } = to.params as {
           token: string;
         };
-        const flowOrg = to.query.org_uuid as string;
-        const project = to.query.project_uuid as string;
-        // i18n.global.locale =
-        //   {
-        //     en: 'en-us',
-        //   }[to.query.locale] || to.query.locale;
-        await useAuthStore().externalLogin({ token: token.replace('+', ' ') });
-        await useAuthStore().selectedProject({ project });
 
-        if (flowOrg) {
-          await useAuthStore().selectedFlowOrg({ flowOrg });
-        } else {
-          await useAuthStore().getFlowOrganization();
-        }
+        const { locale, project_uuid } = to.query as {
+          locale: string;
+          project_uuid: string;
+        };
+
+        const authStore = useAuthStore();
+
+        authStore.setToken(token.replace('+', ' '));
+        authStore.setProjectUuid(project_uuid);
+
+        i18n.global.locale =
+          {
+            en: 'en-us',
+          }[locale] || locale;
 
         const nextPath = to.query.next as string;
 

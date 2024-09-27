@@ -1,6 +1,6 @@
 import axios from 'axios';
 import type { AxiosInstance } from 'axios';
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/Auth';
 import getEnv from '@/utils/env';
 
 export default {
@@ -10,10 +10,9 @@ export default {
     const client = axios.create({
       baseURL: getEnv('VITE_APP_API_BASE_URL'),
       headers: {
-        ...(authStore.authenticated
+        ...(authStore.token
           ? {
               Authorization: `${authStore.token}`,
-              'Project-Uuid': `${authStore.project}`,
             }
           : {}),
       },
