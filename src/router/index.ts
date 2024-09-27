@@ -1,9 +1,4 @@
-import {
-  createRouter,
-  createWebHistory,
-  type NavigationGuardNext,
-  type RouteLocationNormalized,
-} from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import Discovery from '@/views/Discovery.vue';
 import IntegratedSolutions from '@/views/IntegratedSolutions.vue';
@@ -14,22 +9,35 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/loginexternal/:token/',
+      path: '/loginexternal/:token/:project/:flowOrg',
       name: 'externalLogin',
       component: {},
       beforeEnter: async (to, from, next) => {
-        const { token } = to.params;
+        const { token, project, flowOrg } = to.params as {
+          token: string;
+          project: string;
+          flowOrg: string;
+        };
+        // i18n.global.locale =
+        //   {
+        //     en: 'en-us',
+        //   }[to.query.locale] || to.query.locale;
+        await useAuthStore().externalLogin({ token: token.replace('+', ' ') });
+        await useAuthStore().selectedProject({ project });
 
-        // to.query.org_uuid
-        // to.query.project_uuid
-        // to.query.locale
+        if (flowOrg) {
+          await useAuthStore().selectedFlowOrg({ flowOrg });
+        } else {
+          await useAuthStore().getFlowOrganization();
+        }
 
-        i18n.global.locale =
-          {
-            en: 'en-us',
-          }[to.query.locale] || to.query.locale;
+        if (to.query.next) {
+          next(to.query.next as string);
+        } else {
+          next('/');
+        }
 
-        const nextPath = to.query.next;
+        const nextPath = to.query.next as string;
 
         if (nextPath) {
           next({ path: nextPath, replace: true });
@@ -55,37 +63,6 @@ const router = createRouter({
           component: IntegratedSolutions,
         },
       ],
-    },
-    {
-      path: '/loginexternal/:token/:project/:flowOrg',
-      name: 'externalLogin',
-      redirect: '/',
-      beforeEnter: async (
-        to: RouteLocationNormalized,
-        from: RouteLocationNormalized,
-        next: NavigationGuardNext,
-      ) => {
-        const { token, project, flowOrg } = to.params as {
-          token: string;
-          project: string;
-          flowOrg?: string;
-        };
-
-        await useAuthStore().externalLogin({ token: token.replace('+', ' ') });
-        await useAuthStore().selectedProject({ project });
-
-        if (flowOrg) {
-          await useAuthStore().selectedFlowOrg({ flowOrg });
-        } else {
-          await useAuthStore().getFlowOrganization();
-        }
-
-        if (to.query.next) {
-          next(to.query.next as string);
-        } else {
-          next('/');
-        }
-      },
     },
   ],
 });
