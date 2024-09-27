@@ -1,7 +1,10 @@
 <template>
   <Drawer ref="drawer">
     <template #default>
-      <section class="help-box">
+      <section
+        v-if="solution.documentation"
+        class="help-box"
+      >
         <UnnnicIcon
           icon="info"
           size="ant"
@@ -17,7 +20,7 @@
           <b>{{ $t('solutions.integrate.help.0') }}</b>
 
           <a
-            href="http://google.com"
+            :href="solution.documentation"
             target="_blank"
           >
             {{ $t('solutions.integrate.help.1') }}
