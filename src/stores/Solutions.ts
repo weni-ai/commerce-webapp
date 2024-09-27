@@ -2,13 +2,13 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import APISolutions from '@/api/solutions';
 
-type Solution = {
-  id: string;
-  title: string;
-  description: string;
-};
-
-function makeS({ request, category }) {
+function makeSolutionsList({
+  request,
+  category,
+}: {
+  request: ({ category }: { category: string }) => Promise<Solution[]>;
+  category: string;
+}) {
   const status = ref<null | string>(null);
   const alreadyCalledLoad = ref(false);
   const data = ref<Solution[]>([]);
@@ -39,7 +39,7 @@ function makeS({ request, category }) {
     data.value.push(solution);
   }
 
-  function remove(solution: Solution) {
+  function remove(solution: Pick<Solution, 'id'>) {
     data.value.splice(
       data.value.findIndex(({ id }) => id === solution.id),
       1,
@@ -50,12 +50,12 @@ function makeS({ request, category }) {
 }
 
 export const useSolutionsStore = defineStore('solutions', () => {
-  const integratedActiveNotifications = makeS({
+  const integratedActiveNotifications = makeSolutionsList({
     request: APISolutions.listIntegratedByCategory,
     category: 'active',
   });
 
-  const integratedPassiveService = makeS({
+  const integratedPassiveService = makeSolutionsList({
     request: APISolutions.listIntegratedByCategory,
     category: 'passive',
   });
@@ -69,17 +69,17 @@ export const useSolutionsStore = defineStore('solutions', () => {
       .map(({ id }) => id),
   );
 
-  const activeNotifications = makeS({
+  const activeNotifications = makeSolutionsList({
     request: APISolutions.listByCategory,
     category: 'active',
   });
 
-  const passiveService = makeS({
+  const passiveService = makeSolutionsList({
     request: APISolutions.listByCategory,
     category: 'passive',
   });
 
-  function findSolution({ id }) {
+  function findSolution({ id }: { id: string }) {
     const allSolutions = computed(() =>
       [
         activeNotifications.data.value.map((item) => ({
@@ -104,6 +104,9 @@ export const useSolutionsStore = defineStore('solutions', () => {
       id: solutionToIntegrate.id,
       title: solutionToIntegrate.title,
       description: solutionToIntegrate.description,
+      tip: solutionToIntegrate.tip,
+      globals: solutionToIntegrate.globals,
+      mockedValues: solutionToIntegrate.mockedValues,
     });
   }
 

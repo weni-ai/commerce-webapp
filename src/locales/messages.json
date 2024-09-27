@@ -141,6 +141,14 @@
         }
       }
     },
+
+    "details": {
+      "view_settings": {
+        "pt-br": "Ver configurações",
+        "en-us": "View settings",
+        "es": "Ver configuración"
+      }
+    },
     
     "integrate": {
       "help": {

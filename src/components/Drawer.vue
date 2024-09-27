@@ -4,6 +4,7 @@
       <section
         v-if="isOpen"
         class="drawer__background"
+        data-test="background"
         @click.self="close"
       ></section>
     </Transition>
@@ -27,6 +28,7 @@
             type="tertiary"
             iconCenter="arrow_forward"
             size="small"
+            data-test="close-button"
             @click="close"
           />
         </header>
@@ -50,19 +52,16 @@ import Header from '@/components/Header.vue';
 import Scrollable from '@/components/Scrollable.vue';
 import { onUnmounted, watch } from 'vue';
 
-const props = defineProps<{
-  isOpen: boolean;
+const isOpen = defineModel<boolean>('isOpen', { required: true });
+
+defineProps<{
   title: string;
   icon: string;
   iconScheme: string;
 }>();
 
-const emit = defineEmits<{
-  'update:isOpen': [isOpen: boolean];
-}>();
-
 function close() {
-  emit('update:isOpen', false);
+  isOpen.value = false;
 }
 
 defineExpose({
@@ -70,7 +69,7 @@ defineExpose({
 });
 
 watch(
-  () => props.isOpen,
+  isOpen,
   (isOpen) => {
     document.body.classList?.[isOpen ? 'add' : 'remove']('drawer-view');
   },

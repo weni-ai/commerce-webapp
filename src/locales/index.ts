@@ -1,33 +1,42 @@
 import { createI18n } from 'vue-i18n';
+import { flattenDeep } from 'lodash';
 
-import m from './messages.json';
+import messages from './messages.json';
 
 const languages = ['pt-br', 'en-us', 'es'];
 
-function searchFor(language: string, object: object) {
-  if (typeof object[language] === 'string') {
-    return object[language];
+function transformMessages(b, prefix = []) {
+  if (typeof b === 'string') {
+    return { [prefix.join('.')]: b };
   }
 
-  return Object.entries(object)
-    .map(([key, value]) => ({
-      [key]: searchFor(language, value),
-    }))
-    .reduce(
-      (previous, current) => ({
-        ...previous,
-        ...current,
-      }),
-      {},
-    );
+  return Object.entries(b).map(([key, value]) =>
+    transformMessages(value, prefix.concat(key)),
+  );
 }
+
+const allMessages = flattenDeep(transformMessages(messages)).reduce(
+  (previous, current) => ({
+    ...previous,
+    ...current,
+  }),
+  {},
+);
 
 export const i18n = createI18n({
   locale: 'en-us',
   fallbackLocale: 'en-us',
-  messages: languages
-    .map((language) => ({
-      [language]: searchFor(language, m),
-    }))
-    .reduce((previous, current) => ({ ...previous, ...current })),
+  messages: Object.fromEntries(
+    languages.map((language) => [
+      language,
+      Object.fromEntries(
+        Object.keys(allMessages)
+          .filter((key) => key.endsWith(`.${language}`))
+          .map((current) => [
+            current.slice(0, -`.${language}`.length),
+            allMessages[current],
+          ]),
+      ),
+    ]),
+  ),
 });

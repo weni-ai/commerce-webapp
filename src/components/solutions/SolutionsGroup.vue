@@ -21,71 +21,52 @@
       v-if="solutionToIntegrate.solution"
       v-model="solutionToIntegrate.isOpen"
       v-bind="solutionToIntegrate.solution"
-      @close="solutionToIntegrate.isOpen = false"
-      @integrate="isOpen = true"
+      :status="
+        isSolutionIntegrated(solutionToIntegrate.solution.id)
+          ? 'integrated'
+          : 'available'
+      "
+      @integrate="openDrawer(solutionToIntegrate.solution)"
+      @edit="
+        openDrawer(
+          solutionToIntegrate.solution,
+          solutionToIntegrate.solution?.mockedValues,
+        )
+      "
     />
 
     <DrawerSolution
-      :id="solutionToIntegrate.solution?.id || ''"
-      v-model:isOpen="isOpen"
-      :title="solutionToIntegrate.solution?.title || ''"
+      :id="drawerSolution.solution?.id || ''"
+      v-model:isOpen="drawerSolution.isOpen"
+      :title="drawerSolution.solution?.title || ''"
       :category="category"
       :icon="icon"
       :iconScheme="iconScheme"
+      :solution="drawerSolution.solution"
+      :values="drawerSolution.solution?.values"
     />
 
-    <UnnnicModalDialog
+    <ModalDisintegrate
+      v-if="solutionToDisintegrate.solution"
       v-model="solutionToDisintegrate.isOpen"
-      class="modal-disable-solution"
-      type="warning"
-      :showCloseIcon="true"
-      :title="
-        $t('solutions.disable.confirmation.title', {
-          name: solutionToDisintegrate.solution?.title,
-        })
-      "
-      showActionsDivider
-      :secondaryButtonProps="{
-        text: $t('common.cancel'),
-      }"
-      :primaryButtonProps="{
-        text: $t('common.confirm'),
-      }"
-      @secondary-button-click="solutionToDisintegrate.isOpen = false"
-      @primary-button-click="disintegrate"
-    >
-      <I18nT
-        keypath="solutions.disable.confirmation.description.container"
-        tag="p"
-        scope="global"
-        class="modal-disable-solution__description"
-      >
-        <b>
-          {{
-            $t('solutions.disable.confirmation.description.0', {
-              name: solutionToDisintegrate.solution?.title,
-            })
-          }}
-        </b>
-      </I18nT>
-    </UnnnicModalDialog>
+      :solution="solutionToDisintegrate.solution"
+    />
   </section>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Header from '@/components/Header.vue';
 import SolutionCard from '@/components/solutions/SolutionCard.vue';
 import ModalIntegrate from '@/components/solutions/ModalIntegrate.vue';
 import DrawerSolution from '@/components/solutions/DrawerSolution.vue';
 import { useSolutionsStore } from '@/stores/Solutions';
+import ModalDisintegrate from './ModalDisintegrate.vue';
 
 const { t } = useI18n();
 
 const solutionsStore = useSolutionsStore();
-
-const isOpen = ref(false);
 
 type Solution = {
   id: string;
@@ -125,21 +106,40 @@ const solutionToIntegrate = reactive<{
   solution: null,
 });
 
-function getOptionsBySolution(solution) {
+const drawerSolution = reactive<{
+  isOpen: boolean;
+  solution: null | {
+    id: string;
+    title: string;
+    description: string;
+    globals: string[];
+  };
+}>({
+  isOpen: false,
+  solution: null,
+});
+
+function isSolutionIntegrated(solutionId: string) {
   const integrated = [
     solutionsStore.integrated.activeNotifications.data,
     solutionsStore.integrated.passiveService.data,
   ].flat();
 
-  if (integrated.some((integrated) => integrated.id === solution.id)) {
+  return integrated.some((integrated) => integrated.id === solutionId);
+}
+
+function getOptionsBySolution(solution) {
+  if (isSolutionIntegrated(solution.id)) {
     return [
       {
         icon: 'visibility',
         title: t('solutions.actions.see_details'),
+        onClick: openIntegrateSolutionModal.bind(this, solution),
       },
       {
         icon: 'settings',
         title: t('solutions.actions.settings'),
+        onClick: openDrawer.bind(this, solution, solution.mockedValues),
       },
       {
         type: 'separator',
@@ -159,26 +159,19 @@ function getOptionsBySolution(solution) {
 function openIntegrateSolutionModal(solution: Solution) {
   solutionToIntegrate.isOpen = true;
 
-  solutionToIntegrate.solution = {
-    id: solution.id,
-    title: t(`solutions.${solution.id}.title`),
-    description: t(`solutions.${solution.id}.description`),
-    tip: t(`solutions.${solution.id}.tip`),
-  };
+  solutionToIntegrate.solution = solution;
+}
+
+function openDrawer(solution, values = {}) {
+  drawerSolution.isOpen = true;
+  drawerSolution.solution = solution;
+  drawerSolution.solution.values = values;
 }
 
 function openDisable(solution) {
   solutionToDisintegrate.isOpen = true;
 
   solutionToDisintegrate.solution = solution;
-}
-
-function disintegrate() {
-  solutionToDisintegrate.isOpen = false;
-
-  solutionsStore.disintegrate({ id: solutionToDisintegrate.solution?.id });
-
-  solutionToDisintegrate.solution = null;
 }
 </script>
 

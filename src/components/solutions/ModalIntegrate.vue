@@ -1,5 +1,6 @@
 <template>
   <UnnnicModalDialog
+    v-model="modelValue"
     class="modal-integrate-solution"
     :showCloseIcon="true"
   >
@@ -10,19 +11,37 @@
         </p>
 
         <UnnnicButton
+          v-if="status === 'available'"
           class="modal-integrate-solution__integrate-button"
           size="small"
+          data-test="integrate-button"
           @click="
-            $emit('close');
+            modelValue = false;
             $emit('integrate');
           "
         >
           {{ $t('solutions.integrate.button_label') }}
         </UnnnicButton>
 
+        <UnnnicButton
+          v-else-if="status === 'integrated'"
+          type="secondary"
+          class="modal-integrate-solution__integrate-button"
+          iconLeft="settings"
+          size="small"
+          data-test="edit-button"
+          @click="
+            modelValue = false;
+            $emit('edit');
+          "
+        >
+          {{ $t('solutions.details.view_settings') }}
+        </UnnnicButton>
+
         <section
           v-if="!!tip"
           class="modal-integrate-solution__tip"
+          data-test="tip-box"
         >
           <UnnnicIcon
             icon="emoji_objects"
@@ -44,17 +63,20 @@
 </template>
 
 <script lang="ts" setup>
+import Chat from '@/assets/chat.png';
+
+const modelValue = defineModel<boolean>({ required: true });
+
 defineProps<{
   description: string;
   tip?: string;
+  status: 'available' | 'integrated';
 }>();
 
 defineEmits<{
-  close: [];
   integrate: [];
+  edit: [];
 }>();
-
-import Chat from '@/assets/chat.png';
 </script>
 
 <style scoped lang="scss">
