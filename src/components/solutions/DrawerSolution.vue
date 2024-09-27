@@ -50,43 +50,54 @@
               :modelValue="currentValueField(field).value"
               @update:model-value="updateField(field, $event)"
             />
-
-            <template v-else-if="fieldType(field) === 'tags'">
-              <UnnnicInput
-                size="sm"
-                iconRight="add"
-                iconRightClickable
-                :modelValue="currentValueField(field).input"
-                @update:model-value="updateField(field, $event)"
-                @icon-right-click="iconRightClick(field)"
-                @keydown.enter.self="iconRightClick(field)"
-              />
-
-              <section class="tags">
-                <section
-                  v-for="(tag, tagIndex) in currentValueField(field).value"
-                  :key="tagIndex"
-                  class="tags__tag"
-                >
-                  {{ tag }}
-                </section>
-              </section>
-            </template>
-
-            <SelectSmart
-              v-else-if="fieldType(field) === 'select'"
-              :modelValue="currentValueField(field).value"
-              size="sm"
-              placeholder=" "
-              :options="[
-                'Inscrição evento',
-                'Fluxo exemplo 1',
-                'Fluxo exemplo 2',
-              ]"
-              @update:model-value="updateField(field, $event)"
-            />
           </UnnnicFormElement>
         </template>
+
+        <UnnnicFormElement
+          v-for="(sector, index) in solution.sectors"
+          :key="index"
+          :label="`Tags do ${sector}`"
+        >
+          <UnnnicInput
+            size="sm"
+            iconRight="add"
+            iconRightClickable
+            :modelValue="currentValueField(`tags:sector-${sector}`).input"
+            @update:model-value="updateField(`tags:sector-${sector}`, $event)"
+            @icon-right-click="iconRightClick(`tags:sector-${sector}`)"
+            @keydown.enter.self="iconRightClick(`tags:sector-${sector}`)"
+          />
+
+          <section class="tags">
+            <section
+              v-for="(tag, tagIndex) in currentValueField(
+                `tags:sector-${sector}`,
+              ).value"
+              :key="tagIndex"
+              class="tags__tag"
+            >
+              {{ tag }}
+            </section>
+          </section>
+        </UnnnicFormElement>
+
+        <UnnnicFormElement
+          v-if="solution.flows.length"
+          label="Fluxo inicial:"
+        >
+          <SelectSmart
+            :modelValue="currentValueField('select:flow').value"
+            size="sm"
+            placeholder=" "
+            :options="
+              solution.flows.map(({ uuid, name }) => ({
+                value: uuid,
+                label: name,
+              }))
+            "
+            @update:model-value="updateField('select:flow', $event)"
+          />
+        </UnnnicFormElement>
       </section>
     </template>
 

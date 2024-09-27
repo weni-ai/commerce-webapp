@@ -28,8 +28,9 @@ function makeSolutionsList({
       data.value = await request({ category });
 
       status.value = 'complete';
-    } catch {
+    } catch (error) {
       status.value = 'error';
+      throw error;
     } finally {
       alreadyCalledLoad.value = true;
     }
@@ -103,10 +104,12 @@ export const useSolutionsStore = defineStore('solutions', () => {
     solutionToIntegrate?.parent.add({
       id: solutionToIntegrate.id,
       title: solutionToIntegrate.title,
-      documentation: solutionToDisintegrate.documentation,
+      documentation: solutionToIntegrate.documentation,
       description: solutionToIntegrate.description,
       tip: solutionToIntegrate.tip,
       globals: solutionToIntegrate.globals,
+      flows: solutionToIntegrate.flows,
+      sectors: solutionToIntegrate.sectors,
     });
   }
 
