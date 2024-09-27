@@ -9,15 +9,15 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/loginexternal/:token/:project/:flowOrg',
+      path: '/loginexternal/:token',
       name: 'externalLogin',
       component: {},
       beforeEnter: async (to, from, next) => {
-        const { token, project, flowOrg } = to.params as {
+        const { token } = to.params as {
           token: string;
-          project: string;
-          flowOrg: string;
         };
+        const flowOrg = to.query.org_uuid as string;
+        const project = to.query.project_uuid as string;
         // i18n.global.locale =
         //   {
         //     en: 'en-us',
@@ -29,12 +29,6 @@ const router = createRouter({
           await useAuthStore().selectedFlowOrg({ flowOrg });
         } else {
           await useAuthStore().getFlowOrganization();
-        }
-
-        if (to.query.next) {
-          next(to.query.next as string);
-        } else {
-          next('/');
         }
 
         const nextPath = to.query.next as string;
