@@ -5,11 +5,11 @@ declare global {
     id: string;
     title: string;
     description: string;
+    documentation: string;
     tip: string;
     globals: string[];
-    mockedValues: {
-      [key: string]: string | string[] | boolean;
-    };
+    flows: { uuid: string; name: string }[];
+    sectors: string[];
   };
 }
 

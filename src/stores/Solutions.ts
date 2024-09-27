@@ -51,12 +51,12 @@ function makeSolutionsList({
 
 export const useSolutionsStore = defineStore('solutions', () => {
   const integratedActiveNotifications = makeSolutionsList({
-    request: APISolutions.listIntegratedByCategory,
+    request: APISolutions.listIntegratedSolutions,
     category: 'ACTIVE',
   });
 
   const integratedPassiveService = makeSolutionsList({
-    request: APISolutions.listIntegratedByCategory,
+    request: APISolutions.listIntegratedSolutions,
     category: 'PASSIVE',
   });
 
@@ -103,10 +103,10 @@ export const useSolutionsStore = defineStore('solutions', () => {
     solutionToIntegrate?.parent.add({
       id: solutionToIntegrate.id,
       title: solutionToIntegrate.title,
+      documentation: solutionToDisintegrate.documentation,
       description: solutionToIntegrate.description,
       tip: solutionToIntegrate.tip,
       globals: solutionToIntegrate.globals,
-      mockedValues: solutionToIntegrate.mockedValues,
     });
   }
 
