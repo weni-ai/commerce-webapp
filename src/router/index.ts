@@ -17,15 +17,33 @@ const router = createRouter({
           token: string;
         };
 
-        const { locale, project_uuid } = to.query as {
+        const tokenParsed = token.replace('+', ' ');
+
+        const { locale, project_uuid, set_api_base_url } = to.query as {
           locale: string;
           project_uuid: string;
+          set_api_base_url?: string;
         };
 
         const authStore = useAuthStore();
 
-        authStore.setToken(token.replace('+', ' '));
+        authStore.setToken(tokenParsed);
         authStore.setProjectUuid(project_uuid);
+
+        if (import.meta.env.DEV) {
+          localStorage.setItem(
+            'dev:lastUsedLoginParams',
+            JSON.stringify({
+              token: tokenParsed,
+              locale,
+              projectUuid: project_uuid,
+            }),
+          );
+
+          if (set_api_base_url) {
+            localStorage.setItem('dev:replaceAPIBaseURL', set_api_base_url);
+          }
+        }
 
         i18n.global.locale =
           {

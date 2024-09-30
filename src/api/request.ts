@@ -7,15 +7,26 @@ export default {
   get $http(): AxiosInstance {
     const authStore = useAuthStore();
 
+    let baseURL = getEnv('API_BASE_URL');
+    const headers = {
+      ...(authStore.token
+        ? {
+            Authorization: `${authStore.token}`,
+          }
+        : {}),
+    };
+
+    if (import.meta.env.DEV) {
+      const replaceAPIBaseURL = localStorage.getItem('dev:replaceAPIBaseURL');
+
+      if (replaceAPIBaseURL) {
+        baseURL = replaceAPIBaseURL;
+      }
+    }
+
     const client = axios.create({
-      baseURL: getEnv('VITE_APP_API_BASE_URL'),
-      headers: {
-        ...(authStore.token
-          ? {
-              Authorization: `${authStore.token}`,
-            }
-          : {}),
-      },
+      baseURL,
+      headers,
     });
 
     client.interceptors.response.use(undefined, (error) => {
