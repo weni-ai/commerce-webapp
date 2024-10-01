@@ -2,7 +2,7 @@
 
 declare global {
   type Solution = {
-    id: string;
+    uuid: string;
     title: string;
     description: string;
     documentation: string;

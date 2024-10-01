@@ -36,12 +36,6 @@ const props = defineProps<{
   passiveService: any;
 }>();
 
-type Solution = {
-  id: string;
-  title: string;
-  description: string;
-};
-
 const { t } = useI18n();
 
 const solutionName = ref('');

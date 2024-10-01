@@ -40,9 +40,9 @@ function makeSolutionsList({
     data.value.push(solution);
   }
 
-  function remove(solution: Pick<Solution, 'id'>) {
+  function remove(solution: Pick<Solution, 'uuid'>) {
     data.value.splice(
-      data.value.findIndex(({ id }) => id === solution.id),
+      data.value.findIndex(({ uuid }) => uuid === solution.uuid),
       1,
     );
   }
@@ -61,13 +61,13 @@ export const useSolutionsStore = defineStore('solutions', () => {
     category: 'PASSIVE',
   });
 
-  const integratedIds = computed(() =>
+  const integratedUuids = computed(() =>
     [
       integratedActiveNotifications.data.value,
       integratedPassiveService.data.value,
     ]
       .flat()
-      .map(({ id }) => id),
+      .map(({ uuid }) => uuid),
   );
 
   const activeNotifications = makeSolutionsList({
@@ -80,54 +80,71 @@ export const useSolutionsStore = defineStore('solutions', () => {
     category: 'PASSIVE',
   });
 
-  function findSolution({ id }: { id: string }) {
-    const allSolutions = computed(() =>
-      [
-        activeNotifications.data.value.map((item) => ({
-          ...item,
-          parent: integratedActiveNotifications,
-        })),
+  function findSolution({ uuid }: Pick<Solution, 'uuid'>):
+    | {
+        solution: Solution;
+        integrationCorrespondent: ReturnType<typeof makeSolutionsList>;
+      }
+    | undefined {
+    const allSolutions = [
+      {
+        solutions: activeNotifications.data.value,
+        integrationCorrespondent: integratedActiveNotifications,
+      },
+      {
+        solutions: passiveService.data.value,
+        integrationCorrespondent: integratedPassiveService,
+      },
+    ];
 
-        passiveService.data.value.map((item) => ({
-          ...item,
-          parent: integratedPassiveService,
-        })),
-      ].flat(),
-    );
+    const groupFound = allSolutions
+      .map((group) => ({
+        ...group,
+        solution: group.solutions.find((solution) => solution.uuid === uuid),
+      }))
+      .find(({ solution }) => solution);
 
-    return allSolutions.value.find((solution) => solution.id === id);
+    if (groupFound?.solution) {
+      return {
+        solution: groupFound.solution,
+        integrationCorrespondent: groupFound.integrationCorrespondent,
+      };
+    }
+
+    return undefined;
   }
 
-  function integrate({ id }: { id: string }) {
-    const solutionToIntegrate = findSolution({ id });
+  async function integrate({ uuid }: Pick<Solution, 'uuid'>) {
+    const search = findSolution({ uuid });
 
-    solutionToIntegrate?.parent.add({
-      id: solutionToIntegrate.id,
-      title: solutionToIntegrate.title,
-      documentation: solutionToIntegrate.documentation,
-      description: solutionToIntegrate.description,
-      tip: solutionToIntegrate.tip,
-      globals: solutionToIntegrate.globals,
-      flows: solutionToIntegrate.flows,
-      sectors: solutionToIntegrate.sectors,
-    });
+    if (search?.solution) {
+      await APISolutions.integrateSolution({
+        solutionUuid: search?.solution.uuid,
+        sectors: {},
+        globals: {},
+      });
+
+      search.integrationCorrespondent.add(search.solution);
+    }
   }
 
-  function disintegrate({ id }: { id: string }) {
-    const solutionToDisintegrate = findSolution({ id });
-
-    solutionToDisintegrate?.parent.remove({ id: id });
+  function disintegrate({ uuid }: Pick<Solution, 'uuid'>) {
+    [integratedActiveNotifications, integratedPassiveService]
+      .find((integrated) =>
+        integrated.data.value.find((solution) => solution.uuid === uuid),
+      )
+      ?.remove({ uuid });
   }
 
   const availableActiveNotifications = computed(() =>
     activeNotifications.data.value.filter(
-      (solution) => !integratedIds.value.includes(solution.id),
+      (solution) => !integratedUuids.value.includes(solution.uuid),
     ),
   );
 
   const availablePassiveService = computed(() =>
     passiveService.data.value.filter(
-      (solution) => !integratedIds.value.includes(solution.id),
+      (solution) => !integratedUuids.value.includes(solution.uuid),
     ),
   );
 

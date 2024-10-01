@@ -44,7 +44,7 @@ import { useSolutionsStore } from '@/stores/Solutions';
 const modelValue = defineModel<boolean>({ required: true });
 
 const props = defineProps<{
-  solution: Pick<Solution, 'id' | 'title'>;
+  solution: Pick<Solution, 'uuid' | 'title'>;
 }>();
 
 const solutionsStore = useSolutionsStore();
@@ -54,7 +54,7 @@ function close() {
 }
 
 function disintegrate() {
-  solutionsStore.disintegrate({ id: props.solution.id });
+  solutionsStore.disintegrate({ uuid: props.solution.uuid });
 
   close();
 }

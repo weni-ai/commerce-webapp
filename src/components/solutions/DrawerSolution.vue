@@ -126,9 +126,8 @@ import { useSolutionsStore } from '@/stores/Solutions';
 import { useRouter } from 'vue-router';
 
 const props = defineProps<{
-  id: string;
   category: 'activeNotifications' | 'passiveService';
-  solution: any;
+  solution: Solution;
   values: any;
 }>();
 
@@ -154,15 +153,15 @@ function close() {
   drawerRef.value?.close();
 }
 
-function save() {
+async function save() {
   close();
 
   if (Object.keys(props.values).length) {
     return;
   }
 
-  solutionsStore.integrate({
-    id: props.id,
+  await solutionsStore.integrate({
+    uuid: props.solution.uuid,
   });
 
   alertStore.add({

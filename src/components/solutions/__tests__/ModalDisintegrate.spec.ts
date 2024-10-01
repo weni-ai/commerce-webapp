@@ -12,7 +12,7 @@ describe('ModalDisintegrate', () => {
       props: {
         modelValue: true,
         solution: {
-          id: '1234',
+          uuid: '1234',
           title: 'Title of the Solution',
         },
       },
@@ -67,7 +67,9 @@ describe('ModalDisintegrate', () => {
     it('calls disintegrate function from solutions store', () => {
       const solutionsStore = useSolutionsStore();
 
-      expect(solutionsStore.disintegrate).toHaveBeenCalledWith({ id: '1234' });
+      expect(solutionsStore.disintegrate).toHaveBeenCalledWith({
+        uuid: '1234',
+      });
     });
 
     it('emits close event', () => {

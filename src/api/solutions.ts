@@ -27,8 +27,8 @@ export default {
       `/v2/feature/${authStore.projectUuid}/?category=${category}`,
     );
 
-    return data.results.map((solution, index) => ({
-      id: String(index),
+    return data.results.map((solution) => ({
+      uuid: solution.uuid,
       title: solution.name,
       description: solution.description,
       tip: solution.disclaimer,
@@ -37,6 +37,28 @@ export default {
       flows: solution.initial_flow,
       sectors: solution.sectors,
     }));
+  },
+
+  async integrateSolution({
+    solutionUuid,
+    sectors,
+    globals,
+  }: {
+    solutionUuid: string;
+    sectors: { [key: string]: string[] };
+    globals: { [key: string]: string[] };
+  }) {
+    const authStore = useAuthStore();
+
+    await request.$http.post(`/v2/feature/${solutionUuid}/integrate/`, {
+      project_uuid: authStore.projectUuid,
+      action_base_flow: '',
+      sectors: Object.keys(sectors).map((sectorName) => ({
+        name: sectorName,
+        tags: sectors[sectorName],
+      })),
+      globals_values: globals,
+    });
   },
 
   async listIntegratedSolutions({
@@ -51,6 +73,7 @@ export default {
     }: {
       data: {
         results: {
+          uuid: string;
           name: string;
           description: string;
           disclaimer: string;
@@ -71,8 +94,8 @@ export default {
       `/v2/integrated_feature/${authStore.projectUuid}/?category=${category}`,
     );
 
-    return data.results.map((solution, index) => ({
-      id: String(index),
+    return data.results.map((solution) => ({
+      uuid: solution.uuid,
       title: solution.name,
       description: solution.description,
       tip: solution.disclaimer,

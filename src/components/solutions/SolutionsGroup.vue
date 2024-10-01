@@ -22,7 +22,7 @@
       v-model="solutionToIntegrate.isOpen"
       v-bind="solutionToIntegrate.solution"
       :status="
-        isSolutionIntegrated(solutionToIntegrate.solution.id)
+        isSolutionIntegrated(solutionToIntegrate.solution)
           ? 'integrated'
           : 'available'
       "
@@ -36,7 +36,6 @@
     />
 
     <DrawerSolution
-      :id="drawerSolution.solution?.id || ''"
       v-model:isOpen="drawerSolution.isOpen"
       :title="drawerSolution.solution?.title || ''"
       :category="category"
@@ -68,12 +67,6 @@ const { t } = useI18n();
 
 const solutionsStore = useSolutionsStore();
 
-type Solution = {
-  id: string;
-  title: string;
-  description: string;
-};
-
 defineProps<{
   title: string;
   icon: string;
@@ -85,7 +78,7 @@ defineProps<{
 const solutionToDisintegrate = reactive<{
   isOpen: boolean;
   solution: null | {
-    id: string;
+    uuid: string;
     title: string;
   };
 }>({
@@ -96,7 +89,7 @@ const solutionToDisintegrate = reactive<{
 const solutionToIntegrate = reactive<{
   isOpen: boolean;
   solution: null | {
-    id: string;
+    uuid: string;
     title: string;
     description: string;
     tip: string;
@@ -108,28 +101,23 @@ const solutionToIntegrate = reactive<{
 
 const drawerSolution = reactive<{
   isOpen: boolean;
-  solution: null | {
-    id: string;
-    title: string;
-    description: string;
-    globals: string[];
-  };
+  solution: null | Solution;
 }>({
   isOpen: false,
   solution: null,
 });
 
-function isSolutionIntegrated(solutionId: string) {
+function isSolutionIntegrated(solution: Solution) {
   const integrated = [
     solutionsStore.integrated.activeNotifications.data,
     solutionsStore.integrated.passiveService.data,
   ].flat();
 
-  return integrated.some((integrated) => integrated.id === solutionId);
+  return integrated.some((integrated) => integrated.uuid === solution.uuid);
 }
 
-function getOptionsBySolution(solution) {
-  if (isSolutionIntegrated(solution.id)) {
+function getOptionsBySolution(solution: Solution) {
+  if (isSolutionIntegrated(solution)) {
     return [
       {
         icon: 'visibility',
