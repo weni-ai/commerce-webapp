@@ -20,15 +20,22 @@
     :iconScheme="group.iconScheme"
     :solutions="group.solutions"
     :category="group.category"
+    @disintegrate="openDisintegrate"
+  />
+
+  <ModalDisintegrate
+    v-model="toDisintegrate.isOpen"
+    :solution="toDisintegrate.solution || undefined"
   />
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SolutionsGroup from '@/components/solutions/SolutionsGroup.vue';
 import SolutionsGroupSkeletonLoading from '@/components/solutions/SolutionsGroupSkeletonLoading.vue';
 import StateEmpty from '@/components/solutions/StateEmpty.vue';
+import ModalDisintegrate from '@/components/solutions/ModalDisintegrate.vue';
 
 const props = defineProps<{
   isFirstLoading: boolean;
@@ -72,6 +79,19 @@ const groups = computed(() => {
     }))
     .filter(({ solutions }) => solutions.length);
 });
+
+const toDisintegrate = reactive<{
+  isOpen: boolean;
+  solution?: Solution;
+}>({
+  isOpen: false,
+  solution: undefined,
+});
+
+function openDisintegrate(solution: Solution) {
+  toDisintegrate.isOpen = true;
+  toDisintegrate.solution = solution;
+}
 </script>
 
 <style scoped lang="scss">

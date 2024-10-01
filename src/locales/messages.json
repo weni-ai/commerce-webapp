@@ -202,6 +202,12 @@
           "pt-br": "Solução configurada com sucesso",
           "en-us": "Solution successfully configured",
           "es": "Solución configurada correctamente"
+        },
+        
+        "removed": {
+          "pt-br": "Solução desabilitada com sucesso",
+          "en-us": "Solution successfully disabled",
+          "es": "Solución desactivada correctamente"
         }
       }
     },

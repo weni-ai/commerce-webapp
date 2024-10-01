@@ -44,12 +44,6 @@
       :solution="drawerSolution.solution"
       :values="drawerSolution.solution?.values"
     />
-
-    <ModalDisintegrate
-      v-if="solutionToDisintegrate.solution"
-      v-model="solutionToDisintegrate.isOpen"
-      :solution="solutionToDisintegrate.solution"
-    />
   </section>
 </template>
 
@@ -61,7 +55,6 @@ import SolutionCard from '@/components/solutions/SolutionCard.vue';
 import ModalIntegrate from '@/components/solutions/ModalIntegrate.vue';
 import DrawerSolution from '@/components/solutions/DrawerSolution.vue';
 import { useSolutionsStore } from '@/stores/Solutions';
-import ModalDisintegrate from './ModalDisintegrate.vue';
 
 const { t } = useI18n();
 
@@ -75,16 +68,9 @@ defineProps<{
   solutions: Solution[];
 }>();
 
-const solutionToDisintegrate = reactive<{
-  isOpen: boolean;
-  solution: null | {
-    uuid: string;
-    title: string;
-  };
-}>({
-  isOpen: false,
-  solution: null,
-});
+const emit = defineEmits<{
+  disintegrate: [solution: Solution];
+}>();
 
 const solutionToIntegrate = reactive<{
   isOpen: boolean;
@@ -136,7 +122,7 @@ function getOptionsBySolution(solution: Solution) {
         icon: 'do_not_disturb_on',
         title: t('solutions.actions.disable_solution'),
         scheme: 'aux-red-500',
-        onClick: openDisable.bind(this, solution),
+        onClick: () => emit('disintegrate', solution),
       },
     ];
   } else {
@@ -154,12 +140,6 @@ function openDrawer(solution, values = {}) {
   drawerSolution.isOpen = true;
   drawerSolution.solution = solution;
   drawerSolution.solution.values = values;
-}
-
-function openDisable(solution) {
-  solutionToDisintegrate.isOpen = true;
-
-  solutionToDisintegrate.solution = solution;
 }
 </script>
 

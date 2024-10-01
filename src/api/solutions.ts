@@ -61,6 +61,16 @@ export default {
     });
   },
 
+  async disintegrateSolution({ solutionUuid }: { solutionUuid: string }) {
+    const authStore = useAuthStore();
+
+    await request.$http.delete(`/v2/feature/${solutionUuid}/integrate/`, {
+      data: {
+        project_uuid: authStore.projectUuid,
+      },
+    });
+  },
+
   async listIntegratedSolutions({
     category,
   }: {

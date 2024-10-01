@@ -128,7 +128,9 @@ export const useSolutionsStore = defineStore('solutions', () => {
     }
   }
 
-  function disintegrate({ uuid }: Pick<Solution, 'uuid'>) {
+  async function disintegrate({ uuid }: Pick<Solution, 'uuid'>) {
+    await APISolutions.disintegrateSolution({ solutionUuid: uuid });
+
     [integratedActiveNotifications, integratedPassiveService]
       .find((integrated) =>
         integrated.data.value.find((solution) => solution.uuid === uuid),
