@@ -114,17 +114,25 @@ export const useSolutionsStore = defineStore('solutions', () => {
     return undefined;
   }
 
-  async function integrate({ uuid }: Pick<Solution, 'uuid'>) {
+  async function integrate({
+    uuid,
+    sectors,
+    globals,
+  }: Pick<Solution, 'uuid' | 'sectors' | 'globals'>) {
     const search = findSolution({ uuid });
 
     if (search?.solution) {
       await APISolutions.integrateSolution({
         solutionUuid: search?.solution.uuid,
-        sectors: {},
-        globals: {},
+        sectors,
+        globals,
       });
 
-      search.integrationCorrespondent.add(search.solution);
+      search.integrationCorrespondent.add({
+        ...search.solution,
+        sectors,
+        globals,
+      });
     }
   }
 

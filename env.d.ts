@@ -7,9 +7,9 @@ declare global {
     description: string;
     documentation: string;
     tip: string;
-    globals: string[];
     flows: { uuid: string; name: string }[];
-    sectors: string[];
+    globals: { [key: string]: { value: string } };
+    sectors: { [key: string]: { value: string[] } };
   };
 }
 

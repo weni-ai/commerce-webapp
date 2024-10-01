@@ -30,7 +30,7 @@
 
       <section class="form-elements">
         <template
-          v-for="(field, index) in solution.globals"
+          v-for="(field, index) in Object.keys(solution.globals)"
           :key="index"
         >
           <UnnnicSwitch
@@ -54,7 +54,7 @@
         </template>
 
         <UnnnicFormElement
-          v-for="(sector, index) in solution.sectors"
+          v-for="(sector, index) in Object.keys(solution.sectors)"
           :key="index"
           :label="`Tags do ${sector}`"
         >
@@ -160,8 +160,28 @@ async function save() {
     return;
   }
 
+  const sectors = Object.keys(props.solution.sectors)
+    .map((sectorName) => ({
+      key: sectorName,
+      props: {
+        value: currentValueField(`tags:sector-${sectorName}`)?.value,
+      },
+    }))
+    .reduce((previous, { key, props }) => ({ ...previous, [key]: props }), {});
+
+  const globals = Object.keys(props.solution.globals)
+    .map((globalName) => ({
+      key: globalName,
+      props: {
+        value: currentValueField(globalName)?.value,
+      },
+    }))
+    .reduce((previous, { key, props }) => ({ ...previous, [key]: props }), {});
+
   await solutionsStore.integrate({
     uuid: props.solution.uuid,
+    sectors,
+    globals,
   });
 
   alertStore.add({
@@ -179,6 +199,17 @@ watch(
   (isOpen) => {
     if (isOpen) {
       resetForm();
+
+      Object.keys(props.solution.sectors).forEach((sectorName) => {
+        props.solution.sectors[sectorName].value.forEach((value) => {
+          updateField(`tags:sector-${sectorName}`, value);
+          iconRightClick(`tags:sector-${sectorName}`);
+        });
+      });
+
+      Object.keys(props.solution.globals).forEach((globalName) => {
+        updateField(globalName, props.solution.globals[globalName].value);
+      });
     }
   },
 );

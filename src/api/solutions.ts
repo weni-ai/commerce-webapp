@@ -32,10 +32,24 @@ export default {
       title: solution.name,
       description: solution.description,
       tip: solution.disclaimer,
-      globals: solution.globals,
       documentation: solution.documentation_url,
       flows: solution.initial_flow,
-      sectors: solution.sectors,
+      globals: solution.globals.reduce(
+        (previous, current) => ({
+          ...previous,
+          [current]: { value: '' },
+        }),
+        {},
+      ),
+      sectors: solution.sectors.reduce(
+        (previous, sectorName) => ({
+          ...previous,
+          [sectorName]: {
+            value: [],
+          },
+        }),
+        {},
+      ),
     }));
   },
 
@@ -45,8 +59,8 @@ export default {
     globals,
   }: {
     solutionUuid: string;
-    sectors: { [key: string]: string[] };
-    globals: { [key: string]: string[] };
+    sectors: Solution['sectors'];
+    globals: Solution['globals'];
   }) {
     const authStore = useAuthStore();
 
@@ -55,9 +69,11 @@ export default {
       action_base_flow: '',
       sectors: Object.keys(sectors).map((sectorName) => ({
         name: sectorName,
-        tags: sectors[sectorName],
+        tags: sectors[sectorName].value,
       })),
-      globals_values: globals,
+      globals_values: Object.keys(globals)
+        .map((globalName) => ({ [globalName]: globals[globalName].value }))
+        .reduce((previous, current) => ({ ...previous, ...current })),
     });
   },
 
@@ -110,14 +126,20 @@ export default {
       description: solution.description,
       tip: solution.disclaimer,
       documentation: solution.documentation_url,
-      globals: Object.keys(
-        solution.globals.reduce(
-          (previous, { name, value }) => ({ ...previous, [name]: value }),
-          {},
-        ),
-      ),
       flows: solution.initial_flow,
-      sectors: solution.sectors,
+      globals: solution.globals.reduce(
+        (previous, { name, value }) => ({ ...previous, [name]: { value } }),
+        {},
+      ),
+      sectors: solution.sectors.reduce(
+        (previous, sectorName) => ({
+          ...previous,
+          [sectorName]: {
+            value: [],
+          },
+        }),
+        {},
+      ),
     }));
   },
 };
