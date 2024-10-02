@@ -38,11 +38,9 @@
     <DrawerSolution
       v-model:isOpen="drawerSolution.isOpen"
       :title="drawerSolution.solution?.title || ''"
-      :category="category"
       :icon="icon"
       :iconScheme="iconScheme"
       :solution="drawerSolution.solution"
-      :values="drawerSolution.solution?.values"
     />
   </section>
 </template>
@@ -87,10 +85,10 @@ const solutionToIntegrate = reactive<{
 
 const drawerSolution = reactive<{
   isOpen: boolean;
-  solution: null | Solution;
+  solution?: Solution;
 }>({
   isOpen: false,
-  solution: null,
+  solution: undefined,
 });
 
 function isSolutionIntegrated(solution: Solution) {

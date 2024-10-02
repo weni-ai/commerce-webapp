@@ -38,6 +38,35 @@ const solution: Solution = {
 describe('DrawerSolution', () => {
   let wrapper: ReturnType<typeof setup>;
 
+  function itEmitsCloseEvent() {
+    it('emits close event', async () => {
+      expect(wrapper.emitted('update:isOpen')).toHaveLength(1);
+      expect(wrapper.emitted('update:isOpen')).toContainEqual([false]);
+    });
+  }
+
+  describe('when the solution is undefined and the drawer is open', () => {
+    beforeEach(() => {
+      wrapper = setup(DrawerSolution, {
+        props: {
+          isOpen: true,
+          title: 'Title of the Solution',
+          icon: 'storefront',
+          iconScheme: 'weni-600',
+          solution: undefined,
+        },
+
+        global: {
+          stubs: {
+            teleport: true,
+          },
+        },
+      });
+    });
+
+    itEmitsCloseEvent();
+  });
+
   describe('when the solution does not have documentation', () => {
     beforeEach(() => {
       wrapper = setup(DrawerSolution, {
@@ -46,7 +75,6 @@ describe('DrawerSolution', () => {
           title: 'Title of the Solution',
           icon: 'storefront',
           iconScheme: 'weni-600',
-          category: 'activeNotifications',
           solution: { ...solution, documentation: undefined },
         },
 
@@ -73,7 +101,6 @@ describe('DrawerSolution', () => {
           title: 'Title of the Solution',
           icon: 'storefront',
           iconScheme: 'weni-600',
-          category: 'activeNotifications',
           solution: solution,
         },
 
@@ -89,26 +116,33 @@ describe('DrawerSolution', () => {
       expect(wrapper.find('[data-test="help-box"]').exists()).toBeTruthy();
     });
 
-    describe('when the user changes one global and one sector', () => {
+    describe('when the user changes one global, one sector and the flow', () => {
       beforeEach(() => {
         wrapper
           .findComponent('[data-test="var2"]')
-          .vm.$emit('update:model-value', 'Value 2 Changed');
+          .vm.$emit('update:modelValue', 'Value 2 Changed');
 
         wrapper
           .findComponent('[data-test="sector2"]')
-          .vm.$emit('update:model-value', [
+          .vm.$emit('update:modelValue', [
             'Value 5 Changed',
             'Value 6 Changed',
           ]);
+
+        wrapper
+          .findComponent('[data-test="flow"]')
+          .vm.$emit('update:modelValue', 'abcd');
       });
 
-      function itEmitsCloseEvent() {
-        it('emits close event', async () => {
-          expect(wrapper.emitted('update:isOpen')).toHaveLength(1);
-          expect(wrapper.emitted('update:isOpen')).toContainEqual([false]);
+      describe('when the drawer closes', () => {
+        beforeEach(() => {
+          wrapper
+            .findComponent({ name: 'Drawer' })
+            .vm.$emit('update:isOpen', false);
         });
-      }
+
+        itEmitsCloseEvent();
+      });
 
       describe('when the user clicks on cancel button', () => {
         beforeEach(() => {
@@ -131,6 +165,8 @@ describe('DrawerSolution', () => {
         it('calls integrate function from solutions store', () => {
           expect(solutionsStore.integrate).toHaveBeenCalledWith({
             uuid: '1234',
+
+            initialFlow: 'abcd',
 
             globals: {
               var1: {

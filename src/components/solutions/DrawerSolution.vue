@@ -1,11 +1,8 @@
 <template>
-  <Drawer
-    ref="drawer"
-    v-model:isOpen="isOpen"
-  >
+  <Drawer v-model:isOpen="isOpen">
     <template #default>
       <section
-        v-if="solution.documentation"
+        v-if="solution?.documentation"
         class="help-box"
         data-test="help-box"
       >
@@ -33,35 +30,40 @@
       </section>
 
       <section class="form-elements">
-        <template
-          v-for="(field, index) in Object.keys(solution.globals)"
-          :key="index"
-        >
-          <UnnnicFormElement :label="fieldLabel(field)">
+        <template v-if="solution?.globals">
+          <UnnnicFormElement
+            v-for="(field, index) in Object.keys(solution.globals)"
+            :key="index"
+            :label="fieldLabel(field)"
+          >
             <UnnnicInput
               v-if="fieldType(field) === 'text'"
               size="sm"
               :data-test="field"
               :modelValue="currentValueField(field).value"
-              @update:model-value="updateField(field, $event)"
+              @update:model-value="
+                ($event: string) => updateField(field, $event)
+              "
+            />
+          </UnnnicFormElement>
+        </template>
+
+        <template v-if="solution?.sectors">
+          <UnnnicFormElement
+            v-for="(sector, index) in Object.keys(solution.sectors)"
+            :key="index"
+            :label="`Tags do ${sector}`"
+          >
+            <InputTags
+              :data-test="sector"
+              :modelValue="currentValueField(`tags:sector-${sector}`).value"
+              @update:model-value="updateField(`tags:sector-${sector}`, $event)"
             />
           </UnnnicFormElement>
         </template>
 
         <UnnnicFormElement
-          v-for="(sector, index) in Object.keys(solution.sectors)"
-          :key="index"
-          :label="`Tags do ${sector}`"
-        >
-          <InputTags
-            :data-test="sector"
-            :modelValue="currentValueField(`tags:sector-${sector}`).value"
-            @update:model-value="updateField(`tags:sector-${sector}`, $event)"
-          />
-        </UnnnicFormElement>
-
-        <UnnnicFormElement
-          v-if="solution.flows.length"
+          v-if="solution?.flows.length"
           label="Fluxo inicial:"
         >
           <SelectSmart
@@ -74,6 +76,7 @@
                 label: name,
               }))
             "
+            data-test="flow"
             @update:model-value="updateField('select:flow', $event)"
           />
         </UnnnicFormElement>
@@ -103,7 +106,7 @@
 import Drawer from '@/components/Drawer.vue';
 import InputTags from '@/components/InputTags.vue';
 import SelectSmart from '@/components/SelectSmart.vue';
-import { reactive, watch } from 'vue';
+import { nextTick, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAlertStore } from '@/stores/Alert';
 import { useSolutionsStore } from '@/stores/Solutions';
@@ -113,8 +116,7 @@ import { clone } from 'lodash';
 const isOpen = defineModel<boolean>('isOpen', { required: true });
 
 const props = defineProps<{
-  category: 'activeNotifications' | 'passiveService';
-  solution: Solution;
+  solution?: Solution;
 }>();
 
 const { t } = useI18n();
@@ -154,10 +156,13 @@ async function save() {
     }))
     .reduce((previous, { key, props }) => ({ ...previous, [key]: props }), {});
 
+  const initialFlow = currentValueField('select:flow')?.value;
+
   await solutionsStore.integrate({
     uuid: props.solution.uuid,
     sectors,
     globals,
+    initialFlow,
   });
 
   close();
@@ -175,7 +180,7 @@ const types = ['tags', 'select'];
 watch(
   isOpen,
   (isOpen) => {
-    if (isOpen) {
+    if (isOpen && props.solution) {
       Object.keys(props.solution.sectors).forEach((sectorName) => {
         updateField(
           `tags:sector-${sectorName}`,
@@ -186,6 +191,8 @@ watch(
       Object.keys(props.solution.globals).forEach((globalName) => {
         updateField(globalName, props.solution.globals[globalName].value);
       });
+    } else if (isOpen) {
+      nextTick(close);
     }
   },
   { immediate: true },
@@ -196,9 +203,9 @@ function currentValueField(field: string) {
   const label = fieldLabel(field);
 
   if (type === 'text') {
-    return formData[label] || { type: 'text', value: '' };
+    return formData[label];
   } else if (type === 'tags') {
-    return formData[label] || { type: 'tags', value: [], input: '' };
+    return formData[label];
   } else if (type === 'select') {
     return formData[label] || { type: 'select', value: '' };
   }
