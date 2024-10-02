@@ -1,6 +1,10 @@
 import request from './request';
 import { useAuthStore } from '@/stores/Auth';
 
+function generateUuid() {
+  return String(Math.floor(Math.random() * 10000));
+}
+
 export default {
   async listSolutions({ category }: { category: string }): Promise<Solution[]> {
     const authStore = useAuthStore();
@@ -14,7 +18,7 @@ export default {
           description: string;
           disclaimer: string;
           documentation_url: string;
-          globals: string[];
+          globals?: string[];
           initial_flow: {
             name: string;
             uuid: string;
@@ -28,13 +32,13 @@ export default {
     );
 
     return data.results.map((solution) => ({
-      uuid: solution.uuid,
+      uuid: solution.uuid || generateUuid(),
       title: solution.name,
       description: solution.description,
       tip: solution.disclaimer,
       documentation: solution.documentation_url,
       flows: solution.initial_flow,
-      globals: solution.globals.reduce(
+      globals: (solution.globals || []).reduce(
         (previous, current) => ({
           ...previous,
           [current]: { value: '' },
@@ -104,7 +108,7 @@ export default {
           description: string;
           disclaimer: string;
           documentation_url: string;
-          globals: {
+          globals?: {
             name: string;
             value: string;
           }[];
@@ -121,13 +125,13 @@ export default {
     );
 
     return data.results.map((solution) => ({
-      uuid: solution.uuid,
+      uuid: solution.uuid || generateUuid(),
       title: solution.name,
       description: solution.description,
       tip: solution.disclaimer,
       documentation: solution.documentation_url,
       flows: solution.initial_flow,
-      globals: solution.globals.reduce(
+      globals: (solution.globals || []).reduce(
         (previous, { name, value }) => ({ ...previous, [name]: { value } }),
         {},
       ),

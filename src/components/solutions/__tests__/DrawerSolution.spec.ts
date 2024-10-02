@@ -101,12 +101,6 @@ describe('DrawerSolution', () => {
             'Value 5 Changed',
             'Value 6 Changed',
           ]);
-
-        console.log(
-          '',
-          wrapper.findComponent('[data-test="var2"]').emitted(),
-          wrapper.findComponent('[data-test="var2"]').vm.$emit,
-        );
       });
 
       function itEmitsCloseEvent() {
@@ -143,7 +137,7 @@ describe('DrawerSolution', () => {
                 value: 'Value 1',
               },
               var2: {
-                value: 'Value 2',
+                value: 'Value 2 Changed',
               },
             },
 
@@ -152,7 +146,7 @@ describe('DrawerSolution', () => {
                 value: ['Value 3', 'Value 4'],
               },
               sector2: {
-                value: ['Value 5', 'Value 6'],
+                value: ['Value 5 Changed', 'Value 6 Changed'],
               },
             },
           });

@@ -1,23 +1,25 @@
 <template>
-  <UnnnicInput
-    v-model="input"
-    size="sm"
-    iconRight="add"
-    iconRightClickable
-    @icon-right-click="iconRightClick()"
-    @keydown.enter.self="iconRightClick()"
-  />
+  <section>
+    <UnnnicInput
+      v-model="input"
+      size="sm"
+      iconRight="add"
+      iconRightClickable
+      @icon-right-click="iconRightClick()"
+      @keydown.enter.self="iconRightClick()"
+    />
 
-  <section
-    class="tags"
-    v-bind="$attrs"
-  >
     <section
-      v-for="(tag, tagIndex) in modelValue"
-      :key="tagIndex"
-      class="tags__tag"
+      class="tags"
+      v-bind="$attrs"
     >
-      {{ tag }}
+      <section
+        v-for="(tag, tagIndex) in modelValue"
+        :key="tagIndex"
+        class="tags__tag"
+      >
+        {{ tag }}
+      </section>
     </section>
   </section>
 </template>
