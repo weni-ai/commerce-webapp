@@ -39,7 +39,7 @@ function iconRightClick() {
   }
 
   if (tag) {
-    modelValue.value.push(tag);
+    modelValue.value = modelValue.value.concat(tag);
   }
 
   input.value = '';
