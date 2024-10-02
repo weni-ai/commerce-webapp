@@ -1,5 +1,5 @@
 import { setup } from '@/tests/utils';
-import { beforeEach, describe, expect, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import InputTags from '@/components/InputTags.vue';
 
 describe('InputTags', () => {
