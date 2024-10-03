@@ -116,7 +116,7 @@ describe('DrawerSolution', () => {
       expect(wrapper.find('[data-test="help-box"]').exists()).toBeTruthy();
     });
 
-    describe('when the user changes one global, one sector and the flow', () => {
+    describe('when the user changes one global and one sector', () => {
       beforeEach(() => {
         wrapper
           .findComponent('[data-test="var2"]')
@@ -128,10 +128,6 @@ describe('DrawerSolution', () => {
             'Value 5 Changed',
             'Value 6 Changed',
           ]);
-
-        wrapper
-          .findComponent('[data-test="flow"]')
-          .vm.$emit('update:modelValue', 'abcd');
       });
 
       describe('when the drawer closes', () => {
@@ -165,8 +161,6 @@ describe('DrawerSolution', () => {
         it('calls integrate function from solutions store', () => {
           expect(solutionsStore.integrate).toHaveBeenCalledWith({
             uuid: '1234',
-
-            initialFlow: 'abcd',
 
             globals: {
               var1: {

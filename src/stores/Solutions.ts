@@ -118,8 +118,7 @@ export const useSolutionsStore = defineStore('solutions', () => {
     uuid,
     sectors,
     globals,
-    initialFlow,
-  }: Pick<Solution, 'uuid' | 'sectors' | 'globals'> & { initialFlow: string }) {
+  }: Pick<Solution, 'uuid' | 'sectors' | 'globals'>) {
     const search = findSolution({ uuid });
 
     if (search?.solution) {

@@ -61,25 +61,6 @@
             />
           </UnnnicFormElement>
         </template>
-
-        <UnnnicFormElement
-          v-if="solution?.flows.length"
-          label="Fluxo inicial:"
-        >
-          <SelectSmart
-            :modelValue="currentValueField('select:flow').value"
-            size="sm"
-            placeholder=" "
-            :options="
-              solution.flows.map(({ uuid, name }) => ({
-                value: uuid,
-                label: name,
-              }))
-            "
-            data-test="flow"
-            @update:model-value="updateField('select:flow', $event)"
-          />
-        </UnnnicFormElement>
       </section>
     </template>
 
@@ -105,7 +86,6 @@
 <script setup lang="ts">
 import Drawer from '@/components/Drawer.vue';
 import InputTags from '@/components/InputTags.vue';
-import SelectSmart from '@/components/SelectSmart.vue';
 import { nextTick, reactive, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAlertStore } from '@/stores/Alert';
@@ -156,13 +136,10 @@ async function save() {
     }))
     .reduce((previous, { key, props }) => ({ ...previous, [key]: props }), {});
 
-  const initialFlow = currentValueField('select:flow')?.value;
-
   await solutionsStore.integrate({
     uuid: props.solution.uuid,
     sectors,
     globals,
-    initialFlow,
   });
 
   close();
@@ -175,7 +152,7 @@ async function save() {
   router.push({ name: 'integrated-solutions' });
 }
 
-const types = ['tags', 'select'];
+const types = ['tags'];
 
 watch(
   isOpen,
@@ -206,8 +183,6 @@ function currentValueField(field: string) {
     return formData[label];
   } else if (type === 'tags') {
     return formData[label];
-  } else if (type === 'select') {
-    return formData[label] || { type: 'select', value: '' };
   }
 }
 
@@ -234,8 +209,6 @@ function updateField(field: string, value: string | boolean | string[]) {
       input.value = [];
     }
 
-    input.value = value;
-  } else if (type === 'select') {
     input.value = value;
   }
 }
