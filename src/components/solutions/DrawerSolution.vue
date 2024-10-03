@@ -75,6 +75,7 @@
 
       <UnnnicButton
         data-test="save-button"
+        :loading="isSaving"
         @click="save"
       >
         {{ $t('common.finish_and_save') }}
@@ -86,7 +87,7 @@
 <script setup lang="ts">
 import Drawer from '@/components/Drawer.vue';
 import InputTags from '@/components/InputTags.vue';
-import { nextTick, reactive, watch } from 'vue';
+import { nextTick, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAlertStore } from '@/stores/Alert';
 import { useSolutionsStore } from '@/stores/Solutions';
@@ -104,6 +105,8 @@ const { t } = useI18n();
 const router = useRouter();
 const alertStore = useAlertStore();
 const solutionsStore = useSolutionsStore();
+
+const isSaving = ref(false);
 
 const formData = reactive<{
   [key: string]: {
@@ -136,20 +139,26 @@ async function save() {
     }))
     .reduce((previous, { key, props }) => ({ ...previous, [key]: props }), {});
 
-  await solutionsStore.integrate({
-    uuid: props.solution.uuid,
-    sectors,
-    globals,
-  });
+  try {
+    isSaving.value = true;
 
-  close();
+    await solutionsStore.integrateOrUpdate({
+      uuid: props.solution.uuid,
+      sectors,
+      globals,
+    });
 
-  alertStore.add({
-    type: 'success',
-    text: t('solutions.integrate.status.created'),
-  });
+    close();
 
-  router.push({ name: 'integrated-solutions' });
+    alertStore.add({
+      type: 'success',
+      text: t('solutions.integrate.status.created'),
+    });
+
+    router.push({ name: 'integrated-solutions' });
+  } finally {
+    isSaving.value = false;
+  }
 }
 
 const types = ['tags'];

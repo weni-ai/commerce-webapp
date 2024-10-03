@@ -14,7 +14,7 @@ export default {
     }: {
       data: {
         results: {
-          uuid: string;
+          feature_uuid: string;
           description: string;
           disclaimer: string;
           documentation_url: string;
@@ -32,7 +32,7 @@ export default {
     );
 
     return data.results.map((solution) => ({
-      uuid: solution.uuid || generateUuid(),
+      uuid: solution.feature_uuid || generateUuid(),
       title: solution.name,
       description: solution.description,
       tip: solution.disclaimer,
@@ -63,9 +63,7 @@ export default {
     globals,
   }: {
     solutionUuid: string;
-    sectors: Solution['sectors'];
-    globals: Solution['globals'];
-  }) {
+  } & Pick<Solution, 'sectors' | 'globals'>) {
     const authStore = useAuthStore();
 
     await request.$http.post(`/v2/feature/${solutionUuid}/integrate/`, {
@@ -91,6 +89,25 @@ export default {
     });
   },
 
+  async updateIntegratedSolution({
+    solutionUuid,
+    sectors,
+    globals,
+  }: { solutionUuid: string } & Pick<Solution, 'sectors' | 'globals'>) {
+    const authStore = useAuthStore();
+
+    await request.$http.put(`/v2/feature/${solutionUuid}/integrate/`, {
+      project_uuid: authStore.projectUuid,
+      sectors: Object.keys(sectors).map((sectorName) => ({
+        name: sectorName,
+        tags: sectors[sectorName].value,
+      })),
+      globals_values: Object.keys(globals)
+        .map((globalName) => ({ [globalName]: globals[globalName].value }))
+        .reduce((previous, current) => ({ ...previous, ...current })),
+    });
+  },
+
   async listIntegratedSolutions({
     category,
   }: {
@@ -103,7 +120,7 @@ export default {
     }: {
       data: {
         results: {
-          uuid: string;
+          feature_uuid: string;
           name: string;
           description: string;
           disclaimer: string;
@@ -125,7 +142,7 @@ export default {
     );
 
     return data.results.map((solution) => ({
-      uuid: solution.uuid || generateUuid(),
+      uuid: solution.feature_uuid || generateUuid(),
       title: solution.name,
       description: solution.description,
       tip: solution.disclaimer,

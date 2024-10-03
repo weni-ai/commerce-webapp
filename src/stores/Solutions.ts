@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import APISolutions from '@/api/solutions';
+import { isSolutionIntegrated } from '@/utils';
+import { cloneDeep } from 'lodash';
 
 function makeSolutionsList({
   request,
@@ -40,6 +42,19 @@ function makeSolutionsList({
     data.value.push(solution);
   }
 
+  function update(
+    uuid: Solution['uuid'],
+    solutionNewValues: Partial<Solution>,
+  ) {
+    const solution = data.value.find((solution) => solution.uuid === uuid);
+
+    if (solution) {
+      Object.keys(solutionNewValues).forEach((attribute) => {
+        solution[attribute] = cloneDeep(solutionNewValues[attribute]);
+      });
+    }
+  }
+
   function remove(solution: Pick<Solution, 'uuid'>) {
     data.value.splice(
       data.value.findIndex(({ uuid }) => uuid === solution.uuid),
@@ -47,7 +62,7 @@ function makeSolutionsList({
     );
   }
 
-  return { status, isFirstLoading, data, load, add, remove };
+  return { status, isFirstLoading, data, load, add, update, remove };
 }
 
 export const useSolutionsStore = defineStore('solutions', () => {
@@ -79,6 +94,25 @@ export const useSolutionsStore = defineStore('solutions', () => {
     request: APISolutions.listSolutions,
     category: 'PASSIVE',
   });
+
+  function findCorrespondentListOfIntegratedSolution({
+    uuid,
+  }: Pick<Solution, 'uuid'>): ReturnType<typeof makeSolutionsList> | undefined {
+    const allSolutions = [
+      {
+        solutions: integratedActiveNotifications.data.value,
+        correspondent: integratedActiveNotifications,
+      },
+      {
+        solutions: integratedPassiveService.data.value,
+        correspondent: integratedPassiveService,
+      },
+    ];
+
+    return allSolutions.find(({ solutions }) =>
+      solutions.some(({ uuid: solutionUuid }) => solutionUuid === uuid),
+    )?.correspondent;
+  }
 
   function findSolution({ uuid }: Pick<Solution, 'uuid'>):
     | {
@@ -114,25 +148,39 @@ export const useSolutionsStore = defineStore('solutions', () => {
     return undefined;
   }
 
-  async function integrate({
+  async function integrateOrUpdate({
     uuid,
     sectors,
     globals,
   }: Pick<Solution, 'uuid' | 'sectors' | 'globals'>) {
-    const search = findSolution({ uuid });
+    const isIntegrated = isSolutionIntegrated({ uuid });
 
-    if (search?.solution) {
-      await APISolutions.integrateSolution({
-        solutionUuid: search?.solution.uuid,
+    if (isIntegrated) {
+      await APISolutions.updateIntegratedSolution({
+        solutionUuid: uuid,
         sectors,
         globals,
       });
 
-      search.integrationCorrespondent.add({
-        ...search.solution,
-        sectors,
-        globals,
-      });
+      const list = findCorrespondentListOfIntegratedSolution({ uuid });
+
+      list?.update(uuid, { sectors, globals });
+    } else {
+      const search = findSolution({ uuid });
+
+      if (search?.solution) {
+        await APISolutions.integrateSolution({
+          solutionUuid: search?.solution.uuid,
+          sectors,
+          globals,
+        });
+
+        search.integrationCorrespondent.add({
+          ...search.solution,
+          sectors,
+          globals,
+        });
+      }
     }
   }
 
@@ -169,7 +217,7 @@ export const useSolutionsStore = defineStore('solutions', () => {
       activeNotifications: integratedActiveNotifications,
       passiveService: integratedPassiveService,
     },
-    integrate,
+    integrateOrUpdate,
     disintegrate,
   };
 });

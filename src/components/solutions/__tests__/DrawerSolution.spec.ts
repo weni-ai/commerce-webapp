@@ -153,13 +153,13 @@ describe('DrawerSolution', () => {
 
         beforeEach(() => {
           solutionsStore = useSolutionsStore();
-          solutionsStore.integrate.mockResolvedValue({});
+          solutionsStore.integrateOrUpdate.mockResolvedValue({});
 
           wrapper.find('[data-test="save-button"]').trigger('click');
         });
 
-        it('calls integrate function from solutions store', () => {
-          expect(solutionsStore.integrate).toHaveBeenCalledWith({
+        it('calls integrateOrUpdate function from solutions store', () => {
+          expect(solutionsStore.integrateOrUpdate).toHaveBeenCalledWith({
             uuid: '1234',
 
             globals: {

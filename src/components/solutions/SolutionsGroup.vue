@@ -52,11 +52,9 @@ import Header from '@/components/Header.vue';
 import SolutionCard from '@/components/solutions/SolutionCard.vue';
 import ModalIntegrate from '@/components/solutions/ModalIntegrate.vue';
 import DrawerSolution from '@/components/solutions/DrawerSolution.vue';
-import { useSolutionsStore } from '@/stores/Solutions';
+import { isSolutionIntegrated } from '@/utils';
 
 const { t } = useI18n();
-
-const solutionsStore = useSolutionsStore();
 
 defineProps<{
   title: string;
@@ -90,15 +88,6 @@ const drawerSolution = reactive<{
   isOpen: false,
   solution: undefined,
 });
-
-function isSolutionIntegrated(solution: Solution) {
-  const integrated = [
-    solutionsStore.integrated.activeNotifications.data,
-    solutionsStore.integrated.passiveService.data,
-  ].flat();
-
-  return integrated.some((integrated) => integrated.uuid === solution.uuid);
-}
 
 function getOptionsBySolution(solution: Solution) {
   if (isSolutionIntegrated(solution)) {
