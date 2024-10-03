@@ -56,12 +56,14 @@ const buttonProps =
         size: 'large',
         'data-test': 'integrate-button',
       }
-    : {
-        class: 'modal-integrate-solution__edit-button',
-        text: t('solutions.details.view_settings'),
-        size: 'large',
-        'data-test': 'edit-button',
-      };
+    : props.status === 'integrated'
+      ? {
+          class: 'modal-integrate-solution__edit-button',
+          text: t('solutions.details.view_settings'),
+          size: 'large',
+          'data-test': 'edit-button',
+        }
+      : {};
 
 function emitValue() {
   modelValue.value = false;
