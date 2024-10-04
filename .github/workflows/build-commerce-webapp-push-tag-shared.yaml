@@ -36,7 +36,7 @@ jobs:
             echo "TAG=$TAG" | tee -a "${GITHUB_ENV}"
             VERSION="${TAG}"
             echo "VERSION=${VERSION}" | tee -a "${GITHUB_ENV}"
-            echo "COMMIT_SHA=$GITHUB_SHA" | tee -a "${GITHUB_ENV}"
+            echo "COMMIT_SHA=$(git rev-list -n 1 "$TAG") | tee -a "${GITHUB_ENV}"
             echo "IMAGE_TAG=${{ secrets.ECR }}/commerce:webapp-${TAG}" | tee -a "${GITHUB_ENV}"
             echo "IMAGE_SOURCE_URL=https://github.com/weni-ai/commerce-webapp" | tee -a "${GITHUB_ENV}"
             echo "MANIFESTS_REPOSITORY=weni-ai/kubernetes-manifests-retail" | tee -a "${GITHUB_ENV}"
