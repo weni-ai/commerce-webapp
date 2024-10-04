@@ -14,11 +14,13 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      - name: Set variables
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           fetch-tags: 0
+
+      - name: Set variables
         run: |
             TAG=$(git tag --list --sort=-creatordate | head -n 1)
             if grep -qs -e '^.*.*-staging' <<< "${TAG}" ; then
