@@ -22,6 +22,8 @@ jobs:
         id: get_latest_tag
         run: |
           latest_tag=$(git tag --list --sort=-v:refname | grep -E '^[0-9]+\.[0-9]+\.[0-9]+-staging$' | head -n 1)
+          git tag
+          echo $(git tag)
           echo "Latest Tag: $latest_tag"
           echo "::set-output name=latest_tag::$latest_tag"
 
