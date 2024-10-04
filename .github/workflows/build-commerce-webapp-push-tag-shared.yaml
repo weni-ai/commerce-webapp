@@ -65,6 +65,10 @@ jobs:
           username: ${{ secrets.AWS_ACCESS_KEY_ID_SHARED }}       # Credentials used to push image to ECR repository
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY_SHARED }}
 
+      - name: Checkout specific commit SHA
+        run: |
+          git checkout ${{env.COMMIT_SHA}}
+
       - name: Build and push - Commerce Webapp Image
         uses: docker/build-push-action@v3
         with:
