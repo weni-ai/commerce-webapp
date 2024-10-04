@@ -5,6 +5,10 @@ on:
     tags:
       - '*.*.*-staging'
       - '*.*.*'
+  workflow_run:
+    workflows: ["Create Staging Tag"]
+    types:
+      - completed
 
 jobs:
   docker:
