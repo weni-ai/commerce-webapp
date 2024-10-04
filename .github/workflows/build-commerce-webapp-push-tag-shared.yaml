@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set variables
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: 0
         run: |
             TAG=$(git tag --list --sort=-creatordate | head -n 1)
             if grep -qs -e '^.*.*-staging' <<< "${TAG}" ; then
