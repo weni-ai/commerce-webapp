@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Set variables
         run: |
-            TAG="$( echo "${GITHUB_REF}" | cut -d'/' -f3 )"
+            TAG=$(git tag --list --sort=-creatordate | head -n 1)
             if grep -qs -e '^.*.*-staging' <<< "${TAG}" ; then
               echo "Found environment: STAGING - ${TAG}"
               echo "MANIFESTS_ENVIRONMENT=staging" | tee -a "${GITHUB_ENV}"
