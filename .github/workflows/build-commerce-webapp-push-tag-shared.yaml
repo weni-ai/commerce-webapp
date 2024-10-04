@@ -24,6 +24,7 @@ jobs:
         run: |
             TAG=$(git tag --list --sort=-creatordate | head -n 1)
             COMMIT_SHA=$(git rev-list -n 1 "$TAG")
+            git checkout $COMMIT_SHA
             if grep -qs -e '^.*.*-staging' <<< "${TAG}" ; then
               echo "Found environment: STAGING - ${TAG}"
               echo "MANIFESTS_ENVIRONMENT=staging" | tee -a "${GITHUB_ENV}"
