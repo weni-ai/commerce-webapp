@@ -2,28 +2,55 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import Discovery from '@/views/Discovery.vue';
 import IntegratedSolutions from '@/views/IntegratedSolutions.vue';
+import { useAuthStore } from '@/stores/Auth';
 import { i18n } from '@/locales';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/loginexternal/:token/',
+      path: '/loginexternal/:token',
       name: 'externalLogin',
       component: {},
       beforeEnter: async (to, from, next) => {
-        const { token } = to.params;
+        const { token } = to.params as {
+          token: string;
+        };
 
-        // to.query.org_uuid
-        // to.query.project_uuid
-        // to.query.locale
+        const tokenParsed = token.replace('+', ' ');
+
+        const { locale, project_uuid, set_api_base_url } = to.query as {
+          locale: string;
+          project_uuid: string;
+          set_api_base_url?: string;
+        };
+
+        const authStore = useAuthStore();
+
+        authStore.setToken(tokenParsed);
+        authStore.setProjectUuid(project_uuid);
+
+        if (import.meta.env.DEV) {
+          localStorage.setItem(
+            'dev:lastUsedLoginParams',
+            JSON.stringify({
+              token: tokenParsed,
+              locale,
+              projectUuid: project_uuid,
+            }),
+          );
+
+          if (set_api_base_url) {
+            localStorage.setItem('dev:replaceAPIBaseURL', set_api_base_url);
+          }
+        }
 
         i18n.global.locale =
           {
             en: 'en-us',
-          }[to.query.locale] || to.query.locale;
+          }[locale] || locale;
 
-        const nextPath = to.query.next;
+        const nextPath = to.query.next as string;
 
         if (nextPath) {
           next({ path: nextPath, replace: true });

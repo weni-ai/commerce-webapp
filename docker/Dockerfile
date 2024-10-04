@@ -22,9 +22,9 @@ FROM nginxinc/nginx-unprivileged:1.25-alpine
 COPY --chown=nginx:nginx nginx.conf /etc/nginx/nginx.conf
 COPY --from=builder --chown=nginx:nginx /app/dist /usr/share/nginx/html/commerce-webapp/
 COPY docker/docker-entrypoint.sh /
-# RUN mv /usr/share/nginx/html/commerce-webapp/index.html \
-#     && cd /usr/share/nginx/html/commerce-webapp/ \
-#     && ln -s /tmp/index.html
+RUN mv /usr/share/nginx/html/commerce-webapp/index.html /usr/share/nginx/html/commerce-webapp/index.html.tmpl \
+    && cd /usr/share/nginx/html/commerce-webapp/ \
+    && ln -s /tmp/index.html
 
 EXPOSE 8080
 

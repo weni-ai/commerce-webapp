@@ -34,6 +34,26 @@
       "pt-br": "Voltar",
       "en-us": "Back",
       "es": "Volver"
+    },
+
+    "errors": {
+      "unauthorized": {
+        "pt-br": "Você não tem permissão para executar essa ação",
+        "en-us": "You don't have permission to perform this action",
+        "es": "No tiene permiso para realizar esta acción"
+      },
+
+      "internal_server_error": {
+        "pt-br": "Erro interno do servidor",
+        "en-us": "Internal server error",
+        "es": "Error interno del servidor"
+      },
+
+      "unexpected_error": {
+        "pt-br": "Ocorreu um erro inesperado",
+        "en-us": "An unexpected error has occurred",
+        "es": "Se ha producido un error inesperado"
+      }
     }
   },
 
@@ -182,6 +202,12 @@
           "pt-br": "Solução configurada com sucesso",
           "en-us": "Solution successfully configured",
           "es": "Solución configurada correctamente"
+        },
+        
+        "removed": {
+          "pt-br": "Solução desabilitada com sucesso",
+          "en-us": "Solution successfully disabled",
+          "es": "Solución desactivada correctamente"
         }
       }
     },

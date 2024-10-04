@@ -64,10 +64,6 @@ function close() {
   isOpen.value = false;
 }
 
-defineExpose({
-  close,
-});
-
 watch(
   isOpen,
   (isOpen) => {

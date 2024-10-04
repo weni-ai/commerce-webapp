@@ -1,8 +1,14 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import ModalDisintegrate from '@/components/solutions/ModalDisintegrate.vue';
 import { useSolutionsStore } from '@/stores/Solutions';
 import { setup } from '@/tests/utils';
+
+vi.mock('vue-i18n', () => ({
+  useI18n: () => ({
+    t: (key: string) => key,
+  }),
+}));
 
 describe('ModalDisintegrate', () => {
   let wrapper: ReturnType<typeof setup>;
@@ -12,7 +18,7 @@ describe('ModalDisintegrate', () => {
       props: {
         modelValue: true,
         solution: {
-          id: '1234',
+          uuid: '1234',
           title: 'Title of the Solution',
         },
       },
@@ -60,14 +66,20 @@ describe('ModalDisintegrate', () => {
   });
 
   describe('when the user clicks on confirm button', () => {
+    let solutionsStore: ReturnType<typeof useSolutionsStore>;
+
     beforeEach(() => {
+      solutionsStore = useSolutionsStore();
+
+      solutionsStore.disintegrate.mockResolvedValue({});
+
       wrapper.find('[data-test="confirm-button"]').trigger('click');
     });
 
     it('calls disintegrate function from solutions store', () => {
-      const solutionsStore = useSolutionsStore();
-
-      expect(solutionsStore.disintegrate).toHaveBeenCalledWith({ id: '1234' });
+      expect(solutionsStore.disintegrate).toHaveBeenCalledWith({
+        uuid: '1234',
+      });
     });
 
     it('emits close event', () => {

@@ -1,7 +1,11 @@
 <template>
-  <Drawer ref="drawer">
+  <Drawer v-model:isOpen="isOpen">
     <template #default>
-      <section class="help-box">
+      <section
+        v-if="solution?.documentation"
+        class="help-box"
+        data-test="help-box"
+      >
         <UnnnicIcon
           icon="info"
           size="ant"
@@ -17,7 +21,7 @@
           <b>{{ $t('solutions.integrate.help.0') }}</b>
 
           <a
-            href="http://google.com"
+            :href="solution.documentation"
             target="_blank"
           >
             {{ $t('solutions.integrate.help.1') }}
@@ -26,61 +30,34 @@
       </section>
 
       <section class="form-elements">
-        <template
-          v-for="(field, index) in solution.globals"
-          :key="index"
-        >
-          <UnnnicSwitch
-            v-if="fieldType(field) === 'switch'"
-            :textRight="fieldLabel(field)"
-            :modelValue="currentValueField(field).value"
-            @update:model-value="updateField(field, $event)"
-          />
-
+        <template v-if="solution?.globals">
           <UnnnicFormElement
-            v-else
+            v-for="(field, index) in Object.keys(solution.globals)"
+            :key="index"
             :label="fieldLabel(field)"
           >
             <UnnnicInput
               v-if="fieldType(field) === 'text'"
               size="sm"
+              :data-test="field"
               :modelValue="currentValueField(field).value"
-              @update:model-value="updateField(field, $event)"
+              @update:model-value="
+                ($event: string) => updateField(field, $event)
+              "
             />
+          </UnnnicFormElement>
+        </template>
 
-            <template v-else-if="fieldType(field) === 'tags'">
-              <UnnnicInput
-                size="sm"
-                iconRight="add"
-                iconRightClickable
-                :modelValue="currentValueField(field).input"
-                @update:model-value="updateField(field, $event)"
-                @icon-right-click="iconRightClick(field)"
-                @keydown.enter.self="iconRightClick(field)"
-              />
-
-              <section class="tags">
-                <section
-                  v-for="(tag, tagIndex) in currentValueField(field).value"
-                  :key="tagIndex"
-                  class="tags__tag"
-                >
-                  {{ tag }}
-                </section>
-              </section>
-            </template>
-
-            <SelectSmart
-              v-else-if="fieldType(field) === 'select'"
-              :modelValue="currentValueField(field).value"
-              size="sm"
-              placeholder=" "
-              :options="[
-                'Inscrição evento',
-                'Fluxo exemplo 1',
-                'Fluxo exemplo 2',
-              ]"
-              @update:model-value="updateField(field, $event)"
+        <template v-if="solution?.sectors">
+          <UnnnicFormElement
+            v-for="(sector, index) in Object.keys(solution.sectors)"
+            :key="index"
+            :label="`Tags do ${sector}`"
+          >
+            <InputTags
+              :data-test="sector"
+              :modelValue="currentValueField(`tags:sector-${sector}`).value"
+              @update:model-value="updateField(`tags:sector-${sector}`, $event)"
             />
           </UnnnicFormElement>
         </template>
@@ -90,12 +67,17 @@
     <template #footer>
       <UnnnicButton
         type="tertiary"
+        data-test="cancel-button"
         @click="close"
       >
         {{ $t('common.cancel') }}
       </UnnnicButton>
 
-      <UnnnicButton @click="save">
+      <UnnnicButton
+        data-test="save-button"
+        :loading="isSaving"
+        @click="save"
+      >
         {{ $t('common.finish_and_save') }}
       </UnnnicButton>
     </template>
@@ -104,29 +86,27 @@
 
 <script setup lang="ts">
 import Drawer from '@/components/Drawer.vue';
-import SelectSmart from '@/components/SelectSmart.vue';
-import { reactive, ref, useAttrs, useTemplateRef, watch } from 'vue';
+import InputTags from '@/components/InputTags.vue';
+import { nextTick, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAlertStore } from '@/stores/Alert';
 import { useSolutionsStore } from '@/stores/Solutions';
 import { useRouter } from 'vue-router';
+import { clone } from 'lodash';
+
+const isOpen = defineModel<boolean>('isOpen', { required: true });
 
 const props = defineProps<{
-  id: string;
-  category: 'activeNotifications' | 'passiveService';
-  solution: any;
-  values: any;
+  solution?: Solution;
 }>();
 
 const { t } = useI18n();
-
-const attrs = useAttrs();
 
 const router = useRouter();
 const alertStore = useAlertStore();
 const solutionsStore = useSolutionsStore();
 
-const drawerRef = useTemplateRef('drawer');
+const isSaving = ref(false);
 
 const formData = reactive<{
   [key: string]: {
@@ -137,92 +117,85 @@ const formData = reactive<{
 }>({});
 
 function close() {
-  drawerRef.value?.close();
+  isOpen.value = false;
 }
 
-function save() {
-  close();
+async function save() {
+  const sectors = Object.keys(props.solution.sectors)
+    .map((sectorName) => ({
+      key: sectorName,
+      props: {
+        value: currentValueField(`tags:sector-${sectorName}`)?.value,
+      },
+    }))
+    .reduce((previous, { key, props }) => ({ ...previous, [key]: props }), {});
 
-  if (Object.keys(props.values).length) {
-    return;
+  const globals = Object.keys(props.solution.globals)
+    .map((globalName) => ({
+      key: globalName,
+      props: {
+        value: currentValueField(globalName)?.value,
+      },
+    }))
+    .reduce((previous, { key, props }) => ({ ...previous, [key]: props }), {});
+
+  try {
+    isSaving.value = true;
+
+    await solutionsStore.integrateOrUpdate({
+      uuid: props.solution.uuid,
+      sectors,
+      globals,
+    });
+
+    close();
+
+    alertStore.add({
+      type: 'success',
+      text: t('solutions.integrate.status.created'),
+    });
+
+    router.push({ name: 'integrated-solutions' });
+  } finally {
+    isSaving.value = false;
   }
-
-  solutionsStore.integrate({
-    id: props.id,
-  });
-
-  alertStore.add({
-    type: 'success',
-    text: t('solutions.integrate.status.created'),
-  });
-
-  router.push({ name: 'integrated-solutions' });
 }
 
-const types = ['switch', 'tags', 'select'];
+const types = ['tags'];
 
 watch(
-  () => attrs.isOpen,
+  isOpen,
   (isOpen) => {
-    if (isOpen) {
-      resetForm();
+    if (isOpen && props.solution) {
+      Object.keys(props.solution.sectors).forEach((sectorName) => {
+        updateField(
+          `tags:sector-${sectorName}`,
+          clone(props.solution.sectors[sectorName].value),
+        );
+      });
+
+      Object.keys(props.solution.globals).forEach((globalName) => {
+        updateField(globalName, props.solution.globals[globalName].value);
+      });
+    } else if (isOpen) {
+      nextTick(close);
     }
   },
+  { immediate: true },
 );
-
-function resetForm() {
-  Object.keys(formData).forEach((key) => {
-    delete formData[key];
-  });
-
-  Object.entries(props.values).forEach(([key, value]) => {
-    const type = fieldType(key);
-    const label = fieldLabel(key);
-
-    if (type === 'text') {
-      formData[label] = { type: 'text', value };
-    } else if (type === 'switch') {
-      formData[label] = { type: 'switch', value };
-    } else if (type === 'tags') {
-      formData[label] = { type: 'tags', value, input: '' };
-    } else if (type === 'select') {
-      formData[label] = { type: 'select', value };
-    }
-  });
-}
-
-function iconRightClick(field: string) {
-  const tagField = currentValueField(field);
-
-  const tag = tagField.input.trim();
-
-  if (tagField.value.includes(tag)) {
-    return;
-  }
-
-  if (tag) {
-    tagField.value.push(tagField.input.trim());
-  }
-
-  tagField.input = '';
-}
 
 function currentValueField(field: string) {
   const type = fieldType(field);
   const label = fieldLabel(field);
 
   if (type === 'text') {
-    return formData[label] || { type: 'text', value: '' };
-  } else if (type === 'switch') {
-    return formData[label] || { type: 'switch', value: false };
+    return formData[label];
   } else if (type === 'tags') {
-    return formData[label] || { type: 'tags', value: [], input: '' };
-  } else if (type === 'select') {
-    return formData[label] || { type: 'select', value: '' };
+    return formData[label];
   }
 }
 
-function updateField(field: string, value: string | boolean) {
+function updateField(field: string, value: string | boolean | string[]) {
   const type = fieldType(field);
   const label = fieldLabel(field);
 
@@ -240,15 +213,11 @@ function updateField(field: string, value: string | boolean) {
 
   if (type === 'text') {
     input.value = value;
-  } else if (type === 'switch') {
-    input.value = value;
   } else if (type === 'tags') {
     if (!input.value) {
       input.value = [];
     }
 
-    input.input = value;
-  } else if (type === 'select') {
     input.value = value;
   }
 }
@@ -269,26 +238,6 @@ function fieldLabel(name: string) {
 </script>
 
 <style lang="scss" scoped>
-.tags {
-  margin-top: $unnnic-spacing-xs;
-  display: flex;
-  flex-wrap: wrap;
-  gap: $unnnic-spacing-xs;
-
-  &__tag {
-    user-select: none;
-    padding: $unnnic-spacing-nano $unnnic-spacing-ant;
-    border-radius: $unnnic-border-radius-pill;
-    background-color: $unnnic-color-neutral-light;
-
-    color: $unnnic-color-neutral-cloudy;
-    font-family: $unnnic-font-family-secondary;
-    font-weight: $unnnic-font-weight-regular;
-    font-size: $unnnic-font-size-body-md;
-    line-height: $unnnic-font-size-body-md + $unnnic-line-height-md;
-  }
-}
-
 .form-elements {
   display: flex;
   flex-direction: column;

@@ -22,7 +22,7 @@
       v-model="solutionToIntegrate.isOpen"
       v-bind="solutionToIntegrate.solution"
       :status="
-        isSolutionIntegrated(solutionToIntegrate.solution.id)
+        isSolutionIntegrated(solutionToIntegrate.solution)
           ? 'integrated'
           : 'available'
       "
@@ -36,20 +36,11 @@
     />
 
     <DrawerSolution
-      :id="drawerSolution.solution?.id || ''"
       v-model:isOpen="drawerSolution.isOpen"
       :title="drawerSolution.solution?.title || ''"
-      :category="category"
       :icon="icon"
       :iconScheme="iconScheme"
       :solution="drawerSolution.solution"
-      :values="drawerSolution.solution?.values"
-    />
-
-    <ModalDisintegrate
-      v-if="solutionToDisintegrate.solution"
-      v-model="solutionToDisintegrate.isOpen"
-      :solution="solutionToDisintegrate.solution"
     />
   </section>
 </template>
@@ -61,18 +52,9 @@ import Header from '@/components/Header.vue';
 import SolutionCard from '@/components/solutions/SolutionCard.vue';
 import ModalIntegrate from '@/components/solutions/ModalIntegrate.vue';
 import DrawerSolution from '@/components/solutions/DrawerSolution.vue';
-import { useSolutionsStore } from '@/stores/Solutions';
-import ModalDisintegrate from './ModalDisintegrate.vue';
+import { isSolutionIntegrated } from '@/utils';
 
 const { t } = useI18n();
-
-const solutionsStore = useSolutionsStore();
-
-type Solution = {
-  id: string;
-  title: string;
-  description: string;
-};
 
 defineProps<{
   title: string;
@@ -82,21 +64,14 @@ defineProps<{
   solutions: Solution[];
 }>();
 
-const solutionToDisintegrate = reactive<{
-  isOpen: boolean;
-  solution: null | {
-    id: string;
-    title: string;
-  };
-}>({
-  isOpen: false,
-  solution: null,
-});
+const emit = defineEmits<{
+  disintegrate: [solution: Solution];
+}>();
 
 const solutionToIntegrate = reactive<{
   isOpen: boolean;
   solution: null | {
-    id: string;
+    uuid: string;
     title: string;
     description: string;
     tip: string;
@@ -108,28 +83,14 @@ const solutionToIntegrate = reactive<{
 
 const drawerSolution = reactive<{
   isOpen: boolean;
-  solution: null | {
-    id: string;
-    title: string;
-    description: string;
-    globals: string[];
-  };
+  solution?: Solution;
 }>({
   isOpen: false,
-  solution: null,
+  solution: undefined,
 });
 
-function isSolutionIntegrated(solutionId: string) {
-  const integrated = [
-    solutionsStore.integrated.activeNotifications.data,
-    solutionsStore.integrated.passiveService.data,
-  ].flat();
-
-  return integrated.some((integrated) => integrated.id === solutionId);
-}
-
-function getOptionsBySolution(solution) {
-  if (isSolutionIntegrated(solution.id)) {
+function getOptionsBySolution(solution: Solution) {
+  if (isSolutionIntegrated(solution)) {
     return [
       {
         icon: 'visibility',
@@ -148,7 +109,7 @@ function getOptionsBySolution(solution) {
         icon: 'do_not_disturb_on',
         title: t('solutions.actions.disable_solution'),
         scheme: 'aux-red-500',
-        onClick: openDisable.bind(this, solution),
+        onClick: () => emit('disintegrate', solution),
       },
     ];
   } else {
@@ -166,12 +127,6 @@ function openDrawer(solution, values = {}) {
   drawerSolution.isOpen = true;
   drawerSolution.solution = solution;
   drawerSolution.solution.values = values;
-}
-
-function openDisable(solution) {
-  solutionToDisintegrate.isOpen = true;
-
-  solutionToDisintegrate.solution = solution;
 }
 </script>
 

@@ -2,9 +2,12 @@ import { UnnnicSystem } from '@/plugins/UnnnicSystem';
 import { createTestingPinia } from '@pinia/testing';
 import { mount } from '@vue/test-utils';
 import { vi } from 'vitest';
+import { get } from 'lodash';
 
-export const setup = (...args: Parameters<typeof mount>) => {
-  const [component, options] = args;
+export const setup = (
+  ...args: [...Parameters<typeof mount>, { pinia: { stubActions: boolean } }?]
+) => {
+  const [component, options, config] = args;
 
   return mount(component, {
     props: options?.props,
@@ -26,6 +29,7 @@ export const setup = (...args: Parameters<typeof mount>) => {
         UnnnicSystem,
         createTestingPinia({
           createSpy: vi.fn,
+          stubActions: get(config, 'pinia.stubActions'),
         }),
         ...(options?.global?.plugins || []),
       ],

@@ -8,6 +8,8 @@ import { i18n } from './locales';
 import App from './App.vue';
 import router from './router';
 
+import '@/utils/TreatUnhandledRejection';
+
 const app = createApp(App);
 
 app.use(i18n);
