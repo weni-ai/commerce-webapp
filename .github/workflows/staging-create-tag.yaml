@@ -1,0 +1,46 @@
+name: Create Staging Tag
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  increment-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Get the latest staging tag
+        id: get_latest_tag
+        run: |
+          latest_tag=$(git tag --list --sort=-v:refname | grep -E '^\d+\.\d+\.\d+-staging$' | head -n 1)
+          echo "Latest Tag: $latest_tag"
+          echo "::set-output name=latest_tag::$latest_tag"
+
+      - name: Increment the tag
+        id: increment_tag
+        run: |
+          if [ -z "${{ steps.get_latest_tag.outputs.latest_tag }}" ]; then
+            echo "No matching tags found."
+            exit 1
+          fi
+
+          latest_tag=${{ steps.get_latest_tag.outputs.latest_tag }}
+          new_tag=$(echo $latest_tag | sed -E 's/^([0-9]+\.[0-9]+\.[0-9]+)(-[a-z]+)?$/\1./; s/(\d+)$/$((${1}+1))/')
+
+          echo "New Tag: $new_tag"
+          echo "::set-output name=new_tag::$new_tag"
+
+      - name: Create and push new tag
+        run: |
+          new_tag=${{ steps.increment_tag.outputs.new_tag }}
+          git tag "$new_tag"
+          git push origin "$new_tag"

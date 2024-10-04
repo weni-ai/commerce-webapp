@@ -1,5 +1,5 @@
 #!/bin/sh
-export JSON_STRING='var configs = { \
+export JSON_STRING='window.configs = { \
   "SENTRY_DSN":"'${SENTRY_DSN}'", \
   "API_BASE_URL":"'${API_BASE_URL}'", \
 }'
