@@ -34,7 +34,7 @@ jobs:
           latest_tag=${{ steps.get_latest_tag.outputs.latest_tag }}
 
            if [ -z "$latest_tag" ]; then
-            echo "No matching tags found."
+            echo "No matching tags found. test"
             exit 1
           fi
 
