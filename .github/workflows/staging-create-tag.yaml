@@ -31,13 +31,21 @@ jobs:
       - name: Increment the tag
         id: increment_tag
         run: |
-          if [ -z "${{ steps.get_latest_tag.outputs.latest_tag }}" ]; then
+          latest_tag=${{ steps.get_latest_tag.outputs.latest_tag }}
+
+           if [ -z "$latest_tag" ]; then
             echo "No matching tags found."
             exit 1
           fi
 
-          latest_tag=${{ steps.get_latest_tag.outputs.latest_tag }}
-          new_tag=$(echo $latest_tag | sed -E 's/^([0-9]+\.[0-9]+\.[0-9]+)(-[a-z]+)?$/\1-staging/; s/(\d+)$/$((${1}+1))/')
+          # Extract the major, minor, patch versions
+          IFS='.-' read -r major minor patch _ <<< "$latest_tag"
+
+          # Increment the patch version
+          patch=$((patch + 1))
+
+          # Construct the new tag
+          new_tag="$major.$minor.$patch-staging"
 
           echo "New Tag: $new_tag"
           echo "::set-output name=new_tag::$new_tag"
