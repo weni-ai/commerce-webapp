@@ -125,7 +125,10 @@ export default {
             name: string;
             value: string;
           }[];
-          sectors: string[];
+          sectors: {
+            name: string;
+            tags: string[];
+          }[];
           initial_flow: {
             uuid: string;
             name: string;
@@ -149,10 +152,10 @@ export default {
         {},
       ),
       sectors: solution.sectors.reduce(
-        (previous, sectorName) => ({
+        (previous, { name, tags }) => ({
           ...previous,
-          [sectorName]: {
-            value: [],
+          [name]: {
+            value: tags.filter((tag) => tag),
           },
         }),
         {},
