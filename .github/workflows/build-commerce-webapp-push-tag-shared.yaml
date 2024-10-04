@@ -5,26 +5,14 @@ on:
     tags:
       - '*.*.*-staging'
       - '*.*.*'
-  workflow_run:
-    workflows: ["Create Staging Tag"]
-    types:
-      - completed
 
 jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          fetch-tags: 0
-
       - name: Set variables
         run: |
-            TAG=$(git tag --list --sort=-creatordate | head -n 1)
-            COMMIT_SHA=$(git rev-list -n 1 "$TAG")
-            git checkout $COMMIT_SHA
+            TAG="$( echo "${GITHUB_REF}" | cut -d'/' -f3 )"
             if grep -qs -e '^.*.*-staging' <<< "${TAG}" ; then
               echo "Found environment: STAGING - ${TAG}"
               echo "MANIFESTS_ENVIRONMENT=staging" | tee -a "${GITHUB_ENV}"
@@ -38,7 +26,7 @@ jobs:
             echo "TAG=$TAG" | tee -a "${GITHUB_ENV}"
             VERSION="${TAG}"
             echo "VERSION=${VERSION}" | tee -a "${GITHUB_ENV}"
-            echo "COMMIT_SHA=$COMMIT_SHA" | tee -a "${GITHUB_ENV}"
+            echo "COMMIT_SHA=$GITHUB_SHA" | tee -a "${GITHUB_ENV}"
             echo "IMAGE_TAG=${{ secrets.ECR }}/commerce:webapp-${TAG}" | tee -a "${GITHUB_ENV}"
             echo "IMAGE_SOURCE_URL=https://github.com/weni-ai/commerce-webapp" | tee -a "${GITHUB_ENV}"
             echo "MANIFESTS_REPOSITORY=weni-ai/kubernetes-manifests-retail" | tee -a "${GITHUB_ENV}"
@@ -64,10 +52,6 @@ jobs:
           registry: ${{ secrets.ECR }}
           username: ${{ secrets.AWS_ACCESS_KEY_ID_SHARED }}       # Credentials used to push image to ECR repository
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY_SHARED }}
-
-      - name: Checkout specific commit SHA
-        run: |
-          git checkout ${{env.COMMIT_SHA}}
 
       - name: Build and push - Commerce Webapp Image
         uses: docker/build-push-action@v3
