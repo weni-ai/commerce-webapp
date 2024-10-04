@@ -3,40 +3,15 @@
     v-model="modelValue"
     class="modal-integrate-solution"
     :showCloseIcon="true"
+    :hideSecondaryButton="true"
+    :primaryButtonProps="buttonProps"
+    @primary-button-click="emitValue"
   >
     <section class="modal-integrate-solution__container">
       <section class="modal-integrate-solution__body">
         <p>
           {{ description }}
         </p>
-
-        <UnnnicButton
-          v-if="status === 'available'"
-          class="modal-integrate-solution__integrate-button"
-          size="small"
-          data-test="integrate-button"
-          @click="
-            modelValue = false;
-            $emit('integrate');
-          "
-        >
-          {{ $t('solutions.integrate.button_label') }}
-        </UnnnicButton>
-
-        <UnnnicButton
-          v-else-if="status === 'integrated'"
-          type="secondary"
-          class="modal-integrate-solution__integrate-button"
-          iconLeft="settings"
-          size="small"
-          data-test="edit-button"
-          @click="
-            modelValue = false;
-            $emit('edit');
-          "
-        >
-          {{ $t('solutions.details.view_settings') }}
-        </UnnnicButton>
 
         <section
           v-if="!!tip"
@@ -52,52 +27,74 @@
           {{ tip }}
         </section>
       </section>
-
-      <img
-        class="modal-integrate-solution__preview-image"
-        :src="Chat"
-        alt="Chat"
-      />
     </section>
   </UnnnicModalDialog>
 </template>
 
 <script lang="ts" setup>
-import Chat from '@/assets/chat.png';
+import { useI18n } from 'vue-i18n';
 
 const modelValue = defineModel<boolean>({ required: true });
+const { t } = useI18n();
 
-defineProps<{
+const props = defineProps<{
   description: string;
   tip?: string;
   status: 'available' | 'integrated';
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   integrate: [];
   edit: [];
 }>();
+
+const buttonProps =
+  props.status === 'available'
+    ? {
+        class: 'modal-integrate-solution__integrate-button',
+        text: t('solutions.integrate.button_label'),
+        size: 'large',
+        'data-test': 'integrate-button',
+      }
+    : props.status === 'integrated'
+      ? {
+          class: 'modal-integrate-solution__edit-button',
+          text: t('solutions.details.view_settings'),
+          size: 'large',
+          'data-test': 'edit-button',
+        }
+      : {};
+
+function emitValue() {
+  modelValue.value = false;
+  if (props.status === 'available') {
+    emit('integrate');
+  } else if (props.status === 'integrated') {
+    emit('edit');
+  }
+}
 </script>
 
 <style scoped lang="scss">
 .modal-integrate-solution {
   :deep(.unnnic-modal-dialog__container) {
-    width: 43.75 * $unnnic-font-size;
+    width: 25 * $unnnic-font-size;
     border-radius: $unnnic-border-radius-lg;
-  }
-
-  :deep(.unnnic-modal-dialog__container__header) {
-    padding: $unnnic-spacing-lg;
   }
 
   :deep(.unnnic-modal-dialog__container__content) {
     padding-inline: $unnnic-spacing-lg;
     padding-bottom: $unnnic-spacing-lg;
+    border-bottom: solid 1px $unnnic-color-neutral-soft;
+
+    button {
+      width: 100%;
+    }
   }
 
   :deep(.unnnic-modal-dialog__container__header) {
-    padding-bottom: 0;
-    border-bottom-width: 0;
+    padding: $unnnic-spacing-md;
+    border-bottom-width: 1px;
 
     .unnnic-modal-dialog__container__title-text {
       font-family: $unnnic-font-family-secondary;
@@ -107,9 +104,22 @@ defineEmits<{
     }
   }
 
+  :deep(.unnnic-modal-dialog__container__actions) {
+    display: flex;
+
+    button {
+      width: 100%;
+    }
+  }
+
   &__container {
     display: flex;
+    flex-direction: column;
     column-gap: $unnnic-spacing-giant;
+  }
+
+  &__buttons {
+    padding-top: $unnnic-spacing-md;
   }
 
   &__body {

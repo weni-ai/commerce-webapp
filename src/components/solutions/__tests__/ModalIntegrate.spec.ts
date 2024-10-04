@@ -1,6 +1,12 @@
 import { setup } from '@/tests/utils';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import ModalIntegrate from '@/components/solutions/ModalIntegrate.vue';
+
+vi.mock('vue-i18n', () => ({
+  useI18n: () => ({
+    t: (key: string) => key,
+  }),
+}));
 
 describe('ModalIntegrate', () => {
   let wrapper: ReturnType<typeof setup>;
