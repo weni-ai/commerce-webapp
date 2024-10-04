@@ -1,10 +1,6 @@
 import request from './request';
 import { useAuthStore } from '@/stores/Auth';
 
-function generateUuid() {
-  return String(Math.floor(Math.random() * 10000));
-}
-
 export default {
   async listSolutions({ category }: { category: string }): Promise<Solution[]> {
     const authStore = useAuthStore();
@@ -32,7 +28,7 @@ export default {
     );
 
     return data.results.map((solution) => ({
-      uuid: solution.feature_uuid || generateUuid(),
+      uuid: solution.feature_uuid,
       title: solution.name,
       description: solution.description,
       tip: solution.disclaimer,
@@ -142,7 +138,7 @@ export default {
     );
 
     return data.results.map((solution) => ({
-      uuid: solution.feature_uuid || generateUuid(),
+      uuid: solution.feature_uuid,
       title: solution.name,
       description: solution.description,
       tip: solution.disclaimer,
