@@ -10,7 +10,7 @@ export default {
     }: {
       data: {
         results: {
-          feature_uuid: string;
+          uuid: string;
           description: string;
           disclaimer: string;
           documentation_url: string;
@@ -28,7 +28,7 @@ export default {
     );
 
     return data.results.map((solution) => ({
-      uuid: solution.feature_uuid,
+      uuid: solution.uuid,
       title: solution.name,
       description: solution.description,
       tip: solution.disclaimer,
@@ -125,7 +125,10 @@ export default {
             name: string;
             value: string;
           }[];
-          sectors: string[];
+          sectors: {
+            name: string;
+            tags: string[];
+          }[];
           initial_flow: {
             uuid: string;
             name: string;
@@ -149,10 +152,10 @@ export default {
         {},
       ),
       sectors: solution.sectors.reduce(
-        (previous, sectorName) => ({
+        (previous, { name, tags }) => ({
           ...previous,
-          [sectorName]: {
-            value: [],
+          [name]: {
+            value: tags.filter((tag) => tag),
           },
         }),
         {},
