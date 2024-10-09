@@ -10,7 +10,7 @@ export default {
     }: {
       data: {
         results: {
-          feature_uuid: string;
+          uuid: string;
           description: string;
           disclaimer: string;
           documentation_url: string;
@@ -28,7 +28,7 @@ export default {
     );
 
     return data.results.map((solution) => ({
-      uuid: solution.feature_uuid,
+      uuid: solution.uuid,
       title: solution.name,
       description: solution.description,
       tip: solution.disclaimer,
