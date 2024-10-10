@@ -1,5 +1,4 @@
 <template>
-  {{ uuid }}
   <UnnnicModalDialog
     v-if="images[uuid]"
     v-model="modelValue"
@@ -15,10 +14,7 @@
         <UnnnicButton
           class="modal-integrate-solution__integrate-button"
           size="small"
-          @click="
-            $emit('close');
-            $emit('integrate');
-          "
+          @click="emitValue"
         >
           {{ $t('solutions.integrate.button_label') }}
         </UnnnicButton>
@@ -50,7 +46,7 @@
     class="modal-integrate-solution-empty"
     :showCloseIcon="true"
     :hideSecondaryButton="true"
-    :primaryButtonProps="buttonProps"
+    :primaryButtonProps="buttonProps()"
     @primary-button-click="emitValue"
   >
     <section class="modal-integrate-solution__container">
@@ -92,19 +88,35 @@ const props = defineProps<{
 const emit = defineEmits<{
   close: [];
   integrate: [];
+  edit: [];
 }>();
 
-const buttonProps = {
-  class: 'modal-integrate-solution__integrate-button',
-  text: t('solutions.integrate.button_label'),
-  size: 'large',
-  'data-test': 'integrate-button',
+const buttonProps = () => {
+  if (props.status === 'available') {
+    return {
+      class: 'modal-integrate-solution__integrate-button',
+      text: t('solutions.integrate.button_label'),
+      size: 'large',
+      'data-test': 'integrate-button',
+    };
+  } else if (props.status === 'integrated') {
+    return {
+      class: 'modal-integrate-solution__edit-button',
+      text: t('solutions.details.view_settings'),
+      size: 'large',
+      'data-test': 'edit-button',
+    };
+  }
+  return {};
 };
 
 function emitValue() {
   modelValue.value = false;
-  emit('close');
-  emit('integrate');
+  if (props.status === 'available') {
+    emit('integrate');
+  } else if (props.status === 'integrated') {
+    emit('edit');
+  }
 }
 
 const images: Record<string, string> = {
@@ -134,6 +146,17 @@ import status_passive from '@/assets/status_passive.png';
 
     button {
       width: 100%;
+    }
+  }
+  :deep(.unnnic-modal-dialog__container__header) {
+    padding-bottom: 0;
+    border-bottom-width: 0;
+
+    .unnnic-modal-dialog__container__title-text {
+      font-family: $unnnic-font-family-secondary;
+      font-weight: $unnnic-font-weight-bold;
+      font-size: $unnnic-font-size-title-md;
+      line-height: $unnnic-font-size-title-md + $unnnic-line-height-md;
     }
   }
 }
