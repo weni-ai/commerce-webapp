@@ -1,6 +1,8 @@
 <template>
+  {{ uuid }}
   <UnnnicModalDialog
     v-if="images[uuid]"
+    v-model="modelValue"
     class="modal-integrate-solution"
     :showCloseIcon="true"
   >
@@ -90,33 +92,19 @@ const props = defineProps<{
 const emit = defineEmits<{
   close: [];
   integrate: [];
-  edit: [];
 }>();
 
-const buttonProps =
-  props.status === 'available'
-    ? {
-        class: 'modal-integrate-solution__integrate-button',
-        text: t('solutions.integrate.button_label'),
-        size: 'large',
-        'data-test': 'integrate-button',
-      }
-    : props.status === 'integrated'
-      ? {
-          class: 'modal-integrate-solution__edit-button',
-          text: t('solutions.details.view_settings'),
-          size: 'large',
-          'data-test': 'edit-button',
-        }
-      : {};
+const buttonProps = {
+  class: 'modal-integrate-solution__integrate-button',
+  text: t('solutions.integrate.button_label'),
+  size: 'large',
+  'data-test': 'integrate-button',
+};
 
 function emitValue() {
   modelValue.value = false;
-  if (props.status === 'available') {
-    emit('integrate');
-  } else if (props.status === 'integrated') {
-    emit('edit');
-  }
+  emit('close');
+  emit('integrate');
 }
 
 const images: Record<string, string> = {
