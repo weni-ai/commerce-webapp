@@ -90,6 +90,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   close: [];
   integrate: [];
+  edit: [];
 }>();
 
 const buttonProps =
@@ -114,7 +115,7 @@ function emitValue() {
   if (props.status === 'available') {
     emit('integrate');
   } else if (props.status === 'integrated') {
-    emit('close');
+    emit('edit');
   }
 }
 
