@@ -1,5 +1,4 @@
 <template>
-  {{ uuid }}
   <UnnnicModalDialog
     v-if="images[uuid]"
     v-model="modelValue"
@@ -82,7 +81,7 @@ import { useI18n } from 'vue-i18n';
 
 const modelValue = defineModel<boolean>({ required: true });
 const { t } = useI18n();
-const props = defineProps<{
+defineProps<{
   description: string;
   tip?: string;
   uuid: string;
@@ -134,6 +133,17 @@ import status_passive from '@/assets/status_passive.png';
 
     button {
       width: 100%;
+    }
+  }
+  :deep(.unnnic-modal-dialog__container__header) {
+    padding-bottom: 0;
+    border-bottom-width: 0;
+
+    .unnnic-modal-dialog__container__title-text {
+      font-family: $unnnic-font-family-secondary;
+      font-weight: $unnnic-font-weight-bold;
+      font-size: $unnnic-font-size-title-md;
+      line-height: $unnnic-font-size-title-md + $unnnic-line-height-md;
     }
   }
 }
