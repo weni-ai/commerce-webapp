@@ -4,6 +4,7 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { UnnnicSystem } from '@/plugins/UnnnicSystem';
 import { i18n } from './locales';
+import { SentryInit } from '@/utils/SentryInit';
 
 import App from './App.vue';
 import router from './router';
@@ -11,6 +12,8 @@ import router from './router';
 import '@/utils/TreatUnhandledRejection';
 
 const app = createApp(App);
+
+SentryInit({ app });
 
 app.use(i18n);
 app.use(router);
