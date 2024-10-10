@@ -12,6 +12,7 @@
   <UnnnicTab
     :activeTab="$route.name"
     :tabs="tabs"
+    data-test="tabs"
     @change.self="$router.push({ name: $event })"
   >
     <template #tab-head-discovery>
