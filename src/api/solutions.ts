@@ -70,7 +70,7 @@ export default {
       })),
       globals_values: Object.keys(globals)
         .map((globalName) => ({ [globalName]: globals[globalName].value }))
-        .reduce((previous, current) => ({ ...previous, ...current })),
+        .reduce((previous, current) => ({ ...previous, ...current }), {}),
     });
   },
 
@@ -99,7 +99,7 @@ export default {
       })),
       globals_values: Object.keys(globals)
         .map((globalName) => ({ [globalName]: globals[globalName].value }))
-        .reduce((previous, current) => ({ ...previous, ...current })),
+        .reduce((previous, current) => ({ ...previous, ...current }), {}),
     });
   },
 
