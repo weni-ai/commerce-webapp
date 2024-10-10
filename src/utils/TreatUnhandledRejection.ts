@@ -3,13 +3,11 @@ import { useAlertStore } from '@/stores/Alert';
 import { AxiosError, HttpStatusCode } from 'axios';
 import { get } from 'lodash';
 
-export const onUnhandledRejection = (event: PromiseRejectionEvent) => {
+export const onUnhandledRejection = (error: Error | AxiosError) => {
   const alertStore = useAlertStore();
 
-  if (event.reason instanceof AxiosError) {
-    const { reason } = event;
-
-    const statusCode = get(reason, 'response.status');
+  if (error instanceof AxiosError) {
+    const statusCode = get(error, 'response.status');
 
     if (statusCode === HttpStatusCode.Unauthorized) {
       alertStore.add({
@@ -32,5 +30,3 @@ export const onUnhandledRejection = (event: PromiseRejectionEvent) => {
     }
   }
 };
-
-window.addEventListener('unhandledrejection', onUnhandledRejection);
