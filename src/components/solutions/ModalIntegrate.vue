@@ -14,10 +14,7 @@
         <UnnnicButton
           class="modal-integrate-solution__integrate-button"
           size="small"
-          @click="
-            $emit('close');
-            $emit('integrate');
-          "
+          @click="emitValue"
         >
           {{ $t('solutions.integrate.button_label') }}
         </UnnnicButton>
@@ -115,8 +112,11 @@ const buttonProps = () => {
 
 function emitValue() {
   modelValue.value = false;
-  emit('close');
-  emit('integrate');
+  if (props.status === 'available') {
+    emit('integrate');
+  } else if (props.status === 'integrated') {
+    emit('edit');
+  }
 }
 
 const images: Record<string, string> = {
