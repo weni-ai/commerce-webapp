@@ -9,8 +9,6 @@ import { SentryInit } from '@/utils/SentryInit';
 import App from './App.vue';
 import router from './router';
 
-import '@/utils/TreatUnhandledRejection';
-
 const app = createApp(App);
 
 SentryInit({ app });

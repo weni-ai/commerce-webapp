@@ -33,7 +33,6 @@ export default {
       description: solution.description,
       tip: solution.disclaimer,
       documentation: solution.documentation_url,
-      flows: solution.initial_flow,
       globals: (solution.globals || []).reduce(
         (previous, current) => ({
           ...previous,
@@ -146,7 +145,6 @@ export default {
       description: solution.description,
       tip: solution.disclaimer,
       documentation: solution.documentation_url,
-      flows: solution.initial_flow,
       globals: (solution.globals || []).reduce(
         (previous, { name, value }) => ({ ...previous, [name]: { value } }),
         {},
