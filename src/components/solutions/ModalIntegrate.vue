@@ -1,5 +1,6 @@
 <template>
   <UnnnicModalDialog
+    v-if="images[uuid]"
     class="modal-integrate-solution"
     :showCloseIcon="true"
   >
@@ -41,23 +42,86 @@
       />
     </section>
   </UnnnicModalDialog>
+  <UnnnicModalDialog
+    v-else
+    v-model="modelValue"
+    class="modal-integrate-solution-empty"
+    :showCloseIcon="true"
+    :hideSecondaryButton="true"
+    :primaryButtonProps="buttonProps"
+    @primary-button-click="emitValue"
+  >
+    <section class="modal-integrate-solution__container">
+      <section class="modal-integrate-solution__body">
+        <p>
+          {{ description }}
+        </p>
+
+        <section
+          v-if="!!tip"
+          class="modal-integrate-solution__tip"
+          data-test="tip-box"
+        >
+          <UnnnicIcon
+            icon="emoji_objects"
+            size="sm"
+            scheme="neutral-cloudy"
+          />
+
+          {{ tip }}
+        </section>
+      </section>
+    </section>
+  </UnnnicModalDialog>
 </template>
 
 <script lang="ts" setup>
-defineProps<{
+import { useI18n } from 'vue-i18n';
+
+const modelValue = defineModel<boolean>({ required: true });
+const { t } = useI18n();
+const props = defineProps<{
   description: string;
   tip?: string;
   uuid: string;
+  status: 'available' | 'integrated';
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   close: [];
   integrate: [];
+  edit: [];
 }>();
+
+const buttonProps =
+  props.status === 'available'
+    ? {
+        class: 'modal-integrate-solution__integrate-button',
+        text: t('solutions.integrate.button_label'),
+        size: 'large',
+        'data-test': 'integrate-button',
+      }
+    : props.status === 'integrated'
+      ? {
+          class: 'modal-integrate-solution__edit-button',
+          text: t('solutions.details.view_settings'),
+          size: 'large',
+          'data-test': 'edit-button',
+        }
+      : {};
+
+function emitValue() {
+  modelValue.value = false;
+  if (props.status === 'available') {
+    emit('integrate');
+  } else if (props.status === 'integrated') {
+    emit('edit');
+  }
+}
 
 const images: Record<string, string> = {
   '4d983f31-065b-45c8-84fd-276469750c38': abandoned_cart,
-  'adc0315c-6549-4321-93c6-0557b55a6ca2': status,
+  'adc0315c-6549-4321-93c6-0557b55a6ca2': status_active,
   '6e38bfb1-a0e1-4dc7-95b3-b14ebc94d1a5': status_passive,
 };
 
@@ -66,11 +130,25 @@ function getImageByUuid(uuid: string): string {
 }
 
 import abandoned_cart from '@/assets/abandoned_cart.png';
-import status from '@/assets/status.png';
+import status_active from '@/assets/status_active.png';
 import status_passive from '@/assets/status_passive.png';
 </script>
 
 <style scoped lang="scss">
+.modal-integrate-solution-empty {
+  :deep(.unnnic-modal-dialog__container) {
+    width: 25 * $unnnic-font-size;
+    border-radius: $unnnic-border-radius-lg;
+  }
+
+  :deep(.unnnic-modal-dialog__container__actions) {
+    display: flex;
+
+    button {
+      width: 100%;
+    }
+  }
+}
 .modal-integrate-solution {
   :deep(.unnnic-modal-dialog__container) {
     width: 43.75 * $unnnic-font-size;
