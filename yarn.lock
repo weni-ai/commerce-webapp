@@ -443,6 +443,87 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.10.4.tgz#427d5549943a9c6fce808e39ea64dbe60d4047f1"
   integrity sha512-WJgX9nzTqknM393q1QJDJmoW28kUfEnybeTfVNcNAPnIx210RXm2DiXiHzfNPJNIUUb1tJnz/l4QGtJ30PgWmA==
 
+"@sentry-internal/browser-utils@8.34.0-internal.0":
+  version "8.34.0-internal.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/browser-utils/-/browser-utils-8.34.0-internal.0.tgz#3fe2c2487a4a2b8ba55a4ce3bd401bd5121202c7"
+  integrity sha512-K/MTyGObRn4/Pu3i3fry1HFj5/GuFLa+SOaPxt9l2orp3WwAYlmVcy9VwQ4mZvxd8MbKbcNknEsENjGOs0gR/w==
+  dependencies:
+    "@sentry/core" "8.34.0-internal.0"
+    "@sentry/types" "8.34.0-internal.0"
+    "@sentry/utils" "8.34.0-internal.0"
+
+"@sentry-internal/feedback@8.34.0-internal.0":
+  version "8.34.0-internal.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/feedback/-/feedback-8.34.0-internal.0.tgz#b1507c12ae4cfe20b281b338c7c23ecf82734ca8"
+  integrity sha512-STVFIpiXEabSWfFF9VoBjelHAvKSSZUzixb7Fr5rEHBrZUO9r1i8UQnWji+5iDEjGar06a1JpC1hqkE2ln4cOQ==
+  dependencies:
+    "@sentry/core" "8.34.0-internal.0"
+    "@sentry/types" "8.34.0-internal.0"
+    "@sentry/utils" "8.34.0-internal.0"
+
+"@sentry-internal/replay-canvas@8.34.0-internal.0":
+  version "8.34.0-internal.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/replay-canvas/-/replay-canvas-8.34.0-internal.0.tgz#fc72477ac71c9ab294448ed5f1f877eefb8e7b0f"
+  integrity sha512-HKq0C3wMbzc/TfPlBO4lDtHil1McVxsfxmj9lHp+z58AQFB5USMU14FlpAA504JrzWllztFkIKCG4Wqjj+82kQ==
+  dependencies:
+    "@sentry-internal/replay" "8.34.0-internal.0"
+    "@sentry/core" "8.34.0-internal.0"
+    "@sentry/types" "8.34.0-internal.0"
+    "@sentry/utils" "8.34.0-internal.0"
+
+"@sentry-internal/replay@8.34.0-internal.0":
+  version "8.34.0-internal.0"
+  resolved "https://registry.yarnpkg.com/@sentry-internal/replay/-/replay-8.34.0-internal.0.tgz#6ec19282279130d295b2cd9dc4cec1997d82b585"
+  integrity sha512-C8SdybYvqD1yoYj5enr/NVCD7PbV9S/1gqkYEDLBjT51FQprX+aL9iaPa9yizNCvOW6KUPfExgVj8UDF/ZOgsw==
+  dependencies:
+    "@sentry-internal/browser-utils" "8.34.0-internal.0"
+    "@sentry/core" "8.34.0-internal.0"
+    "@sentry/types" "8.34.0-internal.0"
+    "@sentry/utils" "8.34.0-internal.0"
+
+"@sentry/browser@8.34.0-internal.0":
+  version "8.34.0-internal.0"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-8.34.0-internal.0.tgz#4045035ab7cbb42a239a7a3ba5c832917219489a"
+  integrity sha512-c+6AGdGm6ssCPEAUiIOKRgbTkjvn0ZHu0OlOEtsVZfqq3K6SEZWAawuwM/fg7KLJNkjXm2yTmDrv6UnzTc3E5Q==
+  dependencies:
+    "@sentry-internal/browser-utils" "8.34.0-internal.0"
+    "@sentry-internal/feedback" "8.34.0-internal.0"
+    "@sentry-internal/replay" "8.34.0-internal.0"
+    "@sentry-internal/replay-canvas" "8.34.0-internal.0"
+    "@sentry/core" "8.34.0-internal.0"
+    "@sentry/types" "8.34.0-internal.0"
+    "@sentry/utils" "8.34.0-internal.0"
+
+"@sentry/core@8.34.0-internal.0":
+  version "8.34.0-internal.0"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-8.34.0-internal.0.tgz#9b4e1564673ac9b37d65d4f018ca5fc3a42d3db3"
+  integrity sha512-qhgSoLInKwbsRMvNex/wM9WIhYF/wDXscp8+BUbPggFigNZQLMjLZRctX2lwO2auBqfiCWBi5j+VhcmJ39bXYA==
+  dependencies:
+    "@sentry/types" "8.34.0-internal.0"
+    "@sentry/utils" "8.34.0-internal.0"
+
+"@sentry/types@8.34.0-internal.0":
+  version "8.34.0-internal.0"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-8.34.0-internal.0.tgz#e8b997d1007d85e4d5f81f041ac3a88aa764a16c"
+  integrity sha512-fCs8ATj9En5flUmIkwIHQsZTMDs1m8lKvZK7RZ+gA07uN9X/6oEbyatZyzJFAhghY4ePONhw8SU25ag/jSoQwA==
+
+"@sentry/utils@8.34.0-internal.0":
+  version "8.34.0-internal.0"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-8.34.0-internal.0.tgz#b662fbda4388f0a65a526649f66a415880aad2e0"
+  integrity sha512-ffdzoQN9GUnYwBK0MLT+NCOCCM52pjWAFRwidv2/ygK3cPs10D18GaFj3rXThuovZgVix/6SmNQfbogs8QsdXQ==
+  dependencies:
+    "@sentry/types" "8.34.0-internal.0"
+
+"@sentry/vue@^8.34.0-internal.0":
+  version "8.34.0-internal.0"
+  resolved "https://registry.yarnpkg.com/@sentry/vue/-/vue-8.34.0-internal.0.tgz#92511ef606cb7c43bb158169402c52ee3ec21c63"
+  integrity sha512-xKbRkrkYAjlhFK26EC8XM+skDmz7CzHBpn2PbbuRFlIj7MCX/7VAJDAaQsMlP8Lt4T2q7bb43s6ukrrrphZiGA==
+  dependencies:
+    "@sentry/browser" "8.34.0-internal.0"
+    "@sentry/core" "8.34.0-internal.0"
+    "@sentry/types" "8.34.0-internal.0"
+    "@sentry/utils" "8.34.0-internal.0"
+
 "@sinclair/typebox@^0.27.8":
   version "0.27.8"
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.27.8.tgz#6667fac16c436b5434a387a34dedb013198f6e6e"
