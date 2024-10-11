@@ -30,9 +30,9 @@
       </section>
 
       <section class="form-elements">
-        <template v-if="solution?.globals">
+        <template v-if="currentVersion?.globals">
           <UnnnicFormElement
-            v-for="(field, index) in Object.keys(solution.globals)"
+            v-for="(field, index) in Object.keys(currentVersion.globals)"
             :key="index"
             :label="fieldLabel(field)"
           >
@@ -100,6 +100,36 @@ const props = defineProps<{
   solution?: Solution;
 }>();
 
+const solutionMock = {
+  version: '1.0',
+  feature_uuid: '4d983f31-065b-45c8-84fd-276469750c38',
+  name: 'Carrinho Abandonado',
+  description:
+    'Recupere vendas lembrando clientes de itens esquecidos no carrinho.',
+  disclaimer:
+    'Com essa solução, é possível aumentar suas chances de conversão, mantendo seu cliente próximo e incentivando a conclusão do pedido.',
+  documentation_url: null,
+  globals: [{ nome_loja: 'loja_roupa' }],
+  sectors: [],
+  versions: [
+    {
+      version: '1.0',
+      globals: ['nome_loja'],
+      sectors: [],
+    },
+    {
+      version: '2.0',
+      globals: ['loja'],
+      sectors: [
+        {
+          name: 'teste',
+          tags: '',
+        },
+      ],
+    },
+  ],
+};
+
 const { t } = useI18n();
 
 const router = useRouter();
@@ -116,48 +146,60 @@ const formData = reactive<{
   };
 }>({});
 
+const currentVersion = solutionMock.versions.find(
+  (item) => item.version === solutionMock.version,
+);
+
 function close() {
   isOpen.value = false;
 }
 
 async function save() {
-  const sectors = Object.keys(props.solution.sectors)
-    .map((sectorName) => ({
-      key: sectorName,
-      props: {
-        value: currentValueField(`tags:sector-${sectorName}`)?.value,
-      },
-    }))
-    .reduce((previous, { key, props }) => ({ ...previous, [key]: props }), {});
+  if (props.solution && currentVersion) {
+    const sectors = Object.keys(currentVersion.sectors)
+      .map((sectorName) => ({
+        key: sectorName,
+        props: {
+          value: currentValueField(`tags:sector-${sectorName}`)?.value,
+        },
+      }))
+      .reduce(
+        (previous, { key, props }) => ({ ...previous, [key]: props }),
+        {},
+      );
 
-  const globals = Object.keys(props.solution.globals)
-    .map((globalName) => ({
-      key: globalName,
-      props: {
-        value: currentValueField(globalName)?.value,
-      },
-    }))
-    .reduce((previous, { key, props }) => ({ ...previous, [key]: props }), {});
+    const globals = Object.keys(currentVersion.globals)
+      .map((globalName) => ({
+        key: globalName,
+        props: {
+          value: currentValueField(globalName)?.value,
+        },
+      }))
+      .reduce(
+        (previous, { key, props }) => ({ ...previous, [key]: props }),
+        {},
+      );
 
-  try {
-    isSaving.value = true;
+    try {
+      isSaving.value = true;
 
-    await solutionsStore.integrateOrUpdate({
-      uuid: props.solution.uuid,
-      sectors,
-      globals,
-    });
+      await solutionsStore.integrateOrUpdate({
+        uuid: props.solution.uuid,
+        sectors,
+        globals,
+      });
 
-    close();
+      close();
 
-    alertStore.add({
-      type: 'success',
-      text: t('solutions.integrate.status.created'),
-    });
+      alertStore.add({
+        type: 'success',
+        text: t('solutions.integrate.status.created'),
+      });
 
-    router.push({ name: 'integrated-solutions' });
-  } finally {
-    isSaving.value = false;
+      router.push({ name: 'integrated-solutions' });
+    } finally {
+      isSaving.value = false;
+    }
   }
 }
 
@@ -166,16 +208,16 @@ const types = ['tags'];
 watch(
   isOpen,
   (isOpen) => {
-    if (isOpen && props.solution) {
-      Object.keys(props.solution.sectors).forEach((sectorName) => {
+    if (isOpen && currentVersion) {
+      Object.keys(currentVersion.sectors).forEach((sectorName) => {
         updateField(
           `tags:sector-${sectorName}`,
-          clone(props.solution.sectors[sectorName].value),
+          clone(currentVersion.sectors[sectorName].value),
         );
       });
 
       Object.keys(props.solution.globals).forEach((globalName) => {
-        updateField(globalName, props.solution.globals[globalName].value);
+        updateField(globalName, currentVersion.globals[globalName].value);
       });
     } else if (isOpen) {
       nextTick(close);
@@ -188,11 +230,11 @@ function currentValueField(field: string) {
   const type = fieldType(field);
   const label = fieldLabel(field);
 
-  if (type === 'text') {
-    return formData[label];
-  } else if (type === 'tags') {
+  if (type === 'text' || type === 'tags') {
     return formData[label];
   }
+
+  return { value: null };
 }
 
 function updateField(field: string, value: string | boolean | string[]) {
