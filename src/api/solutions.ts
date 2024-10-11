@@ -16,7 +16,7 @@ export default {
           disclaimer: string;
           documentation_url: string;
           globals?: string[];
-          initial_flow: {
+          initial_flow?: {
             name: string;
             uuid: string;
           }[];
@@ -24,8 +24,8 @@ export default {
           sectors: string[];
           versions?: {
             version: string;
-            globals: { [key: string]: { value: string } };
-            sectors: { [key: string]: { value: string[] } };
+            globals: string[];
+            sectors: string[];
           }[];
         }[];
       };
@@ -33,14 +33,118 @@ export default {
       `/v2/feature/${authStore.projectUuid}/?category=${category}`,
     );
 
-    return data.results.map((solution) => ({
+    const mockResult = {
+      results: [
+        {
+          name: 'feature 0001 implantation',
+          description: 'implantation',
+          disclaimer: 'vamo',
+          documentation_url: 'weni.by.vtex',
+          feature_uuid: '29c71115-c2fc-4a63-9f58-1893a73a7857',
+          globals: [
+            {
+              nome_loje: '013 cbjr 013',
+              nome_atendente: 'jackson choris',
+            },
+          ],
+          sectors: [
+            {
+              name: 'loja',
+              tags: ['vender'],
+            },
+            {
+              name: 'atendimento loja',
+              tags: ['SAF'],
+            },
+          ],
+          version: '1.0',
+          versions: [
+            {
+              version: '1.0',
+              globals: [
+                {
+                  nome_loje: '013 cbjr 013',
+                  nome_atendente: 'jackson choris',
+                },
+              ],
+              sectors: [
+                {
+                  name: 'loja',
+                  tags: [''],
+                },
+                {
+                  name: 'atendimento loja',
+                  tags: [''],
+                },
+              ],
+            },
+            {
+              version: '2.0',
+              globals: ['nome_fulana', 'nome_ciclana'],
+              sectors: [
+                {
+                  name: 'fulana',
+                  tags: [''],
+                },
+                {
+                  name: 'ciclana',
+                  tags: [''],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: 'feature 0003',
+          description: 'feature',
+          disclaimer: 'disclama',
+          documentation_url: 'google.com',
+          feature_uuid: '27e3434e-8c8d-4a10-a653-2a44ace5585e',
+          globals: [],
+          sectors: [],
+          version: '1.0',
+          versions: [
+            {
+              version: '1.0',
+              globals: [
+                'url_api_vtex',
+                'x_vtex_api_appkey',
+                'x_vtex_api_apptoken',
+                'utm_compras_no_chatbot',
+                'base_url_site',
+                'bloqueio_para_testes',
+                'chatgpt_token',
+                'razao_social',
+              ],
+              sectors: [],
+            },
+            {
+              version: '2.0',
+              globals: ['telefone', 'email'],
+              sectors: [
+                {
+                  name: 'inscrição',
+                  tags: [''],
+                },
+                {
+                  name: 'viagem',
+                  tags: [''],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    return mockResult.results.map((solution) => ({
       version: solution.version || '',
       uuid: solution.feature_uuid,
       title: solution.name,
       description: solution.description,
       tip: solution.disclaimer,
       documentation: solution.documentation_url,
-      flows: solution.initial_flow,
+      flows: solution?.initial_flow || [],
       globals: (solution.globals || []).reduce(
         (previous, current) => ({
           ...previous,

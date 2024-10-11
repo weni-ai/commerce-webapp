@@ -17,6 +17,7 @@
       />
     </section>
 
+    {{ solutionToIntegrate }}
     <ModalIntegrate
       v-if="solutionToIntegrate.solution"
       v-model="solutionToIntegrate.isOpen"
@@ -75,6 +76,11 @@ const solutionToIntegrate = reactive<{
     title: string;
     description: string;
     tip: string;
+    versions?: {
+      version?: string;
+      globals?: string[];
+      sectors?: string[];
+    }[];
   };
 }>({
   isOpen: false,

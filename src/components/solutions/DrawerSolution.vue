@@ -116,19 +116,14 @@ const formData = reactive<{
   };
 }>({});
 
-const currentVersion =
-  props.solution &&
-  props.solution.versions.find(
-    (item) => props.solution && item.version === props.solution.version,
-  );
 
 function close() {
   isOpen.value = false;
 }
 
 async function save() {
-  if (props.solution && currentVersion) {
-    const sectors = Object.keys(currentVersion.sectors)
+  if (props.solution) {
+    const sectors = Object.keys(props.solution.sectors)
       .map((sectorName) => ({
         key: sectorName,
         props: {
@@ -140,7 +135,7 @@ async function save() {
         {},
       );
 
-    const globals = Object.keys(currentVersion.globals)
+    const globals = Object.keys(props.solution.globals)
       .map((globalName) => ({
         key: globalName,
         props: {
@@ -180,16 +175,16 @@ const types = ['tags'];
 watch(
   isOpen,
   (isOpen) => {
-    if (isOpen && currentVersion) {
-      Object.keys(currentVersion.sectors).forEach((sectorName) => {
+    if (isOpen && props.solution) {
+      Object.keys(props.solution.sectors).forEach((sectorName) => {
         updateField(
           `tags:sector-${sectorName}`,
-          clone(currentVersion.sectors[sectorName].value),
+          clone(props.solution.sectors[sectorName].value),
         );
       });
 
-      Object.keys(currentVersion.globals).forEach((globalName) => {
-        updateField(globalName, currentVersion.globals[globalName].value);
+      Object.keys(props.solution.globals).forEach((globalName) => {
+        updateField(globalName, props.solution.globals[globalName].value);
       });
     } else if (isOpen) {
       nextTick(close);
