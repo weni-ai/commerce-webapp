@@ -100,36 +100,6 @@ const props = defineProps<{
   solution?: Solution;
 }>();
 
-const solutionMock = {
-  version: '1.0',
-  feature_uuid: '4d983f31-065b-45c8-84fd-276469750c38',
-  name: 'Carrinho Abandonado',
-  description:
-    'Recupere vendas lembrando clientes de itens esquecidos no carrinho.',
-  disclaimer:
-    'Com essa solução, é possível aumentar suas chances de conversão, mantendo seu cliente próximo e incentivando a conclusão do pedido.',
-  documentation_url: null,
-  globals: [{ nome_loja: 'loja_roupa' }],
-  sectors: [],
-  versions: [
-    {
-      version: '1.0',
-      globals: ['nome_loja'],
-      sectors: [],
-    },
-    {
-      version: '2.0',
-      globals: ['loja'],
-      sectors: [
-        {
-          name: 'teste',
-          tags: '',
-        },
-      ],
-    },
-  ],
-};
-
 const { t } = useI18n();
 
 const router = useRouter();
@@ -146,9 +116,11 @@ const formData = reactive<{
   };
 }>({});
 
-const currentVersion = solutionMock.versions.find(
-  (item) => item.version === solutionMock.version,
-);
+const currentVersion =
+  props.solution &&
+  props.solution.versions.find(
+    (item) => props.solution && item.version === props.solution.version,
+  );
 
 function close() {
   isOpen.value = false;
@@ -216,7 +188,7 @@ watch(
         );
       });
 
-      Object.keys(props.solution.globals).forEach((globalName) => {
+      Object.keys(currentVersion.globals).forEach((globalName) => {
         updateField(globalName, currentVersion.globals[globalName].value);
       });
     } else if (isOpen) {
@@ -230,11 +202,13 @@ function currentValueField(field: string) {
   const type = fieldType(field);
   const label = fieldLabel(field);
 
-  if (type === 'text' || type === 'tags') {
+  console.log('❤️', type, label, JSON.stringify(formData));
+
+  if (type === 'text') {
+    return formData[label];
+  } else if (type === 'tags') {
     return formData[label];
   }
-
-  return { value: null };
 }
 
 function updateField(field: string, value: string | boolean | string[]) {
