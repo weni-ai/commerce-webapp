@@ -41,56 +41,19 @@ export default {
           disclaimer: 'vamo',
           documentation_url: 'weni.by.vtex',
           feature_uuid: '29c71115-c2fc-4a63-9f58-1893a73a7857',
-          globals: [
-            {
-              nome_loje: '013 cbjr 013',
-              nome_atendente: 'jackson choris',
-            },
-          ],
-          sectors: [
-            {
-              name: 'loja',
-              tags: ['vender'],
-            },
-            {
-              name: 'atendimento loja',
-              tags: ['SAF'],
-            },
-          ],
+          globals: [],
+          sectors: [],
           version: '1.0',
           versions: [
             {
               version: '1.0',
-              globals: [
-                {
-                  nome_loje: '013 cbjr 013',
-                  nome_atendente: 'jackson choris',
-                },
-              ],
-              sectors: [
-                {
-                  name: 'loja',
-                  tags: [''],
-                },
-                {
-                  name: 'atendimento loja',
-                  tags: [''],
-                },
-              ],
+              globals: [],
+              sectors: [],
             },
             {
               version: '2.0',
               globals: ['nome_fulana', 'nome_ciclana'],
-              sectors: [
-                {
-                  name: 'fulana',
-                  tags: [''],
-                },
-                {
-                  name: 'ciclana',
-                  tags: [''],
-                },
-              ],
+              sectors: ['fulana', 'ciclana'],
             },
           ],
         },
@@ -100,7 +63,16 @@ export default {
           disclaimer: 'disclama',
           documentation_url: 'google.com',
           feature_uuid: '27e3434e-8c8d-4a10-a653-2a44ace5585e',
-          globals: [],
+          globals: [
+            'url_api_vtex',
+            'x_vtex_api_appkey',
+            'x_vtex_api_apptoken',
+            'utm_compras_no_chatbot',
+            'base_url_site',
+            'bloqueio_para_testes',
+            'chatgpt_token',
+            'razao_social',
+          ],
           sectors: [],
           version: '1.0',
           versions: [
@@ -121,16 +93,7 @@ export default {
             {
               version: '2.0',
               globals: ['telefone', 'email'],
-              sectors: [
-                {
-                  name: 'inscrição',
-                  tags: [''],
-                },
-                {
-                  name: 'viagem',
-                  tags: [''],
-                },
-              ],
+              sectors: ['alooo'],
             },
           ],
         },
