@@ -33,74 +33,7 @@ export default {
       `/v2/feature/${authStore.projectUuid}/?category=${category}`,
     );
 
-    const mockResult = {
-      results: [
-        {
-          name: 'feature 0001 implantation',
-          description: 'implantation',
-          disclaimer: 'vamo',
-          documentation_url: 'weni.by.vtex',
-          feature_uuid: '29c71115-c2fc-4a63-9f58-1893a73a7857',
-          globals: [],
-          sectors: [],
-          version: '2.0',
-          versions: [
-            {
-              version: '1.0',
-              globals: ['oieee', 'alooo'],
-              sectors: [],
-            },
-            {
-              version: '2.0',
-              globals: ['nome_fulana', 'nome_ciclana'],
-              sectors: ['fulana', 'ciclana'],
-            },
-          ],
-        },
-        {
-          name: 'feature 0003',
-          description: 'feature',
-          disclaimer: 'disclama',
-          documentation_url: 'google.com',
-          feature_uuid: '27e3434e-8c8d-4a10-a653-2a44ace5585e',
-          globals: [
-            'url_api_vtex',
-            'x_vtex_api_appkey',
-            'x_vtex_api_apptoken',
-            'utm_compras_no_chatbot',
-            'base_url_site',
-            'bloqueio_para_testes',
-            'chatgpt_token',
-            'razao_social',
-          ],
-          sectors: [],
-          version: '2.0',
-          versions: [
-            {
-              version: '1.0',
-              globals: [
-                'url_api_vtex',
-                'x_vtex_api_appkey',
-                'x_vtex_api_apptoken',
-                'utm_compras_no_chatbot',
-                'base_url_site',
-                'bloqueio_para_testes',
-                'chatgpt_token',
-                'razao_social',
-              ],
-              sectors: [],
-            },
-            {
-              version: '2.0',
-              globals: ['telefone', 'email'],
-              sectors: ['alooo'],
-            },
-          ],
-        },
-      ],
-    };
-
-    return mockResult.results.map((solution) => ({
+    return data.results.map((solution) => ({
       version: solution.version || '',
       uuid: solution.feature_uuid,
       title: solution.name,
@@ -127,14 +60,14 @@ export default {
         solution.versions &&
         solution.versions.map((version) => ({
           version: version.version,
-          globals: (solution.globals || []).reduce(
+          globals: (version.globals || []).reduce(
             (previous, current) => ({
               ...previous,
               [current]: { value: '' },
             }),
             {},
           ),
-          sectors: solution.sectors.reduce(
+          sectors: version.sectors.reduce(
             (previous, sectorName) => ({
               ...previous,
               [sectorName]: {

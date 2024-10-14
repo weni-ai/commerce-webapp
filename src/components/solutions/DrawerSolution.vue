@@ -48,9 +48,9 @@
           </UnnnicFormElement>
         </template>
 
-        <template v-if="solution?.sectors">
+        <template v-if="currentVersion.sectors">
           <UnnnicFormElement
-            v-for="(sector, index) in Object.keys(solution.sectors)"
+            v-for="(sector, index) in Object.keys(currentVersion.sectors)"
             :key="index"
             :label="`Tags do ${sector}`"
           >
@@ -87,13 +87,12 @@
 <script setup lang="ts">
 import Drawer from '@/components/Drawer.vue';
 import InputTags from '@/components/InputTags.vue';
-import { nextTick, onMounted, reactive, ref, watch } from 'vue';
+import { nextTick, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAlertStore } from '@/stores/Alert';
 import { useSolutionsStore } from '@/stores/Solutions';
 import { useRouter } from 'vue-router';
 import { clone } from 'lodash';
-import { idText } from 'typescript';
 
 const isOpen = defineModel<boolean>('isOpen', { required: true });
 
@@ -102,13 +101,6 @@ const props = defineProps<{
 }>();
 
 const currentVersion = ref<any>({});
-
-onMounted(() => {
-  console.log('aquii', props.solution);
-  currentVersion.value = props.solution?.versions.find(
-    (item) => item.version === props.solution?.version,
-  ) || { value: 'djehwdh' };
-});
 
 const { t } = useI18n();
 
