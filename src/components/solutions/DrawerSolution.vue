@@ -30,9 +30,9 @@
       </section>
 
       <section class="form-elements">
-        <template v-if="solution?.globals">
+        <template v-if="currentVersion.globals">
           <UnnnicFormElement
-            v-for="(field, index) in Object.keys(solution.globals)"
+            v-for="(field, index) in Object.keys(currentVersion.globals)"
             :key="index"
             :label="fieldLabel(field)"
           >
@@ -40,7 +40,7 @@
               v-if="fieldType(field) === 'text'"
               size="sm"
               :data-test="field"
-              :modelValue="currentValueField(field).value"
+              :modelValue="currentValueField(field)?.value"
               @update:model-value="
                 ($event: string) => updateField(field, $event)
               "
@@ -48,15 +48,15 @@
           </UnnnicFormElement>
         </template>
 
-        <template v-if="solution?.sectors">
+        <template v-if="currentVersion.sectors">
           <UnnnicFormElement
-            v-for="(sector, index) in Object.keys(solution.sectors)"
+            v-for="(sector, index) in Object.keys(currentVersion.sectors)"
             :key="index"
             :label="`Tags do ${sector}`"
           >
             <InputTags
               :data-test="sector"
-              :modelValue="currentValueField(`tags:sector-${sector}`).value"
+              :modelValue="currentValueField(`tags:sector-${sector}`)?.value"
               @update:model-value="updateField(`tags:sector-${sector}`, $event)"
             />
           </UnnnicFormElement>
@@ -100,6 +100,8 @@ const props = defineProps<{
   solution?: Solution;
 }>();
 
+const currentVersion = ref<any>({});
+
 const { t } = useI18n();
 
 const router = useRouter();
@@ -121,43 +123,51 @@ function close() {
 }
 
 async function save() {
-  const sectors = Object.keys(props.solution.sectors)
-    .map((sectorName) => ({
-      key: sectorName,
-      props: {
-        value: currentValueField(`tags:sector-${sectorName}`)?.value,
-      },
-    }))
-    .reduce((previous, { key, props }) => ({ ...previous, [key]: props }), {});
+  if (props.solution) {
+    const sectors = Object.keys(props.solution.sectors)
+      .map((sectorName) => ({
+        key: sectorName,
+        props: {
+          value: currentValueField(`tags:sector-${sectorName}`)?.value,
+        },
+      }))
+      .reduce(
+        (previous, { key, props }) => ({ ...previous, [key]: props }),
+        {},
+      );
 
-  const globals = Object.keys(props.solution.globals)
-    .map((globalName) => ({
-      key: globalName,
-      props: {
-        value: currentValueField(globalName)?.value,
-      },
-    }))
-    .reduce((previous, { key, props }) => ({ ...previous, [key]: props }), {});
+    const globals = Object.keys(props.solution.globals)
+      .map((globalName) => ({
+        key: globalName,
+        props: {
+          value: currentValueField(globalName)?.value,
+        },
+      }))
+      .reduce(
+        (previous, { key, props }) => ({ ...previous, [key]: props }),
+        {},
+      );
 
-  try {
-    isSaving.value = true;
+    try {
+      isSaving.value = true;
 
-    await solutionsStore.integrateOrUpdate({
-      uuid: props.solution.uuid,
-      sectors,
-      globals,
-    });
+      await solutionsStore.integrateOrUpdate({
+        uuid: props.solution.uuid,
+        sectors,
+        globals,
+      });
 
-    close();
+      close();
 
-    alertStore.add({
-      type: 'success',
-      text: t('solutions.integrate.status.created'),
-    });
+      alertStore.add({
+        type: 'success',
+        text: t('solutions.integrate.status.created'),
+      });
 
-    router.push({ name: 'integrated-solutions' });
-  } finally {
-    isSaving.value = false;
+      router.push({ name: 'integrated-solutions' });
+    } finally {
+      isSaving.value = false;
+    }
   }
 }
 
@@ -166,19 +176,33 @@ const types = ['tags'];
 watch(
   isOpen,
   (isOpen) => {
-    if (isOpen && props.solution) {
-      Object.keys(props.solution.sectors).forEach((sectorName) => {
+    if (isOpen && currentVersion) {
+      Object.keys(currentVersion.value.sectors).forEach((sectorName) => {
         updateField(
           `tags:sector-${sectorName}`,
-          clone(props.solution.sectors[sectorName].value),
+          clone(currentVersion.value.sectors[sectorName].value),
         );
       });
 
-      Object.keys(props.solution.globals).forEach((globalName) => {
-        updateField(globalName, props.solution.globals[globalName].value);
+      Object.keys(currentVersion.value.globals).forEach((globalName) => {
+        updateField(globalName, currentVersion.value.globals[globalName].value);
       });
     } else if (isOpen) {
       nextTick(close);
+    }
+  },
+  { immediate: true },
+);
+
+watch(
+  () => props.solution,
+  (newSolution) => {
+    if (newSolution) {
+      console.log('new solution', newSolution);
+      currentVersion.value =
+        newSolution.versions.find(
+          (item) => item.version === newSolution.version,
+        ) || {};
     }
   },
   { immediate: true },

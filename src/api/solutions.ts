@@ -10,17 +10,23 @@ export default {
     }: {
       data: {
         results: {
+          version?: string;
           feature_uuid: string;
           description: string;
           disclaimer: string;
           documentation_url: string;
           globals?: string[];
-          initial_flow: {
+          initial_flow?: {
             name: string;
             uuid: string;
           }[];
           name: string;
           sectors: string[];
+          versions?: {
+            version: string;
+            globals: string[];
+            sectors: string[];
+          }[];
         }[];
       };
     } = await request.$http.get(
@@ -28,6 +34,7 @@ export default {
     );
 
     return data.results.map((solution) => ({
+      version: solution.version || '',
       uuid: solution.feature_uuid,
       title: solution.name,
       description: solution.description,
@@ -49,6 +56,27 @@ export default {
         }),
         {},
       ),
+      versions:
+        solution.versions &&
+        solution.versions.map((version) => ({
+          version: version.version,
+          globals: (version.globals || []).reduce(
+            (previous, current) => ({
+              ...previous,
+              [current]: { value: '' },
+            }),
+            {},
+          ),
+          sectors: version.sectors.reduce(
+            (previous, sectorName) => ({
+              ...previous,
+              [sectorName]: {
+                value: [],
+              },
+            }),
+            {},
+          ),
+        })),
     }));
   },
 

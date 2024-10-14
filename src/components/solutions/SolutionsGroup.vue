@@ -75,6 +75,11 @@ const solutionToIntegrate = reactive<{
     title: string;
     description: string;
     tip: string;
+    versions?: {
+      version?: string;
+      globals?: string[];
+      sectors?: string[];
+    }[];
   };
 }>({
   isOpen: false,
@@ -126,7 +131,7 @@ function openIntegrateSolutionModal(solution: Solution) {
 function openDrawer(solution, values = {}) {
   drawerSolution.isOpen = true;
   drawerSolution.solution = solution;
-  drawerSolution.solution.values = values;
+  // drawerSolution.solution.values = values;
 }
 </script>
 
