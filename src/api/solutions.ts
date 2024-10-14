@@ -144,7 +144,6 @@ export default {
       description: solution.description,
       tip: solution.disclaimer,
       documentation: solution.documentation_url,
-      flows: solution?.initial_flow || [],
       globals: (solution.globals || []).reduce(
         (previous, current) => ({
           ...previous,
@@ -201,7 +200,7 @@ export default {
       })),
       globals_values: Object.keys(globals)
         .map((globalName) => ({ [globalName]: globals[globalName].value }))
-        .reduce((previous, current) => ({ ...previous, ...current })),
+        .reduce((previous, current) => ({ ...previous, ...current }), {}),
     });
   },
 
@@ -230,7 +229,7 @@ export default {
       })),
       globals_values: Object.keys(globals)
         .map((globalName) => ({ [globalName]: globals[globalName].value }))
-        .reduce((previous, current) => ({ ...previous, ...current })),
+        .reduce((previous, current) => ({ ...previous, ...current }), {}),
     });
   },
 
@@ -276,7 +275,6 @@ export default {
       description: solution.description,
       tip: solution.disclaimer,
       documentation: solution.documentation_url,
-      flows: solution.initial_flow,
       globals: (solution.globals || []).reduce(
         (previous, { name, value }) => ({ ...previous, [name]: { value } }),
         {},

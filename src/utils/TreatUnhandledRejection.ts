@@ -1,9 +1,9 @@
 import { i18n } from '@/locales';
 import { useAlertStore } from '@/stores/Alert';
-import { AxiosError } from 'axios';
+import { AxiosError, HttpStatusCode } from 'axios';
 import { get } from 'lodash';
 
-window.addEventListener('unhandledrejection', (event) => {
+export const onUnhandledRejection = (event: PromiseRejectionEvent) => {
   const alertStore = useAlertStore();
 
   if (event.reason instanceof AxiosError) {
@@ -11,12 +11,15 @@ window.addEventListener('unhandledrejection', (event) => {
 
     const statusCode = get(reason, 'response.status');
 
-    if (statusCode === 401) {
+    if (statusCode === HttpStatusCode.Unauthorized) {
       alertStore.add({
         type: 'error',
         text: i18n.global.t('common.errors.unauthorized'),
       });
-    } else if (statusCode >= 500 && statusCode < 600) {
+    } else if (
+      statusCode >= HttpStatusCode.InternalServerError &&
+      statusCode <= HttpStatusCode.NetworkAuthenticationRequired
+    ) {
       alertStore.add({
         type: 'error',
         text: i18n.global.t('common.errors.internal_server_error'),
@@ -28,4 +31,6 @@ window.addEventListener('unhandledrejection', (event) => {
       });
     }
   }
-});
+};
+
+window.addEventListener('unhandledrejection', onUnhandledRejection);
