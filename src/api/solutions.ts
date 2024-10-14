@@ -43,11 +43,11 @@ export default {
           feature_uuid: '29c71115-c2fc-4a63-9f58-1893a73a7857',
           globals: [],
           sectors: [],
-          version: '1.0',
+          version: '2.0',
           versions: [
             {
               version: '1.0',
-              globals: [],
+              globals: ['oieee', 'alooo'],
               sectors: [],
             },
             {
@@ -74,7 +74,7 @@ export default {
             'razao_social',
           ],
           sectors: [],
-          version: '1.0',
+          version: '2.0',
           versions: [
             {
               version: '1.0',
@@ -127,17 +127,19 @@ export default {
         solution.versions &&
         solution.versions.map((version) => ({
           version: version.version,
-          globals: Object.keys(version.globals).reduce(
-            (previous, key) => ({
+          globals: (solution.globals || []).reduce(
+            (previous, current) => ({
               ...previous,
-              [key]: { value: version.globals[key].value },
+              [current]: { value: '' },
             }),
             {},
           ),
-          sectors: Object.keys(version.sectors).reduce(
-            (previous, key) => ({
+          sectors: solution.sectors.reduce(
+            (previous, sectorName) => ({
               ...previous,
-              [key]: { value: version.sectors[key].value },
+              [sectorName]: {
+                value: [],
+              },
             }),
             {},
           ),

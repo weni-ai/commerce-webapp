@@ -17,7 +17,6 @@
       />
     </section>
 
-    {{ solutionToIntegrate }}
     <ModalIntegrate
       v-if="solutionToIntegrate.solution"
       v-model="solutionToIntegrate.isOpen"
@@ -132,7 +131,7 @@ function openIntegrateSolutionModal(solution: Solution) {
 function openDrawer(solution, values = {}) {
   drawerSolution.isOpen = true;
   drawerSolution.solution = solution;
-  drawerSolution.solution.values = values;
+  // drawerSolution.solution.values = values;
 }
 </script>
 
