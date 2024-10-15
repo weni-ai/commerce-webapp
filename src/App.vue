@@ -16,14 +16,10 @@
 </template>
 
 <script setup lang="ts">
-import { onErrorCaptured } from 'vue';
 import TestTranslations from '@/components/TestTranslations.vue';
 import { useAlertStore } from './stores/Alert';
 import { useAuthStore } from './stores/Auth';
 import { useI18n } from 'vue-i18n';
-import { onUnhandledRejection } from '@/utils/TreatUnhandledRejection';
-
-onErrorCaptured(onUnhandledRejection);
 
 const { locale } = useI18n();
 const alertStore = useAlertStore();
