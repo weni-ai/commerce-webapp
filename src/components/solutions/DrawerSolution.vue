@@ -3,6 +3,7 @@
     <template #default>
       <section
         v-if="solution?.documentation"
+        ref="aloo"
         class="help-box"
         data-test="help-box"
       >
@@ -176,7 +177,7 @@ const types = ['tags'];
 watch(
   isOpen,
   (isOpen) => {
-    if (isOpen && currentVersion) {
+    if (isOpen && currentVersion.value && currentVersion.value.sectors) {
       Object.keys(currentVersion.value.sectors).forEach((sectorName) => {
         updateField(
           `tags:sector-${sectorName}`,
