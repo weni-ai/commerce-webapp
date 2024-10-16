@@ -117,32 +117,31 @@ describe('DrawerSolution', () => {
           },
         },
       });
+    });
 
+    it('drawer should exists', () => {
       const drawer = wrapper.findComponent({ name: 'Drawer' });
       expect(drawer.exists()).toBeTruthy();
-      drawer.vm.$emit('update:isOpen', false);
     });
 
     it('shows the help box', () => {
       expect(wrapper.vm.isOpen).toBe(true);
-      expect(
-        wrapper.findComponent('[data-test="help-box"]').exists(),
-      ).toBeTruthy();
+      expect(wrapper.find('[data-test="help-box"]').exists()).toBeTruthy();
     });
 
     describe('when the user changes one global and one sector', () => {
-      // beforeEach(() => {
-      //   wrapper
-      //     .find('[data-test="var2"]')
-      //     .vm.$emit('update:modelValue', 'Value 2 Changed');
+      beforeEach(() => {
+        wrapper
+          .findComponent('[data-test="var2"]')
+          .vm.$emit('update:modelValue', 'Value 2 Changed');
 
-      //   wrapper
-      //     .findComponent('[data-test="sector2"]')
-      //     .vm.$emit('update:modelValue', [
-      //       'Value 5 Changed',
-      //       'Value 6 Changed',
-      //     ]);
-      // });
+        wrapper
+          .findComponent('[data-test="sector2"]')
+          .vm.$emit('update:modelValue', [
+            'Value 5 Changed',
+            'Value 6 Changed',
+          ]);
+      });
 
       describe('when the drawer closes', () => {
         beforeEach(() => {

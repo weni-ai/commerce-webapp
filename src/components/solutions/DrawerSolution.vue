@@ -177,33 +177,31 @@ const types = ['tags'];
 watch(
   isOpen,
   (isOpen) => {
-    if (isOpen && currentVersion.value && currentVersion.value.sectors) {
-      Object.keys(currentVersion.value.sectors).forEach((sectorName) => {
-        updateField(
-          `tags:sector-${sectorName}`,
-          clone(currentVersion.value.sectors[sectorName].value),
-        );
-      });
+    currentVersion.value =
+      props.solution?.versions.find(
+        (item) => item.version === props.solution?.version,
+      ) || {};
 
-      Object.keys(currentVersion.value.globals).forEach((globalName) => {
-        updateField(globalName, currentVersion.value.globals[globalName].value);
-      });
+    if (isOpen && props.solution) {
+      if (currentVersion.value.sectors) {
+        Object.keys(currentVersion.value.sectors).forEach((sectorName) => {
+          updateField(
+            `tags:sector-${sectorName}`,
+            clone(currentVersion.value.sectors[sectorName].value),
+          );
+        });
+      }
+
+      if (currentVersion.value.globals) {
+        Object.keys(currentVersion.value.globals).forEach((globalName) => {
+          updateField(
+            globalName,
+            currentVersion.value.globals[globalName].value,
+          );
+        });
+      }
     } else if (isOpen) {
       nextTick(close);
-    }
-  },
-  { immediate: true },
-);
-
-watch(
-  () => props.solution,
-  (newSolution) => {
-    if (newSolution) {
-      console.log('new solution', newSolution);
-      currentVersion.value =
-        newSolution.versions.find(
-          (item) => item.version === newSolution.version,
-        ) || {};
     }
   },
   { immediate: true },
