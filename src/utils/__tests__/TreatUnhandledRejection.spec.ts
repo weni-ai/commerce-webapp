@@ -53,4 +53,19 @@ describe('TreatUnhandledRejection', () => {
       });
     },
   );
+
+  describe('when error is Axios and it has a response error string', () => {
+    it('should alert the response error', () => {
+      onUnhandledRejection({
+        reason: new AxiosError('Error', AxiosError.ERR_BAD_RESPONSE, {}, null, {
+          data: { error: 'Error message' },
+        }),
+      });
+
+      expect(alertStore.add).toHaveBeenCalledWith({
+        type: 'error',
+        text: 'Error message',
+      });
+    });
+  });
 });

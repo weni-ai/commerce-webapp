@@ -1,4 +1,5 @@
 import './assets/main.css';
+import '@/utils/TreatUnhandledRejection';
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
@@ -8,8 +9,6 @@ import { SentryInit } from '@/utils/SentryInit';
 
 import App from './App.vue';
 import router from './router';
-
-import '@/utils/TreatUnhandledRejection';
 
 const app = createApp(App);
 
