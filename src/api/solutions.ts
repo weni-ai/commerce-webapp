@@ -1,6 +1,61 @@
 import request from './request';
 import { useAuthStore } from '@/stores/Auth';
 
+const transform = {
+  globals: {
+    from: (
+      globals: {
+        name: string;
+        value: string;
+      }[],
+    ): Solution['globals'] => {
+      return (globals || []).reduce(
+        (previous, { name, value }) => ({ ...previous, [name]: { value } }),
+        {},
+      );
+    },
+
+    to: (
+      globals: Solution['globals'],
+    ): {
+      [key: string]: string;
+    } => {
+      return Object.keys(globals)
+        .map((globalName) => ({ [globalName]: globals[globalName].value }))
+        .reduce((previous, current) => ({ ...previous, ...current }), {});
+    },
+  },
+
+  sectors: {
+    from: (
+      sectors: {
+        name: string;
+        tags: string[];
+        queues?: {
+          name: string;
+        }[];
+      }[],
+    ): Solution['sectors'] => {
+      return (sectors || []).reduce(
+        (previous, { name, tags }) => ({
+          ...previous,
+          [name]: {
+            value: tags.filter((tag) => tag),
+          },
+        }),
+        {},
+      );
+    },
+
+    to: (sectors: Solution['sectors']): { name: string; tags: string[] }[] => {
+      return Object.keys(sectors).map((sectorName) => ({
+        name: sectorName,
+        tags: sectors[sectorName].value,
+      }));
+    },
+  },
+};
+
 export default {
   async listSolutions({ category }: { category: string }): Promise<Solution[]> {
     const authStore = useAuthStore();
@@ -61,17 +116,41 @@ export default {
   } & Pick<Solution, 'sectors' | 'globals'>) {
     const authStore = useAuthStore();
 
-    await request.$http.post(`/v2/feature/${solutionUuid}/integrate/`, {
+    const { data } = await request.$http.post<{
+      status: number;
+      data: {
+        description: string;
+        disclaimer: string;
+        documentation_url: string;
+        feature_uuid: string;
+        feature_version: string;
+        globals: {
+          name: string;
+          value: string;
+        }[];
+        integrated_on: string;
+        name: string;
+        project: string;
+        sectors: {
+          name: string;
+          queues: {
+            name: string;
+          }[];
+          tags: string[];
+        }[];
+        user: string;
+      };
+    }>(`/v2/feature/${solutionUuid}/integrate/`, {
       project_uuid: authStore.projectUuid,
       action_base_flow: '',
-      sectors: Object.keys(sectors).map((sectorName) => ({
-        name: sectorName,
-        tags: sectors[sectorName].value,
-      })),
-      globals_values: Object.keys(globals)
-        .map((globalName) => ({ [globalName]: globals[globalName].value }))
-        .reduce((previous, current) => ({ ...previous, ...current }), {}),
+      sectors: transform.sectors.to(sectors),
+      globals_values: transform.globals.to(globals),
     });
+
+    return {
+      globals: transform.globals.from(data.data.globals),
+      sectors: transform.sectors.from(data.data.sectors),
+    };
   },
 
   async disintegrateSolution({ solutionUuid }: { solutionUuid: string }) {
@@ -93,13 +172,8 @@ export default {
 
     await request.$http.put(`/v2/feature/${solutionUuid}/integrate/`, {
       project_uuid: authStore.projectUuid,
-      sectors: Object.keys(sectors).map((sectorName) => ({
-        name: sectorName,
-        tags: sectors[sectorName].value,
-      })),
-      globals_values: Object.keys(globals)
-        .map((globalName) => ({ [globalName]: globals[globalName].value }))
-        .reduce((previous, current) => ({ ...previous, ...current }), {}),
+      sectors: transform.sectors.to(sectors),
+      globals_values: transform.globals.to(globals),
     });
   },
 
@@ -120,7 +194,7 @@ export default {
           description: string;
           disclaimer: string;
           documentation_url: string;
-          globals?: {
+          globals: {
             name: string;
             value: string;
           }[];
@@ -145,19 +219,8 @@ export default {
       description: solution.description,
       tip: solution.disclaimer,
       documentation: solution.documentation_url,
-      globals: (solution.globals || []).reduce(
-        (previous, { name, value }) => ({ ...previous, [name]: { value } }),
-        {},
-      ),
-      sectors: solution.sectors.reduce(
-        (previous, { name, tags }) => ({
-          ...previous,
-          [name]: {
-            value: tags.filter((tag) => tag),
-          },
-        }),
-        {},
-      ),
+      globals: transform.globals.from(solution.globals),
+      sectors: transform.sectors.from(solution.sectors),
     }));
   },
 };

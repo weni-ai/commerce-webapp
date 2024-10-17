@@ -169,7 +169,7 @@ export const useSolutionsStore = defineStore('solutions', () => {
       const search = findSolution({ uuid });
 
       if (search?.solution) {
-        await APISolutions.integrateSolution({
+        const response = await APISolutions.integrateSolution({
           solutionUuid: search?.solution.uuid,
           sectors,
           globals,
@@ -177,8 +177,8 @@ export const useSolutionsStore = defineStore('solutions', () => {
 
         search.integrationCorrespondent.add({
           ...search.solution,
-          sectors,
-          globals,
+          sectors: response.sectors,
+          globals: response.globals,
         });
       }
     }
