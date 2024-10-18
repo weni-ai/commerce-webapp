@@ -41,11 +41,11 @@ describe('TreatUnhandledRejection', () => {
   ])(
     'Axios status $status should alert $alertText',
     ({ status, alertText }) => {
-      onUnhandledRejection(
-        new AxiosError('Error', AxiosError.ERR_BAD_RESPONSE, {}, null, {
+      onUnhandledRejection({
+        reason: new AxiosError('Error', AxiosError.ERR_BAD_RESPONSE, {}, null, {
           status,
         }),
-      );
+      });
 
       expect(alertStore.add).toHaveBeenCalledWith({
         type: 'error',
@@ -53,4 +53,19 @@ describe('TreatUnhandledRejection', () => {
       });
     },
   );
+
+  describe('when error is Axios and it has a response error string', () => {
+    it('should alert the response error', () => {
+      onUnhandledRejection({
+        reason: new AxiosError('Error', AxiosError.ERR_BAD_RESPONSE, {}, null, {
+          data: { error: 'Error message' },
+        }),
+      });
+
+      expect(alertStore.add).toHaveBeenCalledWith({
+        type: 'error',
+        text: 'Error message',
+      });
+    });
+  });
 });
