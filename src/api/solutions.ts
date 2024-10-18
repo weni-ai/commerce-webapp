@@ -1,5 +1,17 @@
 import request from './request';
 import { useAuthStore } from '@/stores/Auth';
+import * as Sentry from '@sentry/vue';
+import { z } from 'zod';
+import { SolutionsIntegrateResponseScheme } from './schemes/SolutionsIntegrate';
+
+function checkZodScheme(scheme: z.AnyZodObject, data: unknown) {
+  const { error } = scheme.safeParse(data);
+
+  if (error) {
+    Sentry.captureException(error);
+    console.error(error);
+  }
+}
 
 const transform = {
   globals: {
@@ -144,36 +156,16 @@ export default {
   } & Pick<Solution, 'sectors' | 'globals'>) {
     const authStore = useAuthStore();
 
-    const { data } = await request.$http.post<{
-      status: number;
-      data: {
-        description: string;
-        disclaimer: string;
-        documentation_url: string;
-        feature_uuid: string;
-        feature_version: string;
-        globals: {
-          name: string;
-          value: string;
-        }[];
-        integrated_on: string;
-        name: string;
-        project: string;
-        sectors: {
-          name: string;
-          queues: {
-            name: string;
-          }[];
-          tags: string[];
-        }[];
-        user: string;
-      };
-    }>(`/v2/feature/${solutionUuid}/integrate/`, {
+    const { data } = await request.$http.post<
+      z.infer<typeof SolutionsIntegrateResponseScheme>
+    >(`/v2/feature/${solutionUuid}/integrate/`, {
       project_uuid: authStore.projectUuid,
       action_base_flow: '',
       sectors: transform.sectors.to(sectors),
       globals_values: transform.globals.to(globals),
     });
+
+    checkZodScheme(SolutionsIntegrateResponseScheme, data);
 
     return {
       globals: transform.globals.from(data.data.globals),
