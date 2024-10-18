@@ -16,13 +16,19 @@
 </template>
 
 <script setup lang="ts">
+import { onErrorCaptured } from 'vue';
 import TestTranslations from '@/components/TestTranslations.vue';
 import { useAlertStore } from './stores/Alert';
 import { useAuthStore } from './stores/Auth';
 import { useI18n } from 'vue-i18n';
+import { onUnhandledRejection } from '@/utils/TreatUnhandledRejection';
 
 const { locale } = useI18n();
 const alertStore = useAlertStore();
+
+onErrorCaptured((error) => {
+  onUnhandledRejection({ reason: error });
+});
 
 if (import.meta.env.DEV) {
   const authStore = useAuthStore();

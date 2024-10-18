@@ -38,5 +38,3 @@ export const onUnhandledRejection = ({
     }
   }
 };
-
-window.addEventListener('unhandledrejection', onUnhandledRejection);
