@@ -91,8 +91,8 @@ export default {
     return data.results.map((solution) => ({
       version: solution.version || '',
       uuid: solution.feature_uuid,
-      title: solution.name,
-      description: solution.description,
+      title: solution.name || '',
+      description: solution.description || '',
       tip: solution.disclaimer,
       documentation: solution.documentation_url,
       globals: (solution.globals || []).reduce(
@@ -102,7 +102,7 @@ export default {
         }),
         {},
       ),
-      sectors: solution.sectors.reduce(
+      sectors: (solution.sectors || []).reduce(
         (previous, sectorName) => ({
           ...previous,
           [sectorName]: {
