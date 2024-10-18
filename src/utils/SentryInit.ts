@@ -8,6 +8,7 @@ export const SentryInit = ({ app }: { app: ReturnType<typeof createApp> }) => {
       release: `${__APP_NAME__}@${__APP_VERSION__}`,
       app,
       dsn: getEnv('SENTRY_DSN'),
+      environment: getEnv('SENTRY_ENVIRONMENT'),
       integrations: [
         Sentry.browserTracingIntegration(),
         Sentry.replayIntegration(),
