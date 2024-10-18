@@ -8,13 +8,6 @@ export default {
     const authStore = useAuthStore();
 
     let baseURL = getEnv('API_BASE_URL');
-    const headers = {
-      ...(authStore.token
-        ? {
-            Authorization: `${authStore.token}`,
-          }
-        : {}),
-    };
 
     if (import.meta.env.DEV) {
       const replaceAPIBaseURL = localStorage.getItem('dev:replaceAPIBaseURL');
@@ -26,11 +19,9 @@ export default {
 
     const client = axios.create({
       baseURL,
-      headers,
-    });
-
-    client.interceptors.response.use(undefined, (error) => {
-      return Promise.reject(error);
+      headers: {
+        Authorization: authStore.token,
+      },
     });
 
     return client;
