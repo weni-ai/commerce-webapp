@@ -1,5 +1,25 @@
 import { z } from 'zod';
 
+export const SolutionsListResponseScheme = z.object({
+  results: z
+    .object({
+      feature_uuid: z.string(),
+      description: z.string(),
+      disclaimer: z.string(),
+      documentation_url: z.string().default(''),
+      globals: z.string().array().optional(),
+      initial_flow: z
+        .object({
+          name: z.string(),
+          uuid: z.string(),
+        })
+        .array(),
+      name: z.string(),
+      sectors: z.string().array(),
+    })
+    .array(),
+});
+
 export const SolutionsIntegrateResponseScheme = z.object({
   status: z.number(),
   data: z.object({
@@ -20,11 +40,6 @@ export const SolutionsIntegrateResponseScheme = z.object({
     sectors: z
       .object({
         name: z.string(),
-        queues: z
-          .object({
-            name: z.string(),
-          })
-          .array(),
         tags: z.string().array(),
       })
       .array(),

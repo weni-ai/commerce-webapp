@@ -2,7 +2,10 @@ import request from './request';
 import { useAuthStore } from '@/stores/Auth';
 import * as Sentry from '@sentry/vue';
 import { z } from 'zod';
-import { SolutionsIntegrateResponseScheme } from './schemes/SolutionsIntegrate';
+import {
+  SolutionsListResponseScheme,
+  SolutionsIntegrateResponseScheme,
+} from './schemes/SolutionsIntegrate';
 
 function checkZodScheme(scheme: z.AnyZodObject, data: unknown) {
   const { error } = scheme.safeParse(data);
@@ -72,27 +75,11 @@ export default {
   async listSolutions({ category }: { category: string }): Promise<Solution[]> {
     const authStore = useAuthStore();
 
-    const {
-      data,
-    }: {
-      data: {
-        results: {
-          feature_uuid: string;
-          description: string;
-          disclaimer: string;
-          documentation_url: string;
-          globals?: string[];
-          initial_flow: {
-            name: string;
-            uuid: string;
-          }[];
-          name: string;
-          sectors: string[];
-        }[];
-      };
-    } = await request.$http.get(
-      `/v2/feature/${authStore.projectUuid}/?category=${category}`,
-    );
+    const { data } = await request.$http.get<
+      z.infer<typeof SolutionsListResponseScheme>
+    >(`/v2/feature/${authStore.projectUuid}/?category=${category}`);
+
+    checkZodScheme(SolutionsListResponseScheme, data);
 
     return data.results.map((solution) => ({
       uuid: solution.feature_uuid,
