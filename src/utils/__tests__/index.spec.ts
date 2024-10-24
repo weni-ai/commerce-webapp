@@ -1,7 +1,8 @@
 import { createPinia, setActivePinia } from 'pinia';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { isSolutionIntegrated } from '..';
+import { checkZodScheme, isSolutionIntegrated } from '..';
 import { useSolutionsStore } from '@/stores/Solutions';
+import { z } from 'zod';
 
 const integratedLists: { [key in 'ACTIVE' | 'PASSIVE']: Solution[] } = {
   ACTIVE: [
@@ -43,6 +44,8 @@ const mocks = vi.hoisted(() => {
       ({ category }: { category: 'ACTIVE' | 'PASSIVE' }) =>
         new Promise((resolve) => resolve(integratedLists[category])),
     ),
+
+    SentryCaptureException: vi.fn(),
   };
 });
 
@@ -50,6 +53,10 @@ vi.mock('@/api/solutions.ts', () => ({
   default: {
     listIntegratedSolutions: mocks.listIntegratedSolutions,
   },
+}));
+
+vi.mock('@sentry/vue', () => ({
+  captureException: mocks.SentryCaptureException,
 }));
 
 describe('Index', () => {
@@ -76,5 +83,28 @@ describe('Index', () => {
     { uuid: '6cbfd5df-50ff-4adb-8900-082398f75d1e' },
   ])('solution $uuid should not be integrated', ({ uuid }) => {
     expect(isSolutionIntegrated({ uuid })).toBeFalsy();
+  });
+
+  describe('checkZodScheme', () => {
+    it('Sentry should capture on Zod scheme error', () => {
+      vi.spyOn(console, 'error').mockImplementationOnce(() => {});
+
+      checkZodScheme(z.object({ foo: z.number() }), { foo: 'bar' });
+
+      expect(mocks.SentryCaptureException).toBeCalledWith(
+        expect.objectContaining({
+          name: 'ZodError',
+          issues: [
+            {
+              code: 'invalid_type',
+              expected: 'number',
+              received: 'string',
+              path: ['foo'],
+              message: 'Expected number, received string',
+            },
+          ],
+        }),
+      );
+    });
   });
 });
