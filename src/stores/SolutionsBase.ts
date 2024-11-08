@@ -1,8 +1,9 @@
+import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import APISolutions from '@/api/solutions';
 import { cloneDeep } from 'lodash';
 
-export function SolutionsBase({
+function SolutionsBase({
   request,
   category,
 }: {
@@ -86,4 +87,39 @@ export function SolutionsBase({
     update,
     disintegrate,
   };
+}
+
+export function defineSolutionsStore({
+  name,
+  category,
+}: {
+  name: string;
+  category: 'ACTIVE' | 'PASSIVE';
+}) {
+  return defineStore(name, () => {
+    const integrateds = SolutionsBase({
+      request: APISolutions.listIntegratedSolutions,
+      category,
+    });
+
+    const all = SolutionsBase({
+      request: APISolutions.listSolutions,
+      category,
+    });
+
+    const available = computed(() =>
+      all.data.value.filter(
+        (solution) =>
+          !integrateds.data.value
+            .map(({ uuid }) => uuid)
+            .includes(solution.uuid),
+      ),
+    );
+
+    return {
+      all,
+      integrateds,
+      available,
+    };
+  });
 }

@@ -1,29 +1,6 @@
-import { defineStore } from 'pinia';
-import { SolutionsBase } from './SolutionsBase';
-import APISolutions from '@/api/solutions';
-import { computed } from 'vue';
+import { defineSolutionsStore } from './SolutionsBase';
 
-export const useSolutionsPassiveStore = defineStore('solutionsPassive', () => {
-  const integrateds = SolutionsBase({
-    request: APISolutions.listIntegratedSolutions,
-    category: 'PASSIVE',
-  });
-
-  const all = SolutionsBase({
-    request: APISolutions.listSolutions,
-    category: 'PASSIVE',
-  });
-
-  const available = computed(() =>
-    all.data.value.filter(
-      (solution) =>
-        !integrateds.data.value.map(({ uuid }) => uuid).includes(solution.uuid),
-    ),
-  );
-
-  return {
-    all,
-    integrateds,
-    available,
-  };
+export const useSolutionsPassiveStore = defineSolutionsStore({
+  name: 'solutionsPassive',
+  category: 'PASSIVE',
 });
