@@ -1,29 +1,33 @@
 <template>
   <SolutionsList
+    show="integrated"
     :isFirstLoading="
-      solutionsStore.integrated.activeNotifications.isFirstLoading ||
-      solutionsStore.integrated.passiveService.isFirstLoading
+      solutionsActiveStore.integrateds.isFirstLoading ||
+      solutionsPassiveStore.integrateds.isFirstLoading
     "
-    :activeNotifications="solutionsStore.integrated.activeNotifications.data"
-    :passiveService="solutionsStore.integrated.passiveService.data"
+    :activeNotifications="solutionsActiveStore"
+    :passiveService="solutionsPassiveStore"
   />
 </template>
 
 <script setup lang="ts">
 import SolutionsList from '@/components/solutions/SolutionsList.vue';
-import { useSolutionsStore } from '@/stores/Solutions';
 import { computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { useSolutionsActiveStore } from '@/stores/SolutionsActive';
+import { useSolutionsPassiveStore } from '@/stores/SolutionsPassive';
+
+const solutionsActiveStore = useSolutionsActiveStore();
+const solutionsPassiveStore = useSolutionsPassiveStore();
 
 const router = useRouter();
-const solutionsStore = useSolutionsStore();
 
 const isIntegratedSolutionsEmpty = computed(
   () =>
-    solutionsStore.integrated.activeNotifications.status === 'complete' &&
-    solutionsStore.integrated.passiveService.status === 'complete' &&
-    solutionsStore.integrated.activeNotifications.data.length === 0 &&
-    solutionsStore.integrated.passiveService.data.length === 0,
+    solutionsActiveStore.integrateds.status === 'complete' &&
+    solutionsPassiveStore.integrateds.status === 'complete' &&
+    solutionsActiveStore.integrateds.data.length === 0 &&
+    solutionsPassiveStore.integrateds.data.length === 0,
 );
 
 watch(

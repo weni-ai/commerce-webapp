@@ -41,20 +41,20 @@
 
 <script setup lang="ts">
 import { useAlertStore } from '@/stores/Alert';
-import { useSolutionsStore } from '@/stores/Solutions';
+import { useSolutionsManagerStore } from '@/stores/SolutionsManager';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const modelValue = defineModel<boolean>({ required: true });
 
 const props = defineProps<{
-  solution?: Pick<Solution, 'uuid' | 'title'>;
+  solution: Pick<Solution, 'uuid' | 'title'>;
 }>();
 
 const { t } = useI18n();
 
 const alertStore = useAlertStore();
-const solutionsStore = useSolutionsStore();
+const solutionsManagerStore = useSolutionsManagerStore();
 
 const isDisintegrating = ref(false);
 
@@ -65,7 +65,7 @@ function close() {
 async function disintegrate() {
   isDisintegrating.value = true;
 
-  solutionsStore
+  solutionsManagerStore
     .disintegrate({ uuid: props.solution.uuid })
     .then(() => {
       alertStore.add({

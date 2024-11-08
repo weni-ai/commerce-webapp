@@ -20,6 +20,7 @@
     :iconScheme="group.iconScheme"
     :solutions="group.solutions"
     :category="group.category"
+    :status="props.show"
     @disintegrate="openDisintegrate"
   />
 
@@ -36,11 +37,14 @@ import SolutionsGroup from '@/components/solutions/SolutionsGroup.vue';
 import SolutionsGroupSkeletonLoading from '@/components/solutions/SolutionsGroupSkeletonLoading.vue';
 import StateEmpty from '@/components/solutions/StateEmpty.vue';
 import ModalDisintegrate from '@/components/solutions/ModalDisintegrate.vue';
+import type { useSolutionsActiveStore } from '@/stores/SolutionsActive';
+import type { useSolutionsPassiveStore } from '@/stores/SolutionsPassive';
 
 const props = defineProps<{
+  show: 'available' | 'integrated';
   isFirstLoading: boolean;
-  activeNotifications: any;
-  passiveService: any;
+  activeNotifications: ReturnType<typeof useSolutionsActiveStore>;
+  passiveService: ReturnType<typeof useSolutionsPassiveStore>;
 }>();
 
 const { t } = useI18n();
@@ -62,14 +66,20 @@ const groups = computed(() => {
       title: t('active_notifications.title'),
       icon: 'business_messages',
       iconScheme: 'aux-orange-500',
-      solutions: props.activeNotifications,
+      solutions:
+        props.show === 'available'
+          ? props.activeNotifications.available
+          : props.activeNotifications.integrateds.data,
       category: 'activeNotifications',
     },
     {
       title: t('passive_service.title'),
       icon: 'forum',
       iconScheme: 'aux-purple-700',
-      solutions: props.passiveService,
+      solutions:
+        props.show === 'available'
+          ? props.passiveService.available
+          : props.passiveService.integrateds.data,
       category: 'passiveService',
     },
   ]
