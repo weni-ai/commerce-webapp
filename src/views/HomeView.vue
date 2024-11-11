@@ -29,20 +29,22 @@
 
 <script setup lang="ts">
 import Header from '@/components/Header.vue';
-import { useSolutionsStore } from '@/stores/Solutions';
 import { computed, onMounted } from 'vue';
+import { useSolutionsActiveStore } from '@/stores/SolutionsActive';
+import { useSolutionsPassiveStore } from '@/stores/SolutionsPassive';
 
-const solutionsStore = useSolutionsStore();
+const solutionsActiveStore = useSolutionsActiveStore();
+const solutionsPassiveStore = useSolutionsPassiveStore();
 
 onMounted(() => {
-  solutionsStore.integrated.activeNotifications.load();
-  solutionsStore.integrated.passiveService.load();
+  solutionsActiveStore.integrateds.load();
+  solutionsPassiveStore.integrateds.load();
 });
 
 const tabs = computed(() => {
   return ['discovery'].concat(
-    solutionsStore.integrated.activeNotifications.data.length ||
-      solutionsStore.integrated.passiveService.data.length
+    solutionsActiveStore.integrateds.data.length ||
+      solutionsPassiveStore.integrateds.data.length
       ? ['integrated-solutions']
       : [],
   );

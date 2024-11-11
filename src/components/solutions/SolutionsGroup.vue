@@ -21,11 +21,7 @@
       v-if="solutionToIntegrate.solution"
       v-model="solutionToIntegrate.isOpen"
       v-bind="solutionToIntegrate.solution"
-      :status="
-        isSolutionIntegrated(solutionToIntegrate.solution)
-          ? 'integrated'
-          : 'available'
-      "
+      :status="status"
       @integrate="openDrawer(solutionToIntegrate.solution)"
       @edit="
         openDrawer(
@@ -52,11 +48,11 @@ import Header from '@/components/Header.vue';
 import SolutionCard from '@/components/solutions/SolutionCard.vue';
 import ModalIntegrate from '@/components/solutions/ModalIntegrate.vue';
 import DrawerSolution from '@/components/solutions/DrawerSolution.vue';
-import { isSolutionIntegrated } from '@/utils';
 
 const { t } = useI18n();
 
-defineProps<{
+const props = defineProps<{
+  status: 'available' | 'integrated';
   title: string;
   icon: string;
   iconScheme: string;
@@ -90,7 +86,7 @@ const drawerSolution = reactive<{
 });
 
 function getOptionsBySolution(solution: Solution) {
-  if (isSolutionIntegrated(solution)) {
+  if (props.status === 'integrated') {
     return [
       {
         icon: 'visibility',

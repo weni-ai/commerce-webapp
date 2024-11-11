@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import ModalDisintegrate from '@/components/solutions/ModalDisintegrate.vue';
-import { useSolutionsStore } from '@/stores/Solutions';
+import { useSolutionsManagerStore } from '@/stores/SolutionsManager';
 import { setup } from '@/tests/utils';
 
 vi.mock('vue-i18n', () => ({
@@ -66,18 +66,18 @@ describe('ModalDisintegrate', () => {
   });
 
   describe('when the user clicks on confirm button', () => {
-    let solutionsStore: ReturnType<typeof useSolutionsStore>;
+    let solutionsManagerStore: ReturnType<typeof useSolutionsManagerStore>;
 
     beforeEach(() => {
-      solutionsStore = useSolutionsStore();
+      solutionsManagerStore = useSolutionsManagerStore();
 
-      solutionsStore.disintegrate.mockResolvedValue({});
+      solutionsManagerStore.disintegrate.mockResolvedValue({});
 
       wrapper.find('[data-test="confirm-button"]').trigger('click');
     });
 
     it('calls disintegrate function from solutions store', () => {
-      expect(solutionsStore.disintegrate).toHaveBeenCalledWith({
+      expect(solutionsManagerStore.disintegrate).toHaveBeenCalledWith({
         uuid: '1234',
       });
     });

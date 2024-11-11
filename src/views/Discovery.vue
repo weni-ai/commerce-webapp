@@ -1,24 +1,27 @@
 <template>
   <SolutionsList
+    show="available"
     :isFirstLoading="
-      solutionsStore.activeNotifications.isFirstLoading ||
-      solutionsStore.passiveService.isFirstLoading
+      solutionsActiveStore.all.isFirstLoading ||
+      solutionsPassiveStore.all.isFirstLoading
     "
-    :activeNotifications="solutionsStore.available.activeNotifications"
-    :passiveService="solutionsStore.available.passiveService"
+    :activeNotifications="solutionsActiveStore"
+    :passiveService="solutionsPassiveStore"
   />
 </template>
 
 <script setup lang="ts">
 import SolutionsList from '@/components/solutions/SolutionsList.vue';
-import { useSolutionsStore } from '@/stores/Solutions';
 import { onMounted } from 'vue';
+import { useSolutionsActiveStore } from '@/stores/SolutionsActive';
+import { useSolutionsPassiveStore } from '@/stores/SolutionsPassive';
 
-const solutionsStore = useSolutionsStore();
+const solutionsActiveStore = useSolutionsActiveStore();
+const solutionsPassiveStore = useSolutionsPassiveStore();
 
 onMounted(() => {
-  solutionsStore.activeNotifications.load();
-  solutionsStore.passiveService.load();
+  solutionsActiveStore.all.load();
+  solutionsPassiveStore.all.load();
 });
 </script>
 
