@@ -21,7 +21,30 @@
     "title": "Soluções configuradas"
   },
   "active_notifications": {
-    "title": "Notificações ativas"
+    "title": "Notificações ativas",
+    "solutions": [
+  {
+    "feature_uuid": "c1623331-6e29-43d3-b3fc-36251fe69f04",
+    "name": "Carrinho abandonado (ES)",
+    "description": "Solução para enviar uma mensagem de carrinho abandonado conectada ao Master Data VTEX. A mensagem pode ser personalizada (ES)"
+  },
+  {
+    "feature_uuid": "a5b433a7-ded4-4a2d-bac0-a138f3bf03e7",
+    "name": "Notificação de mudança de status do pedido (ES)",
+    "description": "Solução que notifica o cliente sempre que o status do pedido for alterado"
+  },
+  {
+    "feature_uuid": "4d983f31-065b-45c8-84fd-276469750c38",
+    "name": "Carrinho abandonado",
+    "description": "Recupere vendas lembrando os clientes de itens esquecidos em seus carrinhos."
+  },
+  {
+    "feature_uuid": "adc0315c-6549-4321-93c6-0557b55a6ca2",
+    "name": "Notificação de mudança de status do pedido",
+    "description": "Solução que notifica o cliente sempre que o status do pedido for alterado (BR)"
+  }
+]
+
   },
   "passive_service": {
     "title": "Atendimento passivo"
