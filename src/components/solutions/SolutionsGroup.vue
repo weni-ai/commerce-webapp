@@ -10,6 +10,7 @@
       <SolutionCard
         v-for="(solution, index) in solutions"
         :key="index"
+        :uuid="solution.uuid"
         :title="solution.title"
         :description="solution.description"
         :options="getOptionsBySolution(solution)"

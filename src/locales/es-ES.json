@@ -21,34 +21,10 @@
     "title": "Soluciones configuradas"
   },
   "active_notifications": {
-    "title": "Notificaciones activas",
-    "solutions": [
-  {
-    "feature_uuid": "c1623331-6e29-43d3-b3fc-36251fe69f04",
-    "name": "Carrito abandonado (ES)",
-    "description": "Solución para enviar un mensaje de carrito abandonado conectado a Master Data VTEX. El mensaje puede ser personalizado (ES)"
-  },
-  {
-    "feature_uuid": "a5b433a7-ded4-4a2d-bac0-a138f3bf03e7",
-    "name": "Notificación de cambio de estado del pedido (ES)",
-    "description": "Solución que notifica al cliente cada vez que cambia el estado del pedido"
-  },
-  {
-    "feature_uuid": "4d983f31-065b-45c8-84fd-276469750c38",
-    "name": "Carrito abandonado",
-    "description": "Recupere ventas recordando a los clientes los artículos olvidados en sus carritos."
-  },
-  {
-    "feature_uuid": "adc0315c-6549-4321-93c6-0557b55a6ca2",
-    "name": "Notificación de cambio de estado del pedido",
-    "description": "Solución que notifica al cliente cada vez que cambia el estado del pedido (BR)"
-  }
-]
-
+    "title": "Notificaciones activas"
   },
   "passive_service": {
-    "title": "Servicio pasivo",
-    
+    "title": "Servicio pasivo"
   },
   "solutions": {
     "states": {
@@ -110,6 +86,13 @@
       "title": "Recomiéndanos y gana",
       "description": "Anime a los clientes a recomendar su tienda a amigos y familiares con un programa de recompensas.",
       "tip": "Con esta solución, puede ampliar su base de clientes de forma orgánica y aumentar el compromiso, convirtiendo a los consumidores satisfechos en promotores activos de su marca."
+    },
+    "list": {
+    "a3d77bf9-1e06-44cb-a550-c691e6d44687": {
+        "name": "Notificación de cambio de estado del pedido",
+        "description": "Solución que notifica al cliente cada vez que cambia el estado del pedido (BR)"
     }
+}
+
   }
 }

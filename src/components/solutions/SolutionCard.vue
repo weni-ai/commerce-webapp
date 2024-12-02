@@ -2,7 +2,7 @@
   <section class="card">
     <header class="card__header">
       <h3 class="card__header__title">
-        {{ title }}
+        {{ solutionTitle }}
       </h3>
 
       <Popover
@@ -71,7 +71,7 @@
     </header>
 
     <section class="card__body">
-      {{ description }}
+      {{ solutionDescription }}
     </section>
   </section>
 </template>
@@ -79,8 +79,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Popover from '@/components/temp/Popover.vue';
+import { useI18n } from 'vue-i18n';
 
-defineProps<{
+const { t, te } = useI18n();
+
+const props = defineProps<{
+  uuid: string;
   title: string;
   description: string;
   options?: any[];
@@ -91,6 +95,14 @@ defineEmits<{
 }>();
 
 const isActivatedByClick = ref(false);
+
+const solutionTitle = te(`solutions.list.${props.uuid}.title`)
+  ? t(`solutions.list.${props.uuid}.title`)
+  : props.title;
+
+const solutionDescription = te(`solutions.list.${props.uuid}.description`)
+  ? t(`solutions.list.${props.uuid}.description`)
+  : props.description;
 
 function clickOption(option) {
   if (option.onClick) {
