@@ -9,7 +9,7 @@ WORKDIR /app
 
 RUN apk add --no-cache git
 
-COPY package.json package-lock ./
+COPY package.json package-lock.json ./
 
 RUN --mount=type=cache,target=/root/.npm NPM_CONFIG_CACHE=/root/.npm npm install
 
