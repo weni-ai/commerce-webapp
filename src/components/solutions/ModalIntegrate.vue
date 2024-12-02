@@ -16,7 +16,7 @@
           size="small"
           @click="emitValue"
         >
-          {{ $t('solutions.integrate.button_label') }}
+          {{ buttonProps.text }}
         </UnnnicButton>
 
         <section
@@ -46,7 +46,7 @@
     class="modal-integrate-solution-empty"
     :showCloseIcon="true"
     :hideSecondaryButton="true"
-    :primaryButtonProps="buttonProps()"
+    :primaryButtonProps="buttonProps"
     @primary-button-click="emitValue"
   >
     <section class="modal-integrate-solution__container">
@@ -74,6 +74,7 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const modelValue = defineModel<boolean>({ required: true });
@@ -91,7 +92,7 @@ const emit = defineEmits<{
   edit: [];
 }>();
 
-const buttonProps = () => {
+const buttonProps = computed(() => {
   if (props.status === 'available') {
     return {
       class: 'modal-integrate-solution__integrate-button',
@@ -108,10 +109,11 @@ const buttonProps = () => {
     };
   }
   return {};
-};
+});
 
 function emitValue() {
   modelValue.value = false;
+
   if (props.status === 'available') {
     emit('integrate');
   } else if (props.status === 'integrated') {

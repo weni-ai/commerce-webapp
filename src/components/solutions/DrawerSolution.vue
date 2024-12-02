@@ -90,7 +90,7 @@ import InputTags from '@/components/InputTags.vue';
 import { nextTick, reactive, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAlertStore } from '@/stores/Alert';
-import { useSolutionsStore } from '@/stores/Solutions';
+import { useSolutionsManagerStore } from '@/stores/SolutionsManager';
 import { useRouter } from 'vue-router';
 import { clone } from 'lodash';
 
@@ -106,7 +106,7 @@ const { t } = useI18n();
 
 const router = useRouter();
 const alertStore = useAlertStore();
-const solutionsStore = useSolutionsStore();
+const solutionsManagerStore = useSolutionsManagerStore();
 
 const isSaving = ref(false);
 
@@ -123,18 +123,18 @@ function close() {
 }
 
 async function save() {
-  if (props.solution) {
-    const sectors = Object.keys(props.solution.sectors)
-      .map((sectorName) => ({
-        key: sectorName,
-        props: {
-          value: currentValueField(`tags:sector-${sectorName}`)?.value,
-        },
-      }))
-      .reduce(
-        (previous, { key, props }) => ({ ...previous, [key]: props }),
-        {},
-      );
+  if (!props.solution) {
+    return;
+  }
+
+  const sectors = Object.keys(props.solution.sectors)
+    .map((sectorName) => ({
+      key: sectorName,
+      props: {
+        value: currentValueField(`tags:sector-${sectorName}`)?.value,
+      },
+    }))
+    .reduce((previous, { key, props }) => ({ ...previous, [key]: props }), {});
 
     const globals = Object.keys(props.solution.globals)
       .map((globalName) => ({
@@ -151,11 +151,11 @@ async function save() {
     try {
       isSaving.value = true;
 
-      await solutionsStore.integrateOrUpdate({
-        uuid: props.solution.uuid,
-        sectors,
-        globals,
-      });
+    await solutionsManagerStore.integrateOrUpdate({
+      ...props.solution,
+      sectors,
+      globals,
+    });
 
       close();
 

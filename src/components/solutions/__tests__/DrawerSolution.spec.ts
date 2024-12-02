@@ -1,7 +1,7 @@
 import { setup } from '@/tests/utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useAlertStore } from '@/stores/Alert';
-import { useSolutionsStore } from '@/stores/Solutions';
+import { useSolutionsManagerStore } from '@/stores/SolutionsManager';
 import DrawerSolution from '@/components/solutions/DrawerSolution.vue';
 
 vi.mock('vue-i18n', () => ({
@@ -149,37 +149,39 @@ describe('DrawerSolution', () => {
       });
 
       describe('when the user clicks on save button', () => {
-        let solutionsStore: ReturnType<typeof useSolutionsStore>;
+        let solutionsManagerStore: ReturnType<typeof useSolutionsManagerStore>;
 
         beforeEach(() => {
-          solutionsStore = useSolutionsStore();
-          solutionsStore.integrateOrUpdate.mockResolvedValue({});
+          solutionsManagerStore = useSolutionsManagerStore();
+          solutionsManagerStore.integrateOrUpdate.mockResolvedValue({});
 
           wrapper.find('[data-test="save-button"]').trigger('click');
         });
 
         it('calls integrateOrUpdate function from solutions store', () => {
-          expect(solutionsStore.integrateOrUpdate).toHaveBeenCalledWith({
-            uuid: '1234',
+          expect(solutionsManagerStore.integrateOrUpdate).toHaveBeenCalledWith(
+            expect.objectContaining({
+              uuid: '1234',
 
-            globals: {
-              var1: {
-                value: 'Value 1',
+              globals: {
+                var1: {
+                  value: 'Value 1',
+                },
+                var2: {
+                  value: 'Value 2 Changed',
+                },
               },
-              var2: {
-                value: 'Value 2 Changed',
-              },
-            },
 
-            sectors: {
-              sector1: {
-                value: ['Value 3', 'Value 4'],
+              sectors: {
+                sector1: {
+                  value: ['Value 3', 'Value 4'],
+                },
+                sector2: {
+                  value: ['Value 5 Changed', 'Value 6 Changed'],
+                },
               },
-              sector2: {
-                value: ['Value 5 Changed', 'Value 6 Changed'],
-              },
-            },
-          });
+            }),
+          );
         });
 
         itEmitsCloseEvent();

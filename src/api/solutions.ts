@@ -1,17 +1,10 @@
 import request from './request';
 import { useAuthStore } from '@/stores/Auth';
-import * as Sentry from '@sentry/vue';
 import { z } from 'zod';
+import { checkZodScheme } from '@/utils';
+import { SolutionsListResponseScheme } from './schemes/SolutionsList';
 import { SolutionsIntegrateResponseScheme } from './schemes/SolutionsIntegrate';
-
-function checkZodScheme(scheme: z.AnyZodObject, data: unknown) {
-  const { error } = scheme.safeParse(data);
-
-  if (error) {
-    Sentry.captureException(error);
-    console.error(error);
-  }
-}
+import { IntegratedSolutionsListResponseScheme } from './schemes/IntegratedSolutionsList';
 
 const transform = {
   globals: {
@@ -72,33 +65,11 @@ export default {
   async listSolutions({ category }: { category: string }): Promise<Solution[]> {
     const authStore = useAuthStore();
 
-    const {
-      data,
-    }: {
-      data: {
-        results: {
-          version?: string;
-          feature_uuid: string;
-          description: string;
-          disclaimer: string;
-          documentation_url: string;
-          globals?: string[];
-          initial_flow?: {
-            name: string;
-            uuid: string;
-          }[];
-          name: string;
-          sectors: string[];
-          versions?: {
-            version: string;
-            globals: string[];
-            sectors: string[];
-          }[];
-        }[];
-      };
-    } = await request.$http.get(
-      `/v2/feature/${authStore.projectUuid}/?category=${category}`,
-    );
+    const { data } = await request.$http.get<
+      z.infer<typeof SolutionsListResponseScheme>
+    >(`/v2/feature/${authStore.projectUuid}/?category=${category}`);
+
+    checkZodScheme(SolutionsListResponseScheme, data);
 
     return data.results.map((solution) => ({
       version: solution.version || '',
@@ -204,34 +175,11 @@ export default {
   }): Promise<Solution[]> {
     const authStore = useAuthStore();
 
-    const {
-      data,
-    }: {
-      data: {
-        results: {
-          feature_uuid: string;
-          name: string;
-          description: string;
-          disclaimer: string;
-          documentation_url: string;
-          globals: {
-            name: string;
-            value: string;
-          }[];
-          sectors: {
-            name: string;
-            tags: string[];
-          }[];
-          initial_flow: {
-            uuid: string;
-            name: string;
-            is_base_flow: boolean;
-          }[];
-        }[];
-      };
-    } = await request.$http.get(
-      `/v2/integrated_feature/${authStore.projectUuid}/?category=${category}`,
-    );
+    const { data } = await request.$http.get<
+      z.infer<typeof IntegratedSolutionsListResponseScheme>
+    >(`/v2/integrated_feature/${authStore.projectUuid}/?category=${category}`);
+
+    checkZodScheme(IntegratedSolutionsListResponseScheme, data);
 
     return data.results.map((solution) => ({
       uuid: solution.feature_uuid,
