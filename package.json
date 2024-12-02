@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "cross-env NODE_ENV=development rspack serve",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",
@@ -17,6 +17,7 @@
     "@sentry/vue": "^8.34.0-internal.0",
     "@weni/unnnic-system": "^2.11.1",
     "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
     "global": "^4.4.0",
     "lodash": "^4.17.21",
     "pinia": "^2.1.7",
