@@ -7,6 +7,13 @@ const PopoverStub = {
     '<section><slot name="default"></slot><slot name="children"></slot></section>',
 };
 
+vi.mock('vue-i18n', () => ({
+  useI18n: () => ({
+    t: (key: string) => key,
+    te: () => false,
+  }),
+}));
+
 describe('SolutionCard', () => {
   let wrapper: ReturnType<typeof setup>;
 
@@ -14,6 +21,7 @@ describe('SolutionCard', () => {
     beforeEach(() => {
       wrapper = setup(SolutionCard, {
         props: {
+          uuid: '123',
           title: 'Solution title',
           description: 'Solution description',
         },
