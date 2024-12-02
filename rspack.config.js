@@ -3,6 +3,9 @@ import { rspack } from '@rspack/core';
 import { VueLoaderPlugin } from 'vue-loader';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Target browsers, see: https://github.com/browserslist/browserslist
 const targets = ['chrome >= 87', 'edge >= 88', 'firefox >= 78', 'safari >= 14'];
@@ -71,6 +74,10 @@ export default defineConfig({
     new rspack.DefinePlugin({
       __VUE_OPTIONS_API__: true,
       __VUE_PROD_DEVTOOLS__: false,
+      'process.env': JSON.stringify(process.env),
+      'import.meta.env': JSON.stringify({
+        BASE_URL: process.env.BASE_URL || '/',
+      }),
     }),
     new VueLoaderPlugin(),
   ],
