@@ -86,8 +86,7 @@ export default defineConfig({
   plugins: [
     new rspack.HtmlRspackPlugin({
       template: './index.html',
-      scriptLoading: 'blocking',
-      inlineScripts: false,    
+      inject: 'body',
     }),
     new rspack.DefinePlugin({
       __VUE_OPTIONS_API__: true,
