@@ -1,5 +1,6 @@
 import { defineConfig } from '@rspack/cli';
 import { rspack } from '@rspack/core';
+import HtmlRspackPlugin from 'html-rspack-plugin';
 import { VueLoaderPlugin } from 'vue-loader';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
@@ -84,9 +85,14 @@ export default defineConfig({
     ],
   },
   plugins: [
-    new rspack.HtmlRspackPlugin({
+    new HtmlRspackPlugin({
       template: './index.html',
-      inject: 'body',
+      minify: {
+        removeComments: false, 
+        collapseWhitespace: true, 
+        keepClosingSlash: true,  
+        removeAttributeQuotes: false 
+      }
     }),
     new rspack.DefinePlugin({
       __VUE_OPTIONS_API__: true,
