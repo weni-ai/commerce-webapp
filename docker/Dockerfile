@@ -11,7 +11,7 @@ RUN apk add --no-cache git
 
 COPY package.json package-lock.json ./
 
-RUN npm install
+RUN --mount=type=cache,target=/root/.npm NPM_CONFIG_CACHE=/root/.npm npm install
 
 COPY . ./
 
