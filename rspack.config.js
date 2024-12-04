@@ -83,7 +83,7 @@ export default defineConfig({
         test: /\.(png|jpe?g|gif|svg|webp|avif)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/images/[name][hash][ext]',
+          filename: 'assets/images/[name]-[hash][ext]',
         },
       },
     ],
