@@ -32,6 +32,9 @@ export default defineConfig({
     path: path.resolve(__dirname, './dist'),
     publicPath: '/',
     clean: true,
+    filename: 'assets/js/[name].[contenthash].js',
+    chunkFilename: 'assets/js/[name].[contenthash].js',
+    assetModuleFilename: 'assets/[name].[hash][ext]',
   },
   entry: {
     main: './src/main.ts',
