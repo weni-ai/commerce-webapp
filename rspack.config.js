@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
 import path from 'path';
 import dotenv from 'dotenv';
+import pkg from './package.json' assert { type: 'json' };
 
 dotenv.config();
 
@@ -88,13 +89,15 @@ export default defineConfig({
     new HtmlRspackPlugin({
       template: './index.html',
       minify: {
-        removeComments: false, 
-        collapseWhitespace: true, 
-        keepClosingSlash: true,  
-        removeAttributeQuotes: false 
-      }
+        removeComments: false,
+        collapseWhitespace: true,
+        keepClosingSlash: true,
+        removeAttributeQuotes: false,
+      },
     }),
     new rspack.DefinePlugin({
+      __APP_NAME__: JSON.stringify(pkg.name),
+      __APP_VERSION__: JSON.stringify(pkg.version),
       __VUE_OPTIONS_API__: true,
       __VUE_PROD_DEVTOOLS__: false,
       'process.env': JSON.stringify(process.env),
