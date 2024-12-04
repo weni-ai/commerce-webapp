@@ -8,5 +8,4 @@
       "lib": [],
       "types": ["node", "jsdom"]
     }
-  }
-  
+}
