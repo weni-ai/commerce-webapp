@@ -5,11 +5,13 @@ import { z } from 'zod';
 const mocks = vi.hoisted(() => {
   return {
     SentryCaptureException: vi.fn(),
+    SentryCaptureMessage: vi.fn(),
   };
 });
 
 vi.mock('@sentry/vue', () => ({
   captureException: mocks.SentryCaptureException,
+  captureMessage: mocks.SentryCaptureMessage,
 }));
 
 describe('Index', () => {
