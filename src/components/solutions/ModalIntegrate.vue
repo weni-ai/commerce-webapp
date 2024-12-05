@@ -98,7 +98,7 @@ const emit = defineEmits<{
 }>();
 
 const buttonProps = computed(() => {
-  if (!isConfigurable(props.solution)) {
+  if (props.status === 'integrated' && !isConfigurable(props.solution)) {
     return {};
   }
 
