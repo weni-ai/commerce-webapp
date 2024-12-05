@@ -20,13 +20,6 @@ export const IntegratedSolutionsListResponseScheme = z.object({
           tags: z.string().array(),
         })
         .array(),
-      initial_flow: z
-        .object({
-          name: z.string(),
-          uuid: z.string(),
-          is_base_flow: z.boolean(),
-        })
-        .array(),
     })
     .array(),
 });
@@ -57,18 +50,6 @@ const success: z.infer<typeof IntegratedSolutionsListResponseScheme> = {
         {
           name: 'sector2',
           tags: ['sector value 3 updated', 'sector value 4'],
-        },
-      ],
-      initial_flow: [
-        {
-          uuid: '1',
-          name: 'flow 1',
-          is_base_flow: false,
-        },
-        {
-          uuid: '2',
-          name: 'flow 2',
-          is_base_flow: false,
         },
       ],
     },
