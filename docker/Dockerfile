@@ -9,13 +9,13 @@ WORKDIR /app
 
 RUN apk add --no-cache git
 
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
-RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn install
+RUN --mount=type=cache,target=/root/.npm NPM_CONFIG_CACHE=/root/.npm npm install
 
 COPY . ./
 
-RUN yarn build-only
+RUN npm run build-only
 
 FROM nginxinc/nginx-unprivileged:1.25-alpine
 
