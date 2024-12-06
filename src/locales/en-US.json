@@ -91,23 +91,55 @@
       "a3d77bf9-1e06-44cb-a550-c691e6d44687": {
         "title": "Order status change notification",
         "description": "Solution that notifies the customer whenever the order status changes (BR)"
-    },
-    "c1623331-6e29-43d3-b3fc-36251fe69f04": {
-      "title": "Abandoned cart (ES)",
-      "description": "Solution to send an abandoned cart message connected to Master data VTEX. Message can be personalized (ES)"
-    },
-    "a5b433a7-ded4-4a2d-bac0-a138f3bf03e7": {
-      "title": "Order status change notification (ES)",
-      "description": "Solution that notifies the customer whenever the order status changes"
-    },
-    "4d983f31-065b-45c8-84fd-276469750c38": {
-      "title": "Abandoned cart",
-      "description": "Recover sales by reminding customers of forgotten items in their cart."
-    },
-    "adc0315c-6549-4321-93c6-0557b55a6ca2": {
-      "title": "Order status change notification",
-      "description": "Solution that notifies the customer whenever the order status changes (BR)"
+      },
+      "c1623331-6e29-43d3-b3fc-36251fe69f04": {
+        "title": "Abandoned cart (ES)",
+        "description": "Solution to send an abandoned cart message connected to Master data VTEX. Message can be personalized (ES)"
+      },
+      "a5b433a7-ded4-4a2d-bac0-a138f3bf03e7": {
+        "title": "Order status change notification (ES)",
+        "description": "Solution that notifies the customer whenever the order status changes"
+      },
+      "4d983f31-065b-45c8-84fd-276469750c38": {
+        "title": "Abandoned cart",
+        "description": "Recover sales by reminding customers of forgotten items in their cart."
+      },
+      "adc0315c-6549-4321-93c6-0557b55a6ca2": {
+        "title": "Order status change notification",
+        "description": "Solution that notifies the customer whenever the order status changes (BR)"
+      },
+      "8b4ebc82-0c3b-483e-a358-2703dd3692f7": {
+        "title": "Menu with initial greeting",
+        "description": "Offer an interactive and customized menu to your customers to direct service"
+      },
+      "0b391234-0d5a-48f5-bc6d-8ea9f5e5a9de": {
+        "title": "Order status change notification",
+        "description": "Solution that notifies the customer whenever the order status changes"
+      },
+      "b2a12c84-6fbb-43d1-9444-31c8bfa734e8": {
+        "title": "Abandoned cart notification",
+        "description": "Remind customers about forgotten items in their cart to recover sales"
+      },
+      "d9e74f8b-8a73-49f1-bc93-c2e9c80faabb": {
+        "title": "Abandoned cart reminder",
+        "description": "Recover sales by reminding customers of items left in their cart"
+      },
+      "e3b42d7f-d6cc-4e73-a85f-7c58d3b109a7": {
+        "title": "Order updated notification",
+        "description": "Notify customers whenever there are changes to their order"
+      },
+      "fb084ab9-e5d0-4bae-bf9f-0dadfca63ed4": {
+        "title": "Unsubscribing from messages (ES)",
+        "description": "Solution that allows the customer to configure whether or not they wish to receive active marketing or utility messages on Whatsapp (ES)"
+      },
+      "6e38bfb1-a0e1-4dc7-95b3-b14ebc94d1a5": {
+        "title": "Order Status (BR)",
+        "description": "Solution for the customer, whenever they wish, to request the status of their order. In this solution, the customer can receive status, invoice, tracking URL and tracking of the order if this information is included in VTEX (BR)"
+      },
+      "f95cccbc-82f6-47ab-8294-7ec3ab292766": {
+        "title": "Closing (BR)",
+        "description": "The agent builder ends the conversation whenever the customer wants to end the service (BR)"
+      }
     }
-   }
   }
 }

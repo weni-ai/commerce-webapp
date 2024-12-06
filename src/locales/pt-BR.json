@@ -22,7 +22,6 @@
   },
   "active_notifications": {
     "title": "Notificações ativas"
-
   },
   "passive_service": {
     "title": "Atendimento passivo"
@@ -89,26 +88,58 @@
       "tip": "Com essa solução, é possível ampliar a base de clientes de forma orgânica e aumentar o engajamento, transformando consumidores satisfeitos em promotores ativos da sua marca."
     },
     "list": {
-  "a3d77bf9-1e06-44cb-a550-c691e6d44687": {
-    "title": "Notificação de mudança de status do pedido",
-    "description": "Solução que notifica o cliente sempre que o status do pedido mudar (BR)"
-  },
-  "c1623331-6e29-43d3-b3fc-36251fe69f04": {
-    "title": "Carrinho abandonado (ES)",
-    "description": "Solução para enviar uma mensagem de carrinho abandonado conectada aos dados mestres da VTEX. A mensagem pode ser personalizada (ES)"
-  },
-  "a5b433a7-ded4-4a2d-bac0-a138f3bf03e7": {
-    "title": "Notificação de mudança de status do pedido (ES)",
-    "description": "Solução que notifica o cliente sempre que o status do pedido mudar"
-  },
-  "4d983f31-065b-45c8-84fd-276469750c38": {
-    "title": "Carrinho abandonado",
-    "description": "Recupere vendas lembrando os clientes sobre itens esquecidos no carrinho."
-  },
-  "adc0315c-6549-4321-93c6-0557b55a6ca2": {
-    "title": "Notificação de mudança de status do pedido",
-    "description": "Solução que notifica o cliente sempre que o status do pedido mudar (BR)"
-  }
-}
+      "a3d77bf9-1e06-44cb-a550-c691e6d44687": {
+        "title": "Notificação de mudança de status do pedido",
+        "description": "Solução que notifica o cliente sempre que o status do pedido for alterado (BR)"
+      },
+      "c1623331-6e29-43d3-b3fc-36251fe69f04": {
+        "title": "Carrinho abandonado (ES)",
+        "description": "Solução para enviar uma mensagem de carrinho abandonado conectada aos dados mestres da VTEX. A mensagem pode ser personalizada (ES)"
+      },
+      "a5b433a7-ded4-4a2d-bac0-a138f3bf03e7": {
+        "title": "Notificação de mudança de status do pedido (ES)",
+        "description": "Solução que notifica o cliente sempre que o status do pedido for alterado"
+      },
+      "4d983f31-065b-45c8-84fd-276469750c38": {
+        "title": "Carrinho abandonado",
+        "description": "Recupere vendas lembrando os clientes dos itens esquecidos no carrinho."
+      },
+      "adc0315c-6549-4321-93c6-0557b55a6ca2": {
+        "title": "Notificação de mudança de status do pedido",
+        "description": "Solução que notifica o cliente sempre que o status do pedido for alterado (BR)"
+      },
+      "8b4ebc82-0c3b-483e-a358-2703dd3692f7": {
+        "title": "Menu com saudação inicial",
+        "description": "Ofereça um menu interativo e personalizado aos seus clientes para direcionar o atendimento"
+      },
+      "0b391234-0d5a-48f5-bc6d-8ea9f5e5a9de": {
+        "title": "Notificação de mudança de status do pedido",
+        "description": "Solução que notifica o cliente sempre que o status do pedido for alterado"
+      },
+      "b2a12c84-6fbb-43d1-9444-31c8bfa734e8": {
+        "title": "Notificação de carrinho abandonado",
+        "description": "Lembre os clientes sobre itens esquecidos no carrinho para recuperar vendas"
+      },
+      "d9e74f8b-8a73-49f1-bc93-c2e9c80faabb": {
+        "title": "Lembrete de carrinho abandonado",
+        "description": "Recupere vendas lembrando os clientes dos itens deixados no carrinho"
+      },
+      "e3b42d7f-d6cc-4e73-a85f-7c58d3b109a7": {
+        "title": "Notificação de atualização do pedido",
+        "description": "Notifique os clientes sempre que houver mudanças em seus pedidos"
+      },
+      "fb084ab9-e5d0-4bae-bf9f-0dadfca63ed4": {
+        "title": "Cancelamento de mensagens (ES)",
+        "description": "Solução que permite ao cliente configurar se deseja ou não receber mensagens de marketing ativo ou mensagens utilitárias no Whatsapp (ES)"
+      },
+      "6e38bfb1-a0e1-4dc7-95b3-b14ebc94d1a5": {
+        "title": "Status do pedido (BR)",
+        "description": "Solução para o cliente, sempre que desejar, solicitar o status do seu pedido. Nessa solução, o cliente pode receber status, fatura, URL de rastreamento e rastreamento do pedido, se essas informações estiverem incluídas no VTEX (BR)"
+      },
+      "f95cccbc-82f6-47ab-8294-7ec3ab292766": {
+        "title": "Encerramento (BR)",
+        "description": "O construtor de agentes encerra a conversa sempre que o cliente deseja terminar o atendimento (BR)"
+      }
+    }
   }
 }

@@ -88,26 +88,58 @@
       "tip": "Con esta solución, puede ampliar su base de clientes de forma orgánica y aumentar el compromiso, convirtiendo a los consumidores satisfechos en promotores activos de su marca."
     },
     "list": {
-  "a3d77bf9-1e06-44cb-a550-c691e6d44687": {
-    "title": "Notificación de cambio de estado del pedido",
-    "description": "Solución que notifica al cliente cada vez que cambia el estado del pedido (BR)"
-  },
-  "c1623331-6e29-43d3-b3fc-36251fe69f04": {
-    "title": "Carrito abandonado (ES)",
-    "description": "Solución para enviar un mensaje de carrito abandonado conectado a los datos maestros de VTEX. El mensaje puede ser personalizado (ES)"
-  },
-  "a5b433a7-ded4-4a2d-bac0-a138f3bf03e7": {
-    "title": "Notificación de cambio de estado del pedido (ES)",
-    "description": "Solución que notifica al cliente cada vez que cambia el estado del pedido"
-  },
-  "4d983f31-065b-45c8-84fd-276469750c38": {
-    "title": "Carrito abandonado",
-    "description": "Recupere ventas recordando a los clientes los artículos olvidados en su carrito."
-  },
-  "adc0315c-6549-4321-93c6-0557b55a6ca2": {
-    "title": "Notificación de cambio de estado del pedido",
-    "description": "Solución que notifica al cliente cada vez que cambia el estado del pedido (BR)"
-  }
-}
+      "a3d77bf9-1e06-44cb-a550-c691e6d44687": {
+        "title": "Notificación de cambio de estado del pedido",
+        "description": "Solución que notifica al cliente siempre que el estado del pedido cambie (BR)"
+      },
+      "c1623331-6e29-43d3-b3fc-36251fe69f04": {
+        "title": "Carrito abandonado (ES)",
+        "description": "Solución para enviar un mensaje de carrito abandonado conectado a los datos maestros de VTEX. El mensaje puede ser personalizado (ES)"
+      },
+      "a5b433a7-ded4-4a2d-bac0-a138f3bf03e7": {
+        "title": "Notificación de cambio de estado del pedido (ES)",
+        "description": "Solución que notifica al cliente siempre que el estado del pedido cambie"
+      },
+      "4d983f31-065b-45c8-84fd-276469750c38": {
+        "title": "Carrito abandonado",
+        "description": "Recupera ventas recordando a los clientes los artículos olvidados en su carrito."
+      },
+      "adc0315c-6549-4321-93c6-0557b55a6ca2": {
+        "title": "Notificación de cambio de estado del pedido",
+        "description": "Solución que notifica al cliente siempre que el estado del pedido cambie (BR)"
+      },
+      "8b4ebc82-0c3b-483e-a358-2703dd3692f7": {
+        "title": "Menú con saludo inicial",
+        "description": "Ofrece un menú interactivo y personalizado a tus clientes para dirigir el servicio"
+      },
+      "0b391234-0d5a-48f5-bc6d-8ea9f5e5a9de": {
+        "title": "Notificación de cambio de estado del pedido",
+        "description": "Solución que notifica al cliente siempre que el estado del pedido cambie"
+      },
+      "b2a12c84-6fbb-43d1-9444-31c8bfa734e8": {
+        "title": "Notificación de carrito abandonado",
+        "description": "Recuerda a los clientes sobre los artículos olvidados en su carrito para recuperar ventas"
+      },
+      "d9e74f8b-8a73-49f1-bc93-c2e9c80faabb": {
+        "title": "Recordatorio de carrito abandonado",
+        "description": "Recupera ventas recordando a los clientes los artículos que dejaron en su carrito"
+      },
+      "e3b42d7f-d6cc-4e73-a85f-7c58d3b109a7": {
+        "title": "Notificación de actualización del pedido",
+        "description": "Notifica a los clientes siempre que haya cambios en su pedido"
+      },
+      "fb084ab9-e5d0-4bae-bf9f-0dadfca63ed4": {
+        "title": "Darse de baja de mensajes (ES)",
+        "description": "Solución que permite al cliente configurar si desea o no recibir mensajes de marketing activo o mensajes utilitarios en Whatsapp (ES)"
+      },
+      "6e38bfb1-a0e1-4dc7-95b3-b14ebc94d1a5": {
+        "title": "Estado del pedido (BR)",
+        "description": "Solución para el cliente, cuando lo desee, solicitar el estado de su pedido. En esta solución, el cliente puede recibir estado, factura, URL de seguimiento y seguimiento del pedido si esta información está incluida en VTEX (BR)"
+      },
+      "f95cccbc-82f6-47ab-8294-7ec3ab292766": {
+        "title": "Cierre (BR)",
+        "description": "El creador de agentes finaliza la conversación siempre que el cliente quiera terminar el servicio (BR)"
+      }
+    }
   }
 }
