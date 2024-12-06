@@ -86,6 +86,13 @@
       "title": "Indique e ganhe",
       "description": "Incentive os clientes a recomendar sua loja para amigos e familiares com um programa de recompensas.",
       "tip": "Com essa solução, é possível ampliar a base de clientes de forma orgânica e aumentar o engajamento, transformando consumidores satisfeitos em promotores ativos da sua marca."
+    },
+    "order_status_change_notification": {
+      "title": "Notificação de mudança de status do pedido",
+      "description": "Solution that notifies the customer whenever the order status changes"
+    },
+    "menu_with_initial_greeting": {
+      "title": "Menu com saudação inicial"
     }
   }
 }

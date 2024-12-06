@@ -86,6 +86,13 @@
       "title": "Recomiéndanos y gana",
       "description": "Anime a los clientes a recomendar su tienda a amigos y familiares con un programa de recompensas.",
       "tip": "Con esta solución, puede ampliar su base de clientes de forma orgánica y aumentar el compromiso, convirtiendo a los consumidores satisfechos en promotores activos de su marca."
+    },
+    "order_status_change_notification": {
+      "title": "Order status change notification",
+      "description": "Solution that notifies the customer whenever the order status changes"
+    },
+    "menu_with_initial_greeting": {
+      "title": "Menu with initial greeting"
     }
   }
 }
