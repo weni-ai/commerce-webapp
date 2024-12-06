@@ -8,12 +8,6 @@ export const SolutionsListResponseScheme = z.object({
       disclaimer: z.string(),
       documentation_url: z.string().default(''),
       globals: z.string().array().optional(),
-      initial_flow: z
-        .object({
-          name: z.string(),
-          uuid: z.string(),
-        })
-        .array(),
       name: z.string(),
       sectors: z.string().array(),
     })
@@ -30,10 +24,6 @@ const success: z.infer<typeof SolutionsListResponseScheme> = {
       documentation_url: 'Documentation URL 1',
       globals: ['global1', 'global2'],
       sectors: ['sector1', 'sector2'],
-      initial_flow: [
-        { name: 'flow 1', uuid: '1' },
-        { name: 'flow 2', uuid: '2' },
-      ],
     },
   ],
 };

@@ -16,6 +16,14 @@ describe('ModalIntegrate', () => {
       wrapper = setup(ModalIntegrate, {
         props: {
           modelValue: true,
+          solution: {
+            globals: [
+              {
+                global1: { value: 'value for global1' },
+              },
+            ],
+            sectors: [],
+          },
           description: 'Solution description',
           tip: 'Solution tip',
           status: 'available',
@@ -71,11 +79,6 @@ describe('ModalIntegrate', () => {
         wrapper.find('[data-test="integrate-button"]').trigger('click');
       });
 
-      it('emits close event', () => {
-        expect(wrapper.emitted('update:modelValue')).toHaveLength(1);
-        expect(wrapper.emitted('update:modelValue')).toContainEqual([false]);
-      });
-
       it('emits integrate event', () => {
         expect(wrapper.emitted('integrate')).toHaveLength(1);
         expect(wrapper.emitted('integrate')).toContainEqual([]);
@@ -84,34 +87,60 @@ describe('ModalIntegrate', () => {
   });
 
   describe('when the status is integrated', () => {
-    beforeEach(() => {
-      wrapper = setup(ModalIntegrate, {
-        props: {
-          modelValue: true,
-          description: 'Solution description',
-          tip: 'Solution tip',
-          status: 'integrated',
-        },
-      });
-    });
-
-    it('renders edit button', () => {
-      expect(wrapper.find('[data-test="edit-button"]').exists()).toBeTruthy();
-    });
-
-    describe('when the user clicks on the integrate button', () => {
+    describe('when it is configurable', () => {
       beforeEach(() => {
-        wrapper.find('[data-test="edit-button"]').trigger('click');
+        wrapper = setup(ModalIntegrate, {
+          props: {
+            modelValue: true,
+            solution: {
+              globals: [
+                {
+                  global1: { value: 'value for global1' },
+                },
+              ],
+              sectors: [],
+            },
+            description: 'Solution description',
+            tip: 'Solution tip',
+            status: 'integrated',
+          },
+        });
       });
 
-      it('emits close event', () => {
-        expect(wrapper.emitted('update:modelValue')).toHaveLength(1);
-        expect(wrapper.emitted('update:modelValue')).toContainEqual([false]);
+      it('renders edit button', () => {
+        expect(wrapper.find('[data-test="edit-button"]').exists()).toBeTruthy();
       });
 
-      it('emits edit event', () => {
-        expect(wrapper.emitted('edit')).toHaveLength(1);
-        expect(wrapper.emitted('edit')).toContainEqual([]);
+      describe('when the user clicks on the integrate button', () => {
+        beforeEach(() => {
+          wrapper.find('[data-test="edit-button"]').trigger('click');
+        });
+
+        it('emits edit event', () => {
+          expect(wrapper.emitted('edit')).toHaveLength(1);
+          expect(wrapper.emitted('edit')).toContainEqual([]);
+        });
+      });
+    });
+
+    describe('when it is not configurable', () => {
+      beforeEach(() => {
+        wrapper = setup(ModalIntegrate, {
+          props: {
+            modelValue: true,
+            solution: {
+              globals: [],
+              sectors: [],
+            },
+            description: 'Solution description',
+            tip: 'Solution tip',
+            status: 'integrated',
+          },
+        });
+      });
+
+      it('should not render edit button', () => {
+        expect(wrapper.find('[data-test="edit-button"]').exists()).toBeFalsy();
       });
     });
   });
@@ -121,6 +150,10 @@ describe('ModalIntegrate', () => {
       wrapper = setup(ModalIntegrate, {
         props: {
           modelValue: true,
+          solution: {
+            globals: [],
+            sectors: [],
+          },
           description: 'Solution description',
           status: 'available',
         },
@@ -135,6 +168,10 @@ describe('ModalIntegrate', () => {
       wrapper = setup(ModalIntegrate, {
         props: {
           modelValue: true,
+          solution: {
+            globals: [],
+            sectors: [],
+          },
           description: 'Solution description',
           tip: 'Solution tip',
           status: 'unknown',

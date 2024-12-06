@@ -23,7 +23,9 @@
       v-model="solutionToIntegrate.isOpen"
       v-bind="solutionToIntegrate.solution"
       :status="status"
-      @integrate="openDrawer(solutionToIntegrate.solution)"
+      :isIntegrating="solutionToIntegrate.isIntegrating"
+      :solution="solutionToIntegrate.solution"
+      @integrate="integrateSolution(solutionToIntegrate.solution)"
       @edit="
         openDrawer(
           solutionToIntegrate.solution,
@@ -49,6 +51,14 @@ import Header from '@/components/Header.vue';
 import SolutionCard from '@/components/solutions/SolutionCard.vue';
 import ModalIntegrate from '@/components/solutions/ModalIntegrate.vue';
 import DrawerSolution from '@/components/solutions/DrawerSolution.vue';
+import { useAlertStore } from '@/stores/Alert';
+import { useSolutionsManagerStore } from '@/stores/SolutionsManager';
+import { useRouter } from 'vue-router';
+import { isConfigurable } from '@/utils';
+
+const router = useRouter();
+const alertStore = useAlertStore();
+const solutionsManagerStore = useSolutionsManagerStore();
 
 const { t } = useI18n();
 
@@ -67,6 +77,7 @@ const emit = defineEmits<{
 
 const solutionToIntegrate = reactive<{
   isOpen: boolean;
+  isIntegrating: boolean;
   solution: null | {
     uuid: string;
     title: string;
@@ -75,6 +86,7 @@ const solutionToIntegrate = reactive<{
   };
 }>({
   isOpen: false,
+  isIntegrating: false,
   solution: null,
 });
 
@@ -88,27 +100,37 @@ const drawerSolution = reactive<{
 
 function getOptionsBySolution(solution: Solution) {
   if (props.status === 'integrated') {
-    return [
+    const options = [
       {
         icon: 'visibility',
         title: t('solutions.actions.see_details'),
         onClick: openIntegrateSolutionModal.bind(this, solution),
       },
-      {
+    ];
+
+    if (isConfigurable(solution)) {
+      options.push({
         icon: 'settings',
         title: t('solutions.actions.settings'),
         onClick: openDrawer.bind(this, solution, solution.mockedValues),
-      },
-      {
-        type: 'separator',
-      },
-      {
-        icon: 'do_not_disturb_on',
-        title: t('solutions.actions.disable_solution'),
-        scheme: 'aux-red-500',
-        onClick: () => emit('disintegrate', solution),
-      },
-    ];
+      });
+    }
+
+    options.push(
+      ...[
+        {
+          type: 'separator',
+        },
+        {
+          icon: 'do_not_disturb_on',
+          title: t('solutions.actions.disable_solution'),
+          scheme: 'aux-red-500',
+          onClick: () => emit('disintegrate', solution),
+        },
+      ],
+    );
+
+    return options;
   } else {
     return undefined;
   }
@@ -120,7 +142,33 @@ function openIntegrateSolutionModal(solution: Solution) {
   solutionToIntegrate.solution = solution;
 }
 
-function openDrawer(solution, values = {}) {
+async function integrateSolution(solution: Solution) {
+  if (isConfigurable(solution)) {
+    openDrawer(solution);
+    return;
+  }
+
+  solutionToIntegrate.isIntegrating = true;
+
+  await solutionsManagerStore.integrateOrUpdate({
+    ...solution,
+    sectors: {},
+    globals: {},
+  });
+
+  alertStore.add({
+    type: 'success',
+    text: t('solutions.integrate.status.created'),
+  });
+
+  solutionToIntegrate.isOpen = false;
+
+  router.push({ name: 'integrated-solutions' });
+}
+
+async function openDrawer(solution: Solution, values = {}) {
+  solutionToIntegrate.isOpen = false;
+
   drawerSolution.isOpen = true;
   drawerSolution.solution = solution;
   drawerSolution.solution.values = values;
