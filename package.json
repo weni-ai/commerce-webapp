@@ -16,8 +16,8 @@
   "dependencies": {
     "@sentry/vue": "^8.34.0-internal.0",
     "@weni/unnnic-system": "2.18.0",
-    "axios": "^1.7.7",
-    "dotenv": "^16.4.5",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
     "html-rspack-plugin": "^6.0.2",
     "lodash": "^4.17.21",
     "pinia": "^2.3.0",
