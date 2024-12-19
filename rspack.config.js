@@ -25,7 +25,7 @@ export default defineConfig({
     static: {
       directory: path.join(__dirname, 'dist'),
     },
-    compress: true
+    compress: true,
   },
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -113,12 +113,23 @@ export default defineConfig({
       filename: 'remoteEntry.js',
       name: 'remote',
       exposes: {
-        './solution-card': './src/components/solutions/SolutionCard.vue',
+        './solution-card': './src/views/Discovery.vue',
       },
       remotes: {},
       shared: {
+        ...pkg,
         vue: {
           singleton: true,
+          eager: true,
+        },
+        'vue-i18n': {
+          singleton: true,
+          requiredVersion: pkg.dependencies['vue-i18n'],
+          eager: true,
+        },
+        pinia: {
+          singleton: true,
+          requiredVersion: pkg.dependencies['pinia'],
           eager: true,
         },
       },
