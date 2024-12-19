@@ -77,9 +77,13 @@ jobs:
             tag=${{env.TAG}}
             commit=${{env.COMMIT_SHA}}
             repository=${{env.IMAGE_SOURCE_URL}}
+          build-args: |
+            OLD_IMAGE=${{env.OLD_IMAGE}}  
           file: docker/Dockerfile
           push: true
-          tags: "${{env.IMAGE_TAG}}"
+          tags: |
+            "${{env.IMAGE_TAG}}"
+            "${{env.OLD_IMAGE}}" 
           no-cache: true
 
       - name: Check out Kubernetes Manifests
