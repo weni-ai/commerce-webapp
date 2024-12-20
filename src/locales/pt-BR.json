@@ -6,6 +6,8 @@
     "confirm": "Confirmar",
     "save": "Salvar",
     "back": "Voltar",
+    "integrate": "Integração",
+    "integrated": "Integrado",
     "errors": {
       "unauthorized": "Você não tem permissão para executar essa ação",
       "internal_server_error": "Erro interno do servidor",

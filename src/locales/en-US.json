@@ -6,6 +6,8 @@
     "confirm": "Confirm",
     "save": "Save",
     "back": "Back",
+    "integrate": "Integrate",
+    "integrated": "Integrated",
     "errors": {
       "unauthorized": "You don't have permission to perform this action",
       "internal_server_error": "Internal server error",
