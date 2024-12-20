@@ -25,6 +25,12 @@
   "active_notifications": {
     "title": "Notificações ativas"
   },
+  "active_notification": {
+    "title": "Notificação ativa"
+  },
+  "passive_support": {
+    "title": "Suporte passivo"
+  },
   "passive_service": {
     "title": "Atendimento passivo"
   },
@@ -58,7 +64,7 @@
         "0": "Precisa de ajuda?",
         "1": "documentação de integração"
       },
-      "button_label": "Integrar recurso",
+      "button_label": "Integrar",
       "status": {
         "created": "Solução configurada com sucesso",
         "removed": "Solução desabilitada com sucesso"
