@@ -13,6 +13,7 @@
         :title="solution.title"
         :description="solution.description"
         :options="getOptionsBySolution(solution)"
+        :category="props.category"
         @add="openIntegrateSolutionModal(solution)"
       />
     </section>
