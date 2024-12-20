@@ -39,7 +39,8 @@ jobs:
             VERSION="${TAG}"
             echo "VERSION=${VERSION}" | tee -a "${GITHUB_ENV}"
             echo "COMMIT_SHA=$COMMIT_SHA" | tee -a "${GITHUB_ENV}"
-            echo "IMAGE_TAG=${{ secrets.ECR }}/commerce:webapp-${TAG}" | tee -a "${GITHUB_ENV}"
+            echo "IMAGE_TAG=${{ secrets.ECR }}/commerce:webapp-${TAG}" | tee -a "${GITHUB_ENV}" 
+            echo "OLD_IMAGE=${{ secrets.ECR }}/commerce:webapp-${MANIFESTS_ENVIRONMENT}" | tee -a "${GITHUB_ENV}"
             echo "IMAGE_SOURCE_URL=https://github.com/weni-ai/commerce-webapp" | tee -a "${GITHUB_ENV}"
             echo "MANIFESTS_REPOSITORY=weni-ai/kubernetes-manifests-hermes" | tee -a "${GITHUB_ENV}"
             echo "MANIFESTS_APPLICATION=commerce-webapp" | tee -a "${GITHUB_ENV}"
@@ -77,9 +78,13 @@ jobs:
             tag=${{env.TAG}}
             commit=${{env.COMMIT_SHA}}
             repository=${{env.IMAGE_SOURCE_URL}}
+          build-args: |
+            OLD_IMAGE=${{env.OLD_IMAGE}}  
           file: docker/Dockerfile
           push: true
-          tags: "${{env.IMAGE_TAG}}"
+          tags: |
+            "${{env.IMAGE_TAG}}"
+            "${{env.OLD_IMAGE}}" 
           no-cache: true
 
       - name: Check out Kubernetes Manifests
