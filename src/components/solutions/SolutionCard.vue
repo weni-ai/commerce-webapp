@@ -1,9 +1,26 @@
 <template>
   <section class="card">
     <header class="card__header">
-      <h3 class="card__header__title">
-        {{ title }}
-      </h3>
+      <section>
+        <h3 class="card__header__title">
+          {{ title }}
+        </h3>
+        <p
+          :class="{
+            'card__header__sub-title': true,
+            'card__header__sub-title-orange':
+              props.category === 'activeNotifications',
+            'card__header__sub-title-purple':
+              props.category === 'passiveService',
+          }"
+        >
+          {{
+            props.category === 'activeNotifications'
+              ? $t('active_notification.title')
+              : $t('passive_support.title')
+          }}
+        </p>
+      </section>
 
       <Popover
         v-if="options"
@@ -87,10 +104,11 @@
 import { ref } from 'vue';
 import Popover from '@/components/temp/Popover.vue';
 
-defineProps<{
+const props = defineProps<{
   title: string;
   description: string;
   options?: any[];
+  category: 'activeNotifications' | 'passiveService';
 }>();
 
 defineEmits<{
@@ -137,6 +155,26 @@ function clickOption(option) {
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    &__sub-title {
+      font-family: $unnnic-font-family-secondary;
+      font-weight: $unnnic-font-weight-regular;
+      font-size: $unnnic-font-size-body-md;
+      line-height: $unnnic-font-size-body-md + $unnnic-line-height-md;
+
+      &-orange {
+        color: $unnnic-color-aux-orange-500;
+      }
+
+      &-purple {
+        color: $unnnic-color-aux-purple-500;
+      }
+
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      align-self: stretch;
     }
   }
 
