@@ -60,18 +60,25 @@
           </section>
         </template>
       </Popover>
-
-      <UnnnicButtonIcon
-        v-else
-        icon="add-1"
-        size="small"
-        data-test="add-button"
-        @click="$emit('add')"
-      />
     </header>
 
     <section class="card__body">
       {{ description }}
+    </section>
+    <section class="card__footer">
+      <UnnnicButton
+        :class="{
+          card__footer__button: true,
+          card__footer__button__active: !!options,
+        }"
+        :type="options ? 'tertiary' : 'secondary'"
+        data-test="add-button"
+        size="large"
+        :iconLeft="options ? 'check' : 'add-1'"
+        @click="$emit('add')"
+      >
+        {{ options ? $t('common.integrated') : $t('common.integrate') }}
+      </UnnnicButton>
     </section>
   </section>
 </template>
@@ -114,7 +121,6 @@ function clickOption(option) {
 
   &__header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     column-gap: $unnnic-spacing-xs;
     min-height: 2 * ($unnnic-font-size-body-lg + $unnnic-line-height-md);
@@ -148,6 +154,28 @@ function clickOption(option) {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: center;
+    &__button {
+      width: 100%;
+
+      :deep(.unnnic-icon__size--md) {
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
+        min-height: 20px;
+      }
+
+      &__active {
+        color: $unnnic-color-weni-600;
+        :deep(.unnnic-button__icon-left) {
+          color: $unnnic-color-weni-600;
+        }
+      }
+    }
   }
 }
 
