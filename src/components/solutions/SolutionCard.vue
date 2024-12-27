@@ -135,6 +135,7 @@ function clickOption(option) {
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   row-gap: $unnnic-spacing-sm;
 
   &__header {
