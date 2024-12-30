@@ -1,5 +1,6 @@
 <template>
   <UnnnicInput
+    v-if="props.integrateSkills?.available?.length ? false : true"
     v-model="solutionName"
     class="filter-input"
     size="sm"
@@ -39,12 +40,14 @@ import StateEmpty from '@/components/solutions/StateEmpty.vue';
 import ModalDisintegrate from '@/components/solutions/ModalDisintegrate.vue';
 import type { useSolutionsActiveStore } from '@/stores/SolutionsActive';
 import type { useSolutionsPassiveStore } from '@/stores/SolutionsPassive';
+import type { useSolutionsDefaultStore } from '@/stores/SolutionsDefault';
 
 const props = defineProps<{
   show: 'available' | 'integrated';
   isFirstLoading: boolean;
   activeNotifications: ReturnType<typeof useSolutionsActiveStore>;
   passiveService: ReturnType<typeof useSolutionsPassiveStore>;
+  integrateSkills: ReturnType<typeof useSolutionsDefaultStore>;
 }>();
 
 const { t } = useI18n();
@@ -61,7 +64,30 @@ function filterSolutions({ title, description }: Solution) {
 }
 
 const groups = computed(() => {
-  return [
+  interface Groups {
+    title: string;
+    icon: string | null;
+    iconScheme: string | null;
+    solutions: Solution[];
+    category: 'activeNotifications' | 'passiveService' | 'integrateSkills';
+  }
+  const integrateSkillsList: Groups[] = [
+    {
+      solutions: [
+        ...props.integrateSkills.available, 
+        ...props.integrateSkills.integrateds.data.map((values) => ({
+          ...values,
+          integrated: true,
+        }), 
+      )],
+      category: 'integrateSkills',
+      title: t('integrate_skills.title'),
+      icon: null,
+      iconScheme: null,
+    },
+  ];
+
+  const commerceDefaultList: Groups[] = [
     {
       title: t('active_notifications.title'),
       icon: 'business_messages',
@@ -82,7 +108,13 @@ const groups = computed(() => {
           : props.passiveService.integrateds.data,
       category: 'passiveService',
     },
-  ]
+  ];
+
+  const isIntegrateSkillList = props.integrateSkills.available.length || props.integrateSkills.integrateds.data.length;
+
+  const list: Groups[] = isIntegrateSkillList ? integrateSkillsList : commerceDefaultList;
+
+  return list
     .map((group) => ({
       ...group,
       solutions: group.solutions.filter(filterSolutions),
