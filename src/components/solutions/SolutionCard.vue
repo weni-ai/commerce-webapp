@@ -92,6 +92,7 @@
         data-test="add-button"
         size="large"
         :iconLeft="options ? 'check' : 'add-1'"
+        :disabled="!!options"
         @click="$emit('add')"
       >
         {{ options ? $t('common.integrated') : $t('common.integrate') }}
@@ -108,7 +109,7 @@ const props = defineProps<{
   title: string;
   description: string;
   options?: any[];
-  category: 'activeNotifications' | 'passiveService';
+  category?: 'activeNotifications' | 'passiveService' | 'integrateSkills';
 }>();
 
 defineEmits<{
@@ -198,6 +199,11 @@ function clickOption(option) {
   &__footer {
     display: flex;
     justify-content: center;
+
+    :deep(.unnnic-button--tertiary:disabled) {
+      color: $unnnic-color-weni-600;
+    }
+
     &__button {
       width: 100%;
 
