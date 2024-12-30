@@ -5,11 +5,14 @@
     "
     show="available"
     :isFirstLoading="
-      solutionsActiveStore.all.isFirstLoading ||
-      solutionsPassiveStore.all.isFirstLoading
+      type === 'default' ? 
+        (solutionsActiveStore.all.isFirstLoading || solutionsPassiveStore.all.isFirstLoading) 
+      : 
+        solutionsDefaultStore.all.isFirstLoading
     "
     :activeNotifications="solutionsActiveStore"
     :passiveService="solutionsPassiveStore"
+    :integrateSkills="solutionsDefaultStore"
   />
 </template>
 
@@ -18,6 +21,7 @@ import SolutionsList from '@/components/solutions/SolutionsList.vue';
 import { onMounted } from 'vue';
 import { useSolutionsActiveStore } from '@/stores/SolutionsActive';
 import { useSolutionsPassiveStore } from '@/stores/SolutionsPassive';
+import { useSolutionsDefaultStore } from '@/stores/SolutionsDefault';
 import { useAuthStore } from '@/stores/Auth';
 
 const props = defineProps({
@@ -33,6 +37,7 @@ const props = defineProps({
 
 const solutionsActiveStore = useSolutionsActiveStore();
 const solutionsPassiveStore = useSolutionsPassiveStore();
+const solutionsDefaultStore = useSolutionsDefaultStore();
 
 if (props.type === 'remote' && props.auth?.token && props.auth?.uuid) {
   const authStore = useAuthStore();
@@ -42,8 +47,8 @@ if (props.type === 'remote' && props.auth?.token && props.auth?.uuid) {
 
 onMounted(() => {
   if (props.type === 'remote' && props.auth?.token && props.auth?.uuid) {
-    solutionsActiveStore.all.load();
-    solutionsPassiveStore.all.load();
+    solutionsDefaultStore.integrateds.load();
+    solutionsDefaultStore.all.load();
   }
 
   if (props.type === 'default') {
