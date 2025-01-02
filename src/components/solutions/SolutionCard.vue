@@ -3,16 +3,14 @@
     <header class="card__header">
       <section>
         <h3 class="card__header__title">
-          {{ title }}
+          {{ props.title }}
         </h3>
         <p
           v-if="['passive', 'active'].includes(category)"
           :class="{
             'card__header__sub-title': true,
-            'card__header__sub-title-orange':
-              category === 'active',
-            'card__header__sub-title-purple':
-              category === 'passive',
+            'card__header__sub-title-orange': category === 'active',
+            'card__header__sub-title-purple': category === 'passive',
           }"
         >
           {{
@@ -120,7 +118,7 @@ defineEmits<{
 const isActivatedByClick = ref(false);
 const category = computed(() => props.category?.toLowerCase());
 
-function clickOption(option: { onClick: () => void; }) {
+function clickOption(option: { onClick: () => void }) {
   if (option.onClick) {
     isActivatedByClick.value = false;
 
