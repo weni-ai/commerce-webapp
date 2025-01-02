@@ -6,16 +6,17 @@
           {{ title }}
         </h3>
         <p
+          v-if="['passive', 'active'].includes(category)"
           :class="{
             'card__header__sub-title': true,
             'card__header__sub-title-orange':
-              props.category === 'activeNotifications',
+              category === 'active',
             'card__header__sub-title-purple':
-              props.category === 'passiveService',
+              category === 'passive',
           }"
         >
           {{
-            props.category === 'activeNotifications'
+            category === 'passive'
               ? $t('active_notification.title')
               : $t('passive_support.title')
           }}
@@ -102,14 +103,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import Popover from '@/components/temp/Popover.vue';
 
 const props = defineProps<{
   title: string;
   description: string;
   options?: any[];
-  category?: 'activeNotifications' | 'passiveService' | 'integrateSkills';
+  category?: string;
 }>();
 
 defineEmits<{
@@ -117,8 +118,9 @@ defineEmits<{
 }>();
 
 const isActivatedByClick = ref(false);
+const category = computed(() => props.category?.toLowerCase());
 
-function clickOption(option) {
+function clickOption(option: { onClick: () => void; }) {
   if (option.onClick) {
     isActivatedByClick.value = false;
 

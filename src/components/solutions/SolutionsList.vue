@@ -1,6 +1,8 @@
 <template>
   <UnnnicInput
-    v-if="props.integrateSkills?.available?.length ? false : true"
+    v-if="
+      props.integrateSkills?.available?.length || isFirstLoading ? false : true
+    "
     v-model="solutionName"
     class="filter-input"
     size="sm"
@@ -74,12 +76,12 @@ const groups = computed(() => {
   const integrateSkillsList: Groups[] = [
     {
       solutions: [
-        ...props.integrateSkills.available, 
+        ...props.integrateSkills.available,
         ...props.integrateSkills.integrateds.data.map((values) => ({
           ...values,
           integrated: true,
-        }), 
-      )],
+        })),
+      ],
       category: 'integrateSkills',
       title: t('integrate_skills.title'),
       icon: null,
@@ -110,9 +112,13 @@ const groups = computed(() => {
     },
   ];
 
-  const isIntegrateSkillList = props.integrateSkills.available.length || props.integrateSkills.integrateds.data.length;
+  const isIntegrateSkillList =
+    props.integrateSkills.available.length ||
+    props.integrateSkills.integrateds.data.length;
 
-  const list: Groups[] = isIntegrateSkillList ? integrateSkillsList : commerceDefaultList;
+  const list: Groups[] = isIntegrateSkillList
+    ? integrateSkillsList
+    : commerceDefaultList;
 
   return list
     .map((group) => ({

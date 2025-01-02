@@ -4,7 +4,9 @@
       :title="title"
       :icon="icon"
       :iconScheme="iconScheme"
-      :fontFamily="props.category === 'integrateSkills' ? 'secondary' : 'primary'"
+      :fontFamily="
+        props.category === 'integrateSkills' ? 'secondary' : 'primary'
+      "
       :titleWeight="props.category === 'integrateSkills' ? 'black' : 'regular'"
       :fontSize="props.category === 'integrateSkills' ? 'title-lg' : 'title-sm'"
     />
@@ -16,7 +18,7 @@
         :title="solution.title"
         :description="solution.description"
         :options="getOptionsBySolution(solution)"
-        :category="props.category"
+        :category="solution.category"
         @add="openIntegrateSolutionModal(solution)"
       />
     </section>
