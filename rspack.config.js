@@ -21,7 +21,8 @@ export default defineConfig({
   devServer: {
     port: 3001,
     historyApiFallback: true,
-    hot: true,
+    hot: false,
+    liveReload: true,
     static: {
       directory: path.join(__dirname, 'dist'),
     },

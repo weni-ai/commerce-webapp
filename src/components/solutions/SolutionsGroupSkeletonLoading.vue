@@ -38,10 +38,7 @@
 
   &__list {
     display: grid;
-    grid-template-columns: repeat(
-      auto-fill,
-      minmax(15.625 * $unnnic-font-size, 1fr)
-    );
+    grid-template-columns: repeat(auto-fill, minmax(344px, 1fr));
     gap: $unnnic-spacing-sm;
   }
 }
