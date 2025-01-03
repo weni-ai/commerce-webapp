@@ -5,24 +5,25 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development rspack dev",
+    "dev": "cross-env NODE_ENV=development rspack dev --port 3001",
     "build": "run-p type-check \"build-only {@}\" --",
     "test:unit": "vitest",
-    "build-only": "cross-env NODE_ENV=production rspack build",
+    "build-only": "rspack build",
     "type-check": "vue-tsc --build --force",
+    "type-check-t": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
     "@sentry/vue": "^8.34.0-internal.0",
-    "@weni/unnnic-system": "^2.11.1",
-    "axios": "^1.7.7",
-    "dotenv": "^16.4.5",
+    "@weni/unnnic-system": "2.18.0",
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
     "html-rspack-plugin": "^6.0.2",
     "lodash": "^4.17.21",
-    "pinia": "^2.1.7",
-    "vue": "^3.4.29",
-    "vue-i18n": "10",
-    "vue-router": "^4.3.3",
+    "pinia": "^2.3.0",
+    "vue": "3.5.11",
+    "vue-i18n": "10.0.1",
+    "vue-router": "^4.4.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
@@ -33,7 +34,8 @@
     "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^20.14.5",
+    "@types/lodash": "^4.17.13",
+    "@types/node": "^20.17.9",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vitest/coverage-v8": "^1.6.0",
     "@vitest/ui": "^1.6.0",
@@ -57,7 +59,7 @@
     "typescript-eslint": "^8.8.1",
     "vite": "^5.3.1",
     "vitest": "^1.6.0",
-    "vue-loader": "^17.3.1",
-    "vue-tsc": "^2.1.10"
+    "vue-loader": "^17.4.2",
+    "vue-tsc": "^2.0.21"
   }
 }
