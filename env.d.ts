@@ -10,6 +10,8 @@ declare global {
     description: string;
     documentation: string;
     tip: string;
+    category?: string;
+    integrated?: boolean;
     globals: { [key: string]: { value: string } };
     sectors: { [key: string]: { value: string[] } };
   };

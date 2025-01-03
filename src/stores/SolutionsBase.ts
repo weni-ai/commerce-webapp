@@ -8,7 +8,7 @@ function SolutionsBase({
   category,
 }: {
   request: ({ category }: { category: string }) => Promise<Solution[]>;
-  category: string;
+  category: string | undefined;
 }) {
   const status = ref<null | string>(null);
   const alreadyCalledLoad = ref(false);
@@ -26,7 +26,7 @@ function SolutionsBase({
     try {
       status.value = 'loading';
 
-      data.value = await request({ category });
+      data.value = await request({ category: category || '' });
 
       status.value = 'complete';
     } catch (error) {
@@ -94,17 +94,17 @@ export function defineSolutionsStore({
   category,
 }: {
   name: string;
-  category: 'ACTIVE' | 'PASSIVE';
+  category?: 'ACTIVE' | 'PASSIVE';
 }) {
   return defineStore(name, () => {
     const integrateds = SolutionsBase({
       request: APISolutions.listIntegratedSolutions,
-      category,
+      category: category || undefined,
     });
 
     const all = SolutionsBase({
       request: APISolutions.listSolutions,
-      category,
+      category: category || undefined,
     });
 
     const available = computed(() =>

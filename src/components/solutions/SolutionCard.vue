@@ -1,9 +1,25 @@
 <template>
   <section class="card">
     <header class="card__header">
-      <h3 class="card__header__title">
-        {{ title }}
-      </h3>
+      <section>
+        <h3 class="card__header__title">
+          {{ props.title }}
+        </h3>
+        <p
+          v-if="['passive', 'active'].includes(category)"
+          :class="{
+            'card__header__sub-title': true,
+            'card__header__sub-title-orange': category === 'active',
+            'card__header__sub-title-purple': category === 'passive',
+          }"
+        >
+          {{
+            category === 'passive'
+              ? $t('active_notification.title')
+              : $t('passive_support.title')
+          }}
+        </p>
+      </section>
 
       <Popover
         v-if="options"
@@ -60,30 +76,39 @@
           </section>
         </template>
       </Popover>
-
-      <UnnnicButtonIcon
-        v-else
-        icon="add-1"
-        size="small"
-        data-test="add-button"
-        @click="$emit('add')"
-      />
     </header>
 
     <section class="card__body">
       {{ description }}
     </section>
+    <section class="card__footer">
+      <UnnnicButton
+        :class="{
+          card__footer__button: true,
+          card__footer__button__active: !!options,
+        }"
+        :type="options ? 'tertiary' : 'secondary'"
+        data-test="add-button"
+        size="large"
+        :iconLeft="options ? 'check' : 'add-1'"
+        :disabled="!!options"
+        @click="$emit('add')"
+      >
+        {{ options ? $t('common.integrated') : $t('common.integrate') }}
+      </UnnnicButton>
+    </section>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import Popover from '@/components/temp/Popover.vue';
 
-defineProps<{
+const props = defineProps<{
   title: string;
   description: string;
   options?: any[];
+  category?: string;
 }>();
 
 defineEmits<{
@@ -91,8 +116,9 @@ defineEmits<{
 }>();
 
 const isActivatedByClick = ref(false);
+const category = computed(() => props.category?.toLowerCase());
 
-function clickOption(option) {
+function clickOption(option: { onClick: () => void }) {
   if (option.onClick) {
     isActivatedByClick.value = false;
 
@@ -110,11 +136,11 @@ function clickOption(option) {
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   row-gap: $unnnic-spacing-sm;
 
   &__header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     column-gap: $unnnic-spacing-xs;
     min-height: 2 * ($unnnic-font-size-body-lg + $unnnic-line-height-md);
@@ -132,6 +158,26 @@ function clickOption(option) {
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    &__sub-title {
+      font-family: $unnnic-font-family-secondary;
+      font-weight: $unnnic-font-weight-regular;
+      font-size: $unnnic-font-size-body-md;
+      line-height: $unnnic-font-size-body-md + $unnnic-line-height-md;
+
+      &-orange {
+        color: $unnnic-color-aux-orange-500;
+      }
+
+      &-purple {
+        color: $unnnic-color-aux-purple-500;
+      }
+
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      align-self: stretch;
+    }
   }
 
   &__body {
@@ -148,6 +194,33 @@ function clickOption(option) {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: center;
+
+    :deep(.unnnic-button--tertiary:disabled) {
+      color: $unnnic-color-weni-600;
+    }
+
+    &__button {
+      width: 100%;
+
+      :deep(.unnnic-icon__size--md) {
+        width: 20px;
+        height: 20px;
+        min-width: 20px;
+        min-height: 20px;
+      }
+
+      &__active {
+        color: $unnnic-color-weni-600;
+        :deep(.unnnic-button__icon-left) {
+          color: $unnnic-color-weni-600;
+        }
+      }
+    }
   }
 }
 
