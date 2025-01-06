@@ -32,9 +32,9 @@ export default defineConfig({
     path: path.resolve(__dirname, './dist'),
     publicPath: '/',
     clean: true,
-    filename: 'assets/js/[name].[contenthash].js',
-    chunkFilename: 'assets/js/[name].[contenthash].js',
-    assetModuleFilename: 'assets/[name].[hash][ext]',
+    filename: 'assets/js/[name]-[contenthash].js',
+    chunkFilename: 'assets/js/[name]-[contenthash].js',
+    assetModuleFilename: 'assets/[name]-[hash][ext]',
   },
   entry: {
     main: './src/main.ts',
@@ -83,7 +83,7 @@ export default defineConfig({
         test: /\.(png|jpe?g|gif|svg|webp|avif)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/images/[name][hash][ext]',
+          filename: 'assets/images/[name]-[hash][ext]',
         },
       },
     ],

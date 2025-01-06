@@ -12,8 +12,10 @@
         </p>
 
         <UnnnicButton
+          v-if="buttonProps.text"
           class="modal-integrate-solution__integrate-button"
           size="small"
+          :loading="buttonProps.loading"
           @click="emitValue"
         >
           {{ buttonProps.text }}
@@ -76,14 +78,17 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { isConfigurable } from '@/utils';
 
 const modelValue = defineModel<boolean>({ required: true });
 const { t } = useI18n();
 const props = defineProps<{
+  solution: Solution;
   description: string;
   tip?: string;
   uuid: string;
   status: 'available' | 'integrated';
+  isIntegrating: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -93,12 +98,17 @@ const emit = defineEmits<{
 }>();
 
 const buttonProps = computed(() => {
+  if (props.status === 'integrated' && !isConfigurable(props.solution)) {
+    return {};
+  }
+
   if (props.status === 'available') {
     return {
       class: 'modal-integrate-solution__integrate-button',
       text: t('solutions.integrate.button_label'),
       size: 'large',
       'data-test': 'integrate-button',
+      loading: props.isIntegrating,
     };
   } else if (props.status === 'integrated') {
     return {
@@ -112,8 +122,6 @@ const buttonProps = computed(() => {
 });
 
 function emitValue() {
-  modelValue.value = false;
-
   if (props.status === 'available') {
     emit('integrate');
   } else if (props.status === 'integrated') {
