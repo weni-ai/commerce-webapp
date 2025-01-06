@@ -19,18 +19,18 @@ const __dirname = dirname(__filename);
 export default defineConfig({
   context: __dirname,
   devServer: {
+    port: 3001,
     historyApiFallback: true,
-    hot: true,
+    hot: false,
+    liveReload: true,
     static: {
       directory: path.join(__dirname, 'dist'),
-      publicPath: '/',
-      serveIndex: true,
-      watch: true,
     },
+    compress: true,
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: '/',
+    publicPath: process.env.PUBLIC_PATH_URL,
     clean: true,
     filename: 'assets/js/[name]-[contenthash].js',
     chunkFilename: 'assets/js/[name]-[contenthash].js',
@@ -110,6 +110,31 @@ export default defineConfig({
       }),
     }),
     new VueLoaderPlugin(),
+    new rspack.container.ModuleFederationPlugin({
+      filename: 'remoteEntry.js',
+      name: 'remote',
+      exposes: {
+        './solution-card': './src/views/Discovery.vue',
+      },
+      remotes: {},
+      shared: {
+        ...pkg,
+        vue: {
+          singleton: true,
+          eager: true,
+        },
+        'vue-i18n': {
+          singleton: true,
+          requiredVersion: pkg.dependencies['vue-i18n'],
+          eager: true,
+        },
+        pinia: {
+          singleton: true,
+          requiredVersion: pkg.dependencies['pinia'],
+          eager: true,
+        },
+      },
+    }),
   ],
   optimization: {
     minimizer: [

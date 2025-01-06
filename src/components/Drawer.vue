@@ -1,50 +1,48 @@
 <template>
-  <Teleport to="#drawers">
-    <Transition name="fade">
-      <section
-        v-if="isOpen"
-        class="drawer__background"
-        data-test="background"
-        @click.self="close"
-      ></section>
-    </Transition>
+  <Transition name="fade">
+    <section
+      v-if="isOpen"
+      class="drawer__background"
+      data-test="background"
+      @click.self="close"
+    ></section>
+  </Transition>
 
-    <Transition name="drawer">
-      <section
-        v-if="isOpen"
-        class="drawer"
-      >
-        <header class="drawer__header">
-          <Header
-            :title="title"
-            :icon="icon"
-            :iconScheme="iconScheme"
-            fontFamily="secondary"
-            fontSize="title-md"
-          />
+  <Transition name="drawer">
+    <section
+      v-if="isOpen"
+      class="drawer"
+    >
+      <header class="drawer__header">
+        <Header
+          :title="title"
+          :icon="icon"
+          :iconScheme="iconScheme"
+          fontFamily="secondary"
+          fontSize="title-md"
+        />
 
-          <UnnnicButton
-            class="drawer__header__close-button"
-            type="tertiary"
-            iconCenter="arrow_forward"
-            size="small"
-            data-test="close-button"
-            @click="close"
-          />
-        </header>
+        <UnnnicButton
+          class="drawer__header__close-button"
+          type="tertiary"
+          iconCenter="arrow_forward"
+          size="small"
+          data-test="close-button"
+          @click="close"
+        />
+      </header>
 
-        <section class="drawer__body">
-          <Scrollable>
-            <slot name="default"></slot>
-          </Scrollable>
-        </section>
-
-        <footer class="drawer__footer">
-          <slot name="footer"></slot>
-        </footer>
+      <section class="drawer__body">
+        <Scrollable>
+          <slot name="default"></slot>
+        </Scrollable>
       </section>
-    </Transition>
-  </Teleport>
+
+      <footer class="drawer__footer">
+        <slot name="footer"></slot>
+      </footer>
+    </section>
+  </Transition>
 </template>
 
 <script setup lang="ts">
@@ -99,6 +97,7 @@ onUnmounted(() => {
 }
 
 .drawer {
+  z-index: 2;
   display: flex;
   flex-direction: column;
 
@@ -112,6 +111,7 @@ onUnmounted(() => {
   background-color: $unnnic-color-neutral-white;
 
   &__background {
+    z-index: 1;
     position: fixed;
     top: 0;
     right: 0;
