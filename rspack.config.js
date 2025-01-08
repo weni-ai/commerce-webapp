@@ -30,9 +30,9 @@ export default defineConfig({
     compress: true,
   },
   output: {
-    path: path.resolve(__dirname, './dist'),
+    path: path.resolve(__dirname, '../dist/remote'),
     uniqueName: 'remote',
-    publicPath: process.env.PUBLIC_PATH_URL,
+    publicPath: `${process.env.PUBLIC_PATH_URL}remote/`,
     clean: true,
     filename: 'assets/js/[name]-[contenthash].js',
     chunkFilename: 'assets/js/[name]-[contenthash].js',
@@ -113,8 +113,8 @@ export default defineConfig({
     }),
     new VueLoaderPlugin(),
     new rspack.container.ModuleFederationPlugin({
-      filename: 'remoteEntry.js',
       name: 'remote',
+      filename: 'remoteEntry.js',
       exposes: {
         './solution-card': './src/views/Discovery.vue',
       },
