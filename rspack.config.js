@@ -117,6 +117,7 @@ export default defineConfig({
       exposes: {
         './solution-card': './src/views/Discovery.vue',
       },
+      getPublicPath: `function() {return '${process.env.PUBLIC_PATH_URL}'}`,
       remotes: {},
       shared: {
         ...pkg,
