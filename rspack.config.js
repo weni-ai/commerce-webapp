@@ -16,6 +16,7 @@ const targets = ['chrome >= 87', 'edge >= 88', 'firefox >= 78', 'safari >= 14'];
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+console.log('PROCESS ENV ==========================>', process.env);
 export default defineConfig({
   context: __dirname,
   devServer: {
