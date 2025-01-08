@@ -45,6 +45,9 @@ jobs:
             echo "MANIFESTS_APPLICATION=commerce-webapp" | tee -a "${GITHUB_ENV}"
             echo "MANIFESTS_PATCH_TARGET=deployment.json" | tee -a "${GITHUB_ENV}"
 
+            export PUBLIC_PATH_URL="https://commerce-webapp.stg.cloud.weni.ai"
+            echo "PUBLIC_PATH_URL=${PUBLIC_PATH_URL}" | tee -a "${GITHUB_ENV}"
+
       - name: Check out the repo
         uses: actions/checkout@v3
         with:
