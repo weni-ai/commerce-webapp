@@ -31,9 +31,12 @@ export default defineConfig({
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: '/mfe-commerce/',
+    uniqueName: 'remote',
+    publicPath: process.env.PUBLIC_PATH_URL,
     clean: true,
-    pathinfo: false,
+    filename: 'assets/js/[name]-[contenthash].js',
+    chunkFilename: 'assets/js/[name]-[contenthash].js',
+    assetModuleFilename: 'assets/[name]-[hash][ext]',
   },
   entry: {
     main: './src/main.ts',
