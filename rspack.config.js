@@ -31,7 +31,7 @@ export default defineConfig({
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: process.env.PUBLIC_PATH_URL,
+    publicPath: 'auto',
     clean: true,
     filename: 'assets/js/[name]-[contenthash].js',
     chunkFilename: 'assets/js/[name]-[contenthash].js',
@@ -117,7 +117,6 @@ export default defineConfig({
       exposes: {
         './solution-card': './src/views/Discovery.vue',
       },
-      getPublicPath: `function() {return '${process.env.PUBLIC_PATH_URL}'}`,
       remotes: {},
       shared: {
         ...pkg,
