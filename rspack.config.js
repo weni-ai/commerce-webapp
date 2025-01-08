@@ -31,11 +31,9 @@ export default defineConfig({
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: 'auto',
+    publicPath: '/mfe-commerce/',
     clean: true,
-    filename: 'assets/js/[name]-[contenthash].js',
-    chunkFilename: 'assets/js/[name]-[contenthash].js',
-    assetModuleFilename: 'assets/[name]-[hash][ext]',
+    pathinfo: false,
   },
   entry: {
     main: './src/main.ts',
