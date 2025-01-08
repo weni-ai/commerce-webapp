@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/root/.npm NPM_CONFIG_CACHE=/root/.npm npm install
 
 COPY . ./
 
-ENV PUBLIC_PATH_URL=https://commerce-webapp.stg.cloud.weni.ai
+ENV PUBLIC_PATH_URL=https://commerce-webapp.stg.cloud.weni.ai/
 
 RUN npm run build-only
 
