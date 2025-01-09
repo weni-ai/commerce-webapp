@@ -30,7 +30,7 @@ export default defineConfig({
     compress: true,
   },
   output: {
-    path: path.resolve(__dirname, '../dist/remote'),
+    path: path.resolve(__dirname, './dist/remote'),
     uniqueName: 'remote',
     publicPath: `${process.env.PUBLIC_PATH_URL}remote/`,
     clean: true,
