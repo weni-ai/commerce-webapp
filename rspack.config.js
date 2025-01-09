@@ -18,6 +18,7 @@ const __dirname = dirname(__filename);
 
 console.log('PROCESS ENV ==========================>', process.env);
 export default defineConfig({
+  mode: process.env.NODE_ENV,
   context: __dirname,
   devServer: {
     port: 3001,
