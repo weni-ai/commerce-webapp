@@ -114,7 +114,7 @@ export default defineConfig({
     new VueLoaderPlugin(),
     new rspack.container.ModuleFederationPlugin({
       name: 'remote',
-      filename: 'remoteEntry.js',
+      filename: 'remote.js',
       exposes: {
         './solution-card': './src/views/Discovery.vue',
       },
