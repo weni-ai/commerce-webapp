@@ -22,7 +22,7 @@ RUN npm run build-only
 FROM nginxinc/nginx-unprivileged:1.25-alpine
 
 COPY --chown=nginx:nginx nginx.conf /etc/nginx/nginx.conf
-COPY --from=builder --chown=nginx:nginx /app/dist /usr/share/nginx/html/commerce-webapp/
+COPY --from=builder --chown=nginx:nginx /app/remote/dist /usr/share/nginx/html/commerce-webapp/
 COPY docker/docker-entrypoint.sh /
 RUN mv /usr/share/nginx/html/commerce-webapp/index.html /usr/share/nginx/html/commerce-webapp/index.html.tmpl \
     && cd /usr/share/nginx/html/commerce-webapp/ \
