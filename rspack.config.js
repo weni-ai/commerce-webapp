@@ -30,9 +30,9 @@ export default defineConfig({
     compress: true,
   },
   output: {
-    path: path.resolve(__dirname, './dist/remote'),
+    path: path.resolve(__dirname, './dist'),
     uniqueName: 'remote',
-    publicPath: `${process.env.PUBLIC_PATH_URL}remote/`,
+    publicPath: `${process.env.PUBLIC_PATH_URL}`,
     clean: true,
     filename: 'assets/js/[name]-[contenthash].js',
     chunkFilename: 'assets/js/[name]-[contenthash].js',
