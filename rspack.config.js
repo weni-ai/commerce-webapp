@@ -32,7 +32,7 @@ export default defineConfig({
   output: {
     path: path.resolve(__dirname, './dist'),
     uniqueName: 'remote',
-    publicPath: `${process.env.PUBLIC_PATH_URL}`,
+    publicPath: 'auto',
     clean: true,
     filename: 'assets/js/[name]-[contenthash].js',
     chunkFilename: 'assets/js/[name]-[contenthash].js',
