@@ -14,8 +14,9 @@
         <UnnnicButton
           v-if="buttonProps.text"
           class="modal-integrate-solution__integrate-button"
-          size="small"
+          size="large"
           :loading="buttonProps.loading"
+          iconLeft="add-1"
           @click="emitValue"
         >
           {{ buttonProps.text }}
@@ -108,6 +109,7 @@ const buttonProps = computed(() => {
       text: t('solutions.integrate.button_label'),
       size: 'large',
       'data-test': 'integrate-button',
+      iconLeft: 'add-1',
       loading: props.isIntegrating,
     };
   } else if (props.status === 'integrated') {

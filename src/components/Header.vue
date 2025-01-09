@@ -2,6 +2,7 @@
   <header class="header">
     <section class="header__title-and-icon">
       <UnnnicAvatarIcon
+        v-if="icon"
         enabled
         :icon="icon"
         :scheme="iconScheme"
@@ -35,10 +36,10 @@
 withDefaults(
   defineProps<{
     title: string;
-    fontSize?: 'title-sm' | 'title-md';
+    fontSize?: 'title-sm' | 'title-md' | 'title-lg';
     fontFamily?: 'primary' | 'secondary';
-    icon: string;
-    iconScheme: string;
+    icon: string | null;
+    iconScheme: string | null;
     titleWeight?: string;
   }>(),
   {
@@ -68,9 +69,18 @@ withDefaults(
       font-weight: $unnnic-font-weight-bold;
     }
 
+    &--weight-black {
+      font-weight: $unnnic-font-weight-black;
+    }
+
     &--font-size-title-md {
       font-size: $unnnic-font-size-title-md;
       line-height: $unnnic-font-size-title-md + $unnnic-line-height-md;
+    }
+
+    &--font-size-title-lg {
+      font-size: $unnnic-font-size-body-lg;
+      line-height: $unnnic-font-size-body-lg + $unnnic-line-height-md;
     }
 
     &--font-family-secondary {
