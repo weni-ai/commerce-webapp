@@ -5,7 +5,7 @@ ARG BASE_VERSION="alpine3.19"
 ARG OLD_IMAGE="commerce-webapp:latest"
 ARG KEEP_DAYS=60
 
-FROM node:${NODE_VERSION}-${BASE_VERSION} as builder
+FROM node:${NODE_VERSION}-${BASE_VERSION} AS builder
 
 WORKDIR /app
 
@@ -23,7 +23,7 @@ FROM ${OLD_IMAGE} AS old_css
 
 FROM nginxinc/nginx-unprivileged:1.25-alpine
 ARG OLD_IMAGE=${OLD_IMAGE}
-ARG KEEP_DAYS=${KEEP_DAYS}
+ARG KEEP_DAYS
 
 COPY --chown=nginx:nginx docker/nginx.conf /etc/nginx/nginx.conf
 COPY --chown=nginx:nginx docker/headers /usr/share/nginx/html/headers
