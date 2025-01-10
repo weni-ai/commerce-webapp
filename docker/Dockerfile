@@ -25,12 +25,12 @@ FROM nginxinc/nginx-unprivileged:1.25-alpine
 ARG OLD_IMAGE=${OLD_IMAGE}
 ARG KEEP_DAYS=${KEEP_DAYS}
 
-COPY --chown=nginx:nginx nginx.conf /etc/nginx/nginx.conf
-COPY --chown=nginx:nginx headers /usr/share/nginx/html/headers
+COPY --chown=nginx:nginx docker/nginx.conf /etc/nginx/nginx.conf
+COPY --chown=nginx:nginx docker/headers /usr/share/nginx/html/headers
 COPY --chown=nginx:nginx docker/file_handler.sh /
+COPY --chown=nginx:nginx docker/docker-entrypoint.sh /
 COPY --from=builder --chown=nginx:nginx /app/dist /usr/share/nginx/html/commerce-webapp/
 COPY --from=old_css --chown=nginx:nginx /usr/share/nginx/html/commerce-webapp/assets/all.tx[t] /usr/share/nginx/html/commerce-webapp/assets/*.css /usr/share/nginx/html/chats/assets/
-COPY docker/docker-entrypoint.sh /
 RUN mv /usr/share/nginx/html/commerce-webapp/index.html /usr/share/nginx/html/commerce-webapp/index.html.tmpl \
     && cd /usr/share/nginx/html/commerce-webapp/ \
     && ln -s /tmp/index.html \
