@@ -1,6 +1,6 @@
 import { setup } from '@/tests/utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import DropdownFilter from '@/components/DropDownFilter.vue';
+import DropdownFilter from '@/components/DropdownFilter.vue';
 
 describe('DropdownFilter', () => {
   let wrapper: ReturnType<typeof setup>;

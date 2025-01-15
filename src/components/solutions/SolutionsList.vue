@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import Header from '@/components/Header.vue';
-import DropdownFilter from '@/components/DropDownFilter.vue';
+import DropdownFilter from '@/components/DropdownFilter.vue';
 import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SolutionsGroup from '@/components/solutions/SolutionsGroup.vue';
