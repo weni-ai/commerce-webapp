@@ -11,15 +11,12 @@
 
   <section class="filter-container">
     <UnnnicInput
-      v-if="
-        props.integrateSkills?.available?.length || isFirstLoading
-          ? false
-          : true
-      "
+      v-if="isRenderInputSearch"
       v-model="solutionName"
       :class="isIntegrateSkillList ? 'filter-integrate' : 'filter-input'"
       size="sm"
       iconRight="search-1"
+      :disabled="isFirstLoading"
       :placeholder="$t('common.search')"
     />
     <section
@@ -76,21 +73,28 @@ import SolutionsGroup from '@/components/solutions/SolutionsGroup.vue';
 import SolutionsGroupSkeletonLoading from '@/components/solutions/SolutionsGroupSkeletonLoading.vue';
 import StateEmpty from '@/components/solutions/StateEmpty.vue';
 import ModalDisintegrate from '@/components/solutions/ModalDisintegrate.vue';
-import type { useSolutionsActiveStore } from '@/stores/SolutionsActive';
-import type { useSolutionsPassiveStore } from '@/stores/SolutionsPassive';
-import type { useSolutionsDefaultStore } from '@/stores/SolutionsDefault';
+import { useSolutionsActiveStore } from '@/stores/SolutionsActive';
+import { useSolutionsPassiveStore } from '@/stores/SolutionsPassive';
+import { useSolutionsDefaultStore } from '@/stores/SolutionsDefault';
+import type { useSolutionsActiveStore as ActiveStoreType } from '@/stores/SolutionsActive';
+import type { useSolutionsPassiveStore as PassiveStoreType } from '@/stores/SolutionsPassive';
+import type { useSolutionsDefaultStore as DefaultStoreType } from '@/stores/SolutionsDefault';
 
 const props = defineProps<{
   show: 'available' | 'integrated';
   isFirstLoading: boolean;
-  activeNotifications: ReturnType<typeof useSolutionsActiveStore>;
-  passiveService: ReturnType<typeof useSolutionsPassiveStore>;
-  integrateSkills: ReturnType<typeof useSolutionsDefaultStore>;
+  activeNotifications: ReturnType<typeof ActiveStoreType>;
+  passiveService: ReturnType<typeof PassiveStoreType>;
+  integrateSkills: ReturnType<typeof DefaultStoreType>;
 }>();
 
 const { t } = useI18n();
 
 const solutionName = ref('');
+const currentFilter = ref('all');
+const solutionsActiveStore = useSolutionsActiveStore();
+const solutionsPassiveStore = useSolutionsPassiveStore();
+const solutionsDefaultStore = useSolutionsDefaultStore();
 
 function filterSolutions({ title, description }: Solution) {
   const name = solutionName.value.toLowerCase().trim();
@@ -108,6 +112,44 @@ const isIntegrateSkillList = computed(() => {
   );
 });
 
+const isRenderInputSearch = computed(() => {
+  if (isIntegrateSkillList.value) {
+    return true;
+  }
+
+  return !props.integrateSkills?.available?.length || props.isFirstLoading;
+});
+
+type FilterType = 'all' | 'passive_support' | 'active_notification';
+
+const integrateSkillData = computed(() => {
+  const data: Record<FilterType, Solution[]> = {
+    all: [
+      ...props.integrateSkills.available,
+      ...props.integrateSkills.integrateds.data.map((values) => ({
+        ...values,
+        integrated: true,
+      })),
+    ],
+    passive_support: [
+      ...props.passiveService.available,
+      ...props.passiveService.integrateds.data.map((values) => ({
+        ...values,
+        integrated: true,
+      })),
+    ],
+    active_notification: [
+      ...props.activeNotifications.available,
+      ...props.activeNotifications.integrateds.data.map((values) => ({
+        ...values,
+        integrated: true,
+      })),
+    ],
+  };
+
+  return data[currentFilter.value as FilterType];
+});
+
 const groups = computed(() => {
   interface Groups {
     title: string;
@@ -116,15 +158,10 @@ const groups = computed(() => {
     solutions: Solution[];
     category: 'activeNotifications' | 'passiveService' | 'integrateSkills';
   }
+
   const integrateSkillsList: Groups[] = [
     {
-      solutions: [
-        ...props.integrateSkills.available,
-        ...props.integrateSkills.integrateds.data.map((values) => ({
-          ...values,
-          integrated: true,
-        })),
-      ],
+      solutions: integrateSkillData.value,
       category: 'integrateSkills',
       title: t('integrate_skills.title'),
       icon: null,
@@ -184,12 +221,39 @@ function openDisintegrate(solution: Solution) {
   toDisintegrate.solution = solution;
 }
 
+function loadDefaultSolutions() {
+  solutionsDefaultStore.integrateds.load();
+  solutionsDefaultStore.all.load();
+}
+
+function loadPassiveSolutions() {
+  solutionsPassiveStore.all.load();
+  solutionsPassiveStore.integrateds.load();
+}
+
+function loadActiveSolutions() {
+  solutionsActiveStore.all.load();
+  solutionsActiveStore.integrateds.load();
+}
+
 function passiveSupportFilter() {
-  console.log('passive');
+  if (currentFilter.value === 'passive_support') {
+    currentFilter.value = 'all';
+    loadDefaultSolutions();
+  } else {
+    currentFilter.value = 'passive_support';
+    loadPassiveSolutions();
+  }
 }
 
 function activeNotificationFilter() {
-  console.log('active');
+  if (currentFilter.value === 'active_notification') {
+    currentFilter.value = 'all';
+    loadDefaultSolutions();
+  } else {
+    currentFilter.value = 'active_notification';
+    loadActiveSolutions();
+  }
 }
 </script>
 
