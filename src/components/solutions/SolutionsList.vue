@@ -1,13 +1,47 @@
 <template>
-  <UnnnicInput
-    v-if="
-      props.integrateSkills?.available?.length || isFirstLoading ? false : true
-    "
-    v-model="solutionName"
-    class="filter-input"
-    size="sm"
-    iconLeft="search-1"
+  <Header
+    v-if="isIntegrateSkillList"
+    :title="t('integrate_skills.title')"
+    :icon="null"
+    :iconScheme="null"
+    fontFamily="secondary"
+    titleWeight="black"
+    fontSize="title-lg"
   />
+
+  <section class="filter-container">
+    <UnnnicInput
+      v-if="
+        props.integrateSkills?.available?.length || isFirstLoading
+          ? false
+          : true
+      "
+      v-model="solutionName"
+      :class="isIntegrateSkillList ? 'filter-integrate' : 'filter-input'"
+      size="sm"
+      iconRight="search-1"
+      :placeholder="$t('common.search')"
+    />
+    <section
+      v-if="isIntegrateSkillList"
+      class="filter-type"
+    >
+      <p>{{ $t('common.filter-by') }}</p>
+      <DropdownFilter
+        :items="[
+          {
+            name: t('passive_support.title'),
+            action: passiveSupportFilter,
+          },
+          {
+            name: t('active_notification.title'),
+            action: activeNotificationFilter,
+          },
+        ]"
+        :defaultItem="{ name: $t('common.type') }"
+      />
+    </section>
+  </section>
 
   <SolutionsGroupSkeletonLoading v-if="isFirstLoading" />
 
@@ -34,6 +68,8 @@
 </template>
 
 <script setup lang="ts">
+import Header from '@/components/Header.vue';
+import DropdownFilter from '@/components/DropDownFilter.vue';
 import { computed, reactive, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import SolutionsGroup from '@/components/solutions/SolutionsGroup.vue';
@@ -64,6 +100,13 @@ function filterSolutions({ title, description }: Solution) {
     description.toLowerCase().includes(name)
   );
 }
+
+const isIntegrateSkillList = computed(() => {
+  return (
+    props.integrateSkills.available.length ||
+    props.integrateSkills.integrateds.data.length
+  );
+});
 
 const groups = computed(() => {
   interface Groups {
@@ -140,11 +183,44 @@ function openDisintegrate(solution: Solution) {
   toDisintegrate.isOpen = true;
   toDisintegrate.solution = solution;
 }
+
+function passiveSupportFilter() {
+  console.log('passive');
+}
+
+function activeNotificationFilter() {
+  console.log('active');
+}
 </script>
 
 <style scoped lang="scss">
+.filter-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+}
+
+.filter-type {
+  display: flex;
+  align-items: center;
+  gap: $unnnic-spacing-sm;
+  p {
+    color: $unnnic-color-neutral-cloudy;
+    font-family: $unnnic-font-family-secondary;
+    font-size: $unnnic-font-size-body-gt;
+    font-weight: $unnnic-font-weight-regular;
+    line-height: $unnnic-font-size-body-gt + $unnnic-line-height-md;
+  }
+}
+
 .filter-input {
   margin-block: $unnnic-spacing-lg;
+}
+
+.filter-integrate {
+  margin-block: $unnnic-spacing-sm;
+  width: 80%;
 }
 
 .solutions-group {
