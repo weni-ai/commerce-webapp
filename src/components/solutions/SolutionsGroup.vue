@@ -1,14 +1,13 @@
 <template>
   <section class="solutions__group">
     <Header
+      v-if="props.category !== 'integrateSkills'"
       :title="title"
       :icon="icon"
       :iconScheme="iconScheme"
-      :fontFamily="
-        props.category === 'integrateSkills' ? 'secondary' : 'primary'
-      "
-      :titleWeight="props.category === 'integrateSkills' ? 'black' : 'regular'"
-      :fontSize="props.category === 'integrateSkills' ? 'title-lg' : 'title-sm'"
+      fontFamily="primary"
+      titleWeight="regular"
+      fontSize="title-sm"
     />
 
     <section class="solutions__list">

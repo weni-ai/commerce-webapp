@@ -16,7 +16,6 @@ const targets = ['chrome >= 87', 'edge >= 88', 'firefox >= 78', 'safari >= 14'];
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-console.log('PROCESS ENV ==========================>', process.env);
 export default defineConfig({
   mode: process.env.NODE_ENV,
   context: __dirname,
@@ -31,7 +30,7 @@ export default defineConfig({
     compress: true,
   },
   output: {
-    path: path.resolve(__dirname, './remote/dist/'),
+    path: path.resolve(__dirname, './dist'),
     uniqueName: 'remote',
     publicPath: `${process.env.PUBLIC_PATH_URL}`,
     clean: true,
