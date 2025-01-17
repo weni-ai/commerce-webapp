@@ -107,8 +107,8 @@ function filterSolutions({ title, description }: Solution) {
 
 const isIntegrateSkillList = computed(() => {
   return (
-    props.integrateSkills.available.length ||
-    props.integrateSkills.integrateds.data.length
+    props?.integrateSkills?.available?.length ||
+    props?.integrateSkills?.integrateds?.data?.length
   );
 });
 
@@ -117,7 +117,7 @@ const isRenderInputSearch = computed(() => {
     return true;
   }
 
-  return !props.integrateSkills?.available?.length || props.isFirstLoading;
+  return !props?.integrateSkills?.available?.length || props.isFirstLoading;
 });
 
 type FilterType = 'all' | 'passive_support' | 'active_notification';
@@ -125,8 +125,8 @@ type FilterType = 'all' | 'passive_support' | 'active_notification';
 const integrateSkillData = computed(() => {
   const data: Record<FilterType, Solution[]> = {
     all: [
-      ...props.integrateSkills.available,
-      ...props.integrateSkills.integrateds.data.map((values) => ({
+      ...(props?.integrateSkills?.available || []),
+      ...(props?.integrateSkills?.integrateds?.data || []).map((values) => ({
         ...values,
         integrated: true,
       })),
@@ -193,8 +193,8 @@ const groups = computed(() => {
   ];
 
   const isIntegrateSkillList =
-    props.integrateSkills.available.length ||
-    props.integrateSkills.integrateds.data.length;
+    props?.integrateSkills?.available?.length ||
+    props?.integrateSkills?.integrateds?.data?.length;
 
   const list: Groups[] = isIntegrateSkillList
     ? integrateSkillsList
