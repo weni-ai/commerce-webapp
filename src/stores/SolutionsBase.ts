@@ -99,12 +99,12 @@ export function defineSolutionsStore({
   return defineStore(name, () => {
     const integrateds = SolutionsBase({
       request: APISolutions.listIntegratedSolutions,
-      category: category || undefined,
+      category: category ?? undefined,
     });
 
     const all = SolutionsBase({
       request: APISolutions.listSolutions,
-      category: category || undefined,
+      category: category ?? undefined,
     });
 
     const available = computed(() =>

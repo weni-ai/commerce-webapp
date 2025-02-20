@@ -8,6 +8,7 @@ export const IntegratedSolutionsListResponseScheme = z.object({
       description: z.string(),
       disclaimer: z.string(),
       documentation_url: z.string().default(''),
+      category: z.string(),
       globals: z
         .object({
           name: z.string(),
@@ -32,6 +33,7 @@ const success: z.infer<typeof IntegratedSolutionsListResponseScheme> = {
       description: 'Integrated Solution Description 1',
       disclaimer: 'Integrated Solution Disclaimer 1',
       documentation_url: 'Integrated Solution Documentation URL 1',
+      category: 'ACTIVE',
       globals: [
         {
           name: 'global1',
