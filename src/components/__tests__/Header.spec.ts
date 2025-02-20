@@ -66,4 +66,23 @@ describe('Header', () => {
       ).toBeFalsy();
     });
   });
+
+  describe('when icon prop is null', () => {
+    beforeEach(() => {
+      wrapper = setup(Header, {
+        props: {
+          title: 'Header title',
+          fontSize: 'title-sm',
+          fontFamily: 'primary',
+          icon: null,
+          iconScheme: null,
+          titleWeight: 'regular',
+        },
+      });
+    });
+
+    it('does not render icon component', () => {
+      expect(wrapper.find('[data-test="icon"]').exists()).toBeFalsy();
+    });
+  });
 });

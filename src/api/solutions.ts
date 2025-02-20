@@ -75,6 +75,7 @@ export default {
       uuid: solution.feature_uuid,
       title: solution.name,
       description: solution.description,
+      category: solution.category,
       tip: solution.disclaimer,
       documentation: solution.documentation_url,
       globals: (solution.globals || []).reduce(
@@ -165,6 +166,7 @@ export default {
       description: solution.description,
       tip: solution.disclaimer,
       documentation: solution.documentation_url,
+      category: solution.category,
       globals: transform.globals.from(solution.globals),
       sectors: transform.sectors.from(solution.sectors),
     }));
