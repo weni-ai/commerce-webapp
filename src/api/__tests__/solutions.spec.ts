@@ -52,6 +52,7 @@ describe('solutions API', () => {
         uuid: '1',
         title: 'Name 1',
         description: 'Description 1',
+        category: 'ACTIVE',
         tip: 'Disclaimer 1',
         documentation: 'Documentation URL 1',
         globals: { global1: { value: '' }, global2: { value: '' } },
@@ -147,6 +148,7 @@ describe('solutions API', () => {
       {
         uuid: '1',
         title: 'Integrated Solution Name 1',
+        category: 'ACTIVE',
         description: 'Integrated Solution Description 1',
         tip: 'Integrated Solution Disclaimer 1',
         documentation: 'Integrated Solution Documentation URL 1',
