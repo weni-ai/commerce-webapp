@@ -60,6 +60,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Download webapp secret
+        uses: actions/checkout@master
+        with:
+          ref: main
+          repository: "weni-ai/webapp-secret"
+          token: "${{ secrets.DEVOPS_GITHUB_PERMANENT_TOKEN }}"
+          path: ./webapp-secret/  
+
       - name: Set variables
         run: |
           {
