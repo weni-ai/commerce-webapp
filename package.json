@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development rspack dev --port 3001",
+    "dev": "cross-env NODE_ENV=development rspack dev",
     "build": "run-p type-check \"build-only {@}\" --",
     "test:unit": "vitest",
     "build-only": "rspack build",

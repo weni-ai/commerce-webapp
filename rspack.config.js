@@ -20,20 +20,14 @@ export default defineConfig({
   mode: process.env.NODE_ENV,
   context: __dirname,
   devServer: {
-    port: 3001,
     historyApiFallback: true,
-    hot: false,
-    liveReload: true,
-    static: {
-      directory: path.join(__dirname, 'dist'),
-    },
+    hot: true,
+    liveReload: false,
     compress: true,
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    uniqueName: 'remote',
     publicPath: `${process.env.PUBLIC_PATH_URL}`,
-    clean: true,
     filename: 'assets/js/[name]-[contenthash].js',
     chunkFilename: 'assets/js/[name]-[contenthash].js',
     assetModuleFilename: 'assets/[name]-[hash][ext]',
