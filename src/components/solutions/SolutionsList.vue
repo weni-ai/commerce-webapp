@@ -15,7 +15,8 @@
       v-model="solutionName"
       :class="isIntegrateSkillList ? 'filter-integrate' : 'filter-input'"
       size="sm"
-      iconRight="search-1"
+      :iconLeft="isIntegrateSkillList ? null : 'search-1'"
+      :iconRight="isIntegrateSkillList ? 'search-1' : null"
       :disabled="isFirstLoading"
       :placeholder="$t('common.search')"
     />
@@ -280,6 +281,7 @@ function activeNotificationFilter() {
 
 .filter-input {
   margin-block: $unnnic-spacing-lg;
+  width: 100%;
 }
 
 .filter-integrate {
