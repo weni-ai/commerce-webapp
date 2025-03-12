@@ -9,6 +9,15 @@ FROM node:${NODE_VERSION}-${BASE_VERSION} AS builder
 
 WORKDIR /app
 
+# Add build arguments for env variables
+ARG PUBLIC_PATH_URL
+ARG API_BASE_URL
+ARG BUILD_ENV_ARGS
+
+# Set them as environment variables
+ENV PUBLIC_PATH_URL=${PUBLIC_PATH_URL}
+ENV API_BASE_URL=${API_BASE_URL}
+
 RUN apk add --no-cache git
 
 COPY package.json package-lock.json ./
@@ -16,9 +25,6 @@ COPY package.json package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm NPM_CONFIG_CACHE=/root/.npm npm install
 
 COPY . ./
-
-ENV PUBLIC_PATH_URL=https://commerce-webapp.stg.cloud.weni.ai/ \
-    API_BASE_URL=https://retailsetup.stg.cloud.weni.ai
 
 RUN npm run build-only
 
