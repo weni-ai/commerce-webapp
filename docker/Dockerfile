@@ -9,6 +9,15 @@ FROM node:${NODE_VERSION}-${BASE_VERSION} AS builder
 
 WORKDIR /app
 
+# Add build arguments for env variables
+ARG PUBLIC_PATH_URL
+ARG API_BASE_URL
+ARG BUILD_ENV_ARGS
+
+# Set them as environment variables
+ENV PUBLIC_PATH_URL=${PUBLIC_PATH_URL}
+ENV API_BASE_URL=${API_BASE_URL}
+
 RUN apk add --no-cache git
 
 COPY package.json package-lock.json ./
