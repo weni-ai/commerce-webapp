@@ -5,9 +5,15 @@ import { cloneDeep } from 'lodash';
 
 function SolutionsBase({
   request,
-  category,
+  category = '',
 }: {
-  request: ({ category }: { category: string }) => Promise<Solution[]>;
+  request: ({
+    category,
+    can_vtex_integrate,
+  }: {
+    category: string;
+    can_vtex_integrate?: boolean | undefined;
+  }) => Promise<Solution[]>;
   category: string | undefined;
 }) {
   const status = ref<null | string>(null);
@@ -18,15 +24,17 @@ function SolutionsBase({
     () => !alreadyCalledLoad.value && status.value === 'loading',
   );
 
-  async function load() {
+  async function load(isVtexIntegrate?: boolean | undefined) {
     if (status.value !== null) {
       return;
     }
 
     try {
       status.value = 'loading';
-
-      data.value = await request({ category: category || '' });
+      data.value = await request({
+        category: category || '',
+        can_vtex_integrate: isVtexIntegrate || undefined,
+      });
 
       status.value = 'complete';
     } catch (error) {

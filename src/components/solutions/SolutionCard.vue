@@ -9,14 +9,14 @@
           v-if="['passive', 'active'].includes(category)"
           :class="{
             'card__header__sub-title': true,
-            'card__header__sub-title-orange': category === 'active',
-            'card__header__sub-title-purple': category === 'passive',
+            'card__header__sub-title-orange': category === 'passive',
+            'card__header__sub-title-purple': category === 'active',
           }"
         >
           {{
             category === 'passive'
-              ? $t('active_notification.title')
-              : $t('passive_support.title')
+              ? $t('passive_support.title')
+              : $t('active_notification.title')
           }}
         </p>
       </section>

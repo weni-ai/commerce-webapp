@@ -52,8 +52,8 @@ if (props.type === 'remote' && props.auth?.token && props.auth?.uuid) {
 
 onMounted(() => {
   if (props.type === 'remote' && props.auth?.token && props.auth?.uuid) {
-    solutionsDefaultStore.integrateds.load();
-    solutionsDefaultStore.all.load();
+    solutionsDefaultStore.integrateds.load(true);
+    solutionsDefaultStore.all.load(true);
   }
 
   if (props.type === 'default') {
