@@ -28,6 +28,10 @@
       <DropdownFilter
         :items="[
           {
+            name: t('common.all'),
+            action: loadAllSolutions,
+          },
+          {
             name: t('passive_support.title'),
             action: passiveSupportFilter,
           },
@@ -223,18 +227,23 @@ function openDisintegrate(solution: Solution) {
 }
 
 function loadDefaultSolutions() {
-  solutionsDefaultStore.integrateds.load();
-  solutionsDefaultStore.all.load();
+  solutionsDefaultStore.integrateds.load(true);
+  solutionsDefaultStore.all.load(true);
 }
 
 function loadPassiveSolutions() {
-  solutionsPassiveStore.all.load();
-  solutionsPassiveStore.integrateds.load();
+  solutionsPassiveStore.all.load(true);
+  solutionsPassiveStore.integrateds.load(true);
 }
 
 function loadActiveSolutions() {
-  solutionsActiveStore.all.load();
-  solutionsActiveStore.integrateds.load();
+  solutionsActiveStore.all.load(true);
+  solutionsActiveStore.integrateds.load(true);
+}
+
+function loadAllSolutions() {
+  currentFilter.value = 'all';
+  loadDefaultSolutions();
 }
 
 function passiveSupportFilter() {

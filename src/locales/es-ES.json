@@ -9,6 +9,7 @@
     "integrate": "Integrar",
     "integrated": "Integrado",
     "filter-by": "Filtrar por:",
+    "all": "Todos",
     "type": "Tipo",
     "search": "Buscar",
     "errors": {
@@ -38,7 +39,7 @@
     "title": "Servicio pasivo"
   },
   "integrate_skills": {
-    "title": "Integrar habilidades de comercio"
+    "title": "Integrar agentes"
   },
   "solutions": {
     "states": {

@@ -9,6 +9,7 @@
     "integrate": "Integrate",
     "integrated": "Integrated",
     "filter-by": "Filter by:",
+    "all": "All",
     "type": "Type",
     "search": "Search",
     "errors": {
@@ -38,7 +39,7 @@
     "title": "Passive service"
   },
   "integrate_skills": {
-    "title": "Integrate commerce skills"
+    "title": "Integrate agents"
   },
   "solutions": {
     "states": {
