@@ -112,7 +112,9 @@ export default defineConfig({
       exposes: {
         './solution-card': './src/views/Discovery.vue',
       },
-      remotes: {},
+      remotes: {
+        host: "host@http://localhost:8080/remoteEntry.js",
+      },
       shared: {
         ...pkg,
         vue: {
