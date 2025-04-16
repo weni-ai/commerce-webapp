@@ -4,20 +4,16 @@ import Discovery from '@/views/Discovery.vue';
 import IntegratedSolutions from '@/views/IntegratedSolutions.vue';
 import { useAuthStore } from '@/stores/Auth';
 import { i18n } from '@/locales';
+import { getJwtToken } from '@/plugins/jwt';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/loginexternal/:token',
+      path: '/loginexternal',
       name: 'externalLogin',
       component: {},
       beforeEnter: async (to, from, next) => {
-        const { token } = to.params as {
-          token: string;
-        };
-
-        const tokenParsed = token.replace('+', ' ');
 
         const { locale, project_uuid, set_api_base_url } = to.query as {
           locale: string;
@@ -26,15 +22,22 @@ const router = createRouter({
         };
 
         const authStore = useAuthStore();
+        await getJwtToken();
 
-        authStore.setToken(tokenParsed);
+        const token = localStorage.getItem('authToken');
+
+        if (!token) {
+          return next({ path: '/', replace: true });
+        }
+
+        authStore.setToken(token);
         authStore.setProjectUuid(project_uuid);
 
         if (import.meta.env.DEV) {
           localStorage.setItem(
             'dev:lastUsedLoginParams',
             JSON.stringify({
-              token: tokenParsed,
+              token: token,
               locale,
               projectUuid: project_uuid,
             }),
