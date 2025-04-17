@@ -62,12 +62,24 @@ const transform = {
 };
 
 export default {
-  async listSolutions({ category }: { category: string }): Promise<Solution[]> {
+  async listSolutions({
+    category,
+    can_vtex_integrate,
+  }: {
+    category: string;
+    can_vtex_integrate?: boolean | undefined;
+  }): Promise<Solution[]> {
     const authStore = useAuthStore();
+
+    const can_vtex_integrate_param = can_vtex_integrate
+      ? `&can_vtex_integrate=${can_vtex_integrate}`
+      : '';
 
     const { data } = await request.$http.get<
       z.infer<typeof SolutionsListResponseScheme>
-    >(`/v2/feature/${authStore.projectUuid}/?category=${category}`);
+    >(
+      `/v2/feature/${authStore.projectUuid}/?category=${category}${can_vtex_integrate_param}`,
+    );
 
     checkZodScheme(SolutionsListResponseScheme, data);
 
@@ -75,6 +87,7 @@ export default {
       uuid: solution.feature_uuid,
       title: solution.name,
       description: solution.description,
+      category: solution.category,
       tip: solution.disclaimer,
       documentation: solution.documentation_url,
       globals: (solution.globals || []).reduce(
@@ -148,14 +161,22 @@ export default {
 
   async listIntegratedSolutions({
     category,
+    can_vtex_integrate,
   }: {
     category: string;
+    can_vtex_integrate?: boolean | undefined;
   }): Promise<Solution[]> {
     const authStore = useAuthStore();
 
+    const can_vtex_integrate_param = can_vtex_integrate
+      ? `&can_vtex_integrate=${can_vtex_integrate}`
+      : '';
+
     const { data } = await request.$http.get<
       z.infer<typeof IntegratedSolutionsListResponseScheme>
-    >(`/v2/integrated_feature/${authStore.projectUuid}/?category=${category}`);
+    >(
+      `/v2/integrated_feature/${authStore.projectUuid}/?category=${category}${can_vtex_integrate_param}`,
+    );
 
     checkZodScheme(IntegratedSolutionsListResponseScheme, data);
 
@@ -165,6 +186,7 @@ export default {
       description: solution.description,
       tip: solution.disclaimer,
       documentation: solution.documentation_url,
+      category: solution.category,
       globals: transform.globals.from(solution.globals),
       sectors: transform.sectors.from(solution.sectors),
     }));

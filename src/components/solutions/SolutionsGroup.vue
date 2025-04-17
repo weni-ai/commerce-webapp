@@ -1,9 +1,13 @@
 <template>
   <section class="solutions__group">
     <Header
+      v-if="props.category !== 'integrateSkills'"
       :title="title"
       :icon="icon"
       :iconScheme="iconScheme"
+      fontFamily="primary"
+      titleWeight="regular"
+      fontSize="title-sm"
     />
 
     <section class="solutions__list">
@@ -13,6 +17,7 @@
         :title="solution.title"
         :description="solution.description"
         :options="getOptionsBySolution(solution)"
+        :category="solution.category"
         @add="openIntegrateSolutionModal(solution)"
       />
     </section>
@@ -64,9 +69,9 @@ const { t } = useI18n();
 const props = defineProps<{
   status: 'available' | 'integrated';
   title: string;
-  icon: string;
-  iconScheme: string;
-  category: 'activeNotifications' | 'passiveService';
+  icon: string | null;
+  iconScheme: string | null;
+  category: 'activeNotifications' | 'passiveService' | 'integrateSkills';
   solutions: Solution[];
 }>();
 
@@ -98,7 +103,7 @@ const drawerSolution = reactive<{
 });
 
 function getOptionsBySolution(solution: Solution) {
-  if (props.status === 'integrated') {
+  if (props.status === 'integrated' || solution.integrated) {
     const options = [
       {
         icon: 'visibility',
@@ -184,10 +189,7 @@ async function openDrawer(solution: Solution, values = {}) {
 
   &__list {
     display: grid;
-    grid-template-columns: repeat(
-      auto-fill,
-      minmax(15.625 * $unnnic-font-size, 1fr)
-    );
+    grid-template-columns: repeat(auto-fill, minmax(344px, 1fr));
     gap: $unnnic-spacing-sm;
   }
 }

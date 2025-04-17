@@ -5,10 +5,16 @@ import { cloneDeep } from 'lodash';
 
 function SolutionsBase({
   request,
-  category,
+  category = '',
 }: {
-  request: ({ category }: { category: string }) => Promise<Solution[]>;
-  category: string;
+  request: ({
+    category,
+    can_vtex_integrate,
+  }: {
+    category: string;
+    can_vtex_integrate?: boolean | undefined;
+  }) => Promise<Solution[]>;
+  category: string | undefined;
 }) {
   const status = ref<null | string>(null);
   const alreadyCalledLoad = ref(false);
@@ -18,15 +24,17 @@ function SolutionsBase({
     () => !alreadyCalledLoad.value && status.value === 'loading',
   );
 
-  async function load() {
+  async function load(isVtexIntegrate?: boolean | undefined) {
     if (status.value !== null) {
       return;
     }
 
     try {
       status.value = 'loading';
-
-      data.value = await request({ category });
+      data.value = await request({
+        category: category || '',
+        can_vtex_integrate: isVtexIntegrate || undefined,
+      });
 
       status.value = 'complete';
     } catch (error) {
@@ -94,17 +102,17 @@ export function defineSolutionsStore({
   category,
 }: {
   name: string;
-  category: 'ACTIVE' | 'PASSIVE';
+  category?: 'ACTIVE' | 'PASSIVE';
 }) {
   return defineStore(name, () => {
     const integrateds = SolutionsBase({
       request: APISolutions.listIntegratedSolutions,
-      category,
+      category: category ?? undefined,
     });
 
     const all = SolutionsBase({
       request: APISolutions.listSolutions,
-      category,
+      category: category ?? undefined,
     });
 
     const available = computed(() =>

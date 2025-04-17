@@ -17,21 +17,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default defineConfig({
+  mode: process.env.NODE_ENV,
   context: __dirname,
   devServer: {
     historyApiFallback: true,
     hot: true,
-    static: {
-      directory: path.join(__dirname, 'dist'),
-      publicPath: '/',
-      serveIndex: true,
-      watch: true,
-    },
+    liveReload: false,
+    compress: true,
   },
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: '/',
-    clean: true,
+    publicPath: `${process.env.PUBLIC_PATH_URL}`,
     filename: 'assets/js/[name]-[contenthash].js',
     chunkFilename: 'assets/js/[name]-[contenthash].js',
     assetModuleFilename: 'assets/[name]-[hash][ext]',
@@ -110,6 +106,33 @@ export default defineConfig({
       }),
     }),
     new VueLoaderPlugin(),
+    new rspack.container.ModuleFederationPlugin({
+      name: 'remote',
+      filename: 'remote.js',
+      exposes: {
+        './solution-card': './src/views/Discovery.vue',
+      },
+      remotes: {
+        host: `host@${process.env.MODULE_FEDERATION_CONNECT_URL}/remoteEntry.js`,
+      },
+      shared: {
+        ...pkg,
+        vue: {
+          singleton: true,
+          eager: true,
+        },
+        'vue-i18n': {
+          singleton: true,
+          requiredVersion: pkg.dependencies['vue-i18n'],
+          eager: true,
+        },
+        pinia: {
+          singleton: true,
+          requiredVersion: pkg.dependencies['pinia'],
+          eager: true,
+        },
+      },
+    }),
   ],
   optimization: {
     minimizer: [
