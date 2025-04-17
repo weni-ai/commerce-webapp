@@ -10,7 +10,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/loginexternal',
+      path: '/',
       name: 'externalLogin',
       component: {},
       beforeEnter: async (to, from, next) => {
