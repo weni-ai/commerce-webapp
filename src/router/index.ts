@@ -14,7 +14,7 @@ const router = createRouter({
       name: 'externalLogin',
       component: {},
       beforeEnter: async (to, from, next) => {
-
+        console.log('beforeEnter');
         const { locale, project_uuid, set_api_base_url } = to.query as {
           locale: string;
           project_uuid: string;
@@ -22,19 +22,14 @@ const router = createRouter({
         };
 
         const authStore = useAuthStore();
-        console.log('getJwtToken');
         await getJwtToken();
-        console.log('getJwtToken done');
         const token = localStorage.getItem('authToken');
-        console.log('token', token);
         if (!token) {
-          console.log('no token');
-          return next({ path: '/', replace: true });
+          return next({ path: '/login', replace: true });
         }
-        
         authStore.setToken(token);
         authStore.setProjectUuid(project_uuid);
-
+        
         if (import.meta.env.DEV) {
           localStorage.setItem(
             'dev:lastUsedLoginParams',
