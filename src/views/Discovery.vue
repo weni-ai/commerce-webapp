@@ -1,7 +1,7 @@
 <template>
   <SolutionsList
     v-if="
-      type === 'default' || (type === 'remote' && auth?.token && auth?.uuid)
+      ['default', 'remote'].includes(type)
     "
     show="available"
     :isFirstLoading="isFirstLoading"
@@ -24,10 +24,6 @@ const props = defineProps({
     type: String,
     default: 'default',
   },
-  auth: {
-    type: Object as () => { token: string; uuid: string } | null,
-    default: null,
-  },
 });
 
 const solutionsActiveStore = useSolutionsActiveStore();
@@ -44,16 +40,19 @@ const isFirstLoading = computed(() => {
   return props.type === 'default' ? loadingDefault : loadingRemote;
 });
 
-if (props.type === 'remote' && props.auth?.token && props.auth?.uuid) {
-  const authStore = useAuthStore();
-  authStore.setToken(props.auth.token);
-  authStore.setProjectUuid(props.auth.uuid);
-}
 
 onMounted(() => {
-  if (props.type === 'remote' && props.auth?.token && props.auth?.uuid) {
-    solutionsDefaultStore.integrateds.load(true);
-    solutionsDefaultStore.all.load(true);
+  if (props.type === 'remote') {
+    import('host/sharedStore').then(({ useSharedStore }) => {
+      const sharedStore = useSharedStore();
+      const authStore = useAuthStore();
+
+      authStore.setToken(`Bearer ${sharedStore.auth.token}`);
+      authStore.setProjectUuid(sharedStore.current.project.uuid);
+
+      solutionsDefaultStore.integrateds.load(true);
+      solutionsDefaultStore.all.load(true);
+    });
   }
 
   if (props.type === 'default') {
