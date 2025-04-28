@@ -101,6 +101,20 @@
       "title": "Recomiéndanos y gana",
       "description": "Anime a los clientes a recomendar su tienda a amigos y familiares con un programa de recompensas.",
       "tip": "Con esta solución, puede ampliar su base de clientes de forma orgánica y aumentar el compromiso, convirtiendo a los consumidores satisfechos en promotores activos de su marca."
+    },
+    "order_status_change_notification": {
+      "title": "Notificación de cambio de estado del pedido",
+      "description": "Solución que notifica al cliente siempre que el estado del pedido cambie"
+    },
+    "menu_with_initial_greeting": {
+      "title": "Menú con saludo inicial"
+    },
+    "abandoned_cart_reminder": {
+      "title": "Recordatorio de carrito abandonado"
+    },
+    "closing": {
+      "title": "Cierre",
+      "description": "El creador de agentes finaliza la conversación siempre que el cliente quiera terminar el servicio"
     }
   }
 }
