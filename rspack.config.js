@@ -111,6 +111,9 @@ export default defineConfig({
       filename: 'remote.js',
       exposes: {
         './solution-card': './src/views/Discovery.vue',
+        './locales/pt_br': './src/locales/pt-BR.json',
+        './locales/en_us': './src/locales/en-US.json',
+        './locales/es_es': './src/locales/es-ES.json',
       },
       remotes: {
         host: `host@${process.env.MODULE_FEDERATION_CONNECT_URL}/remoteEntry.js`,
