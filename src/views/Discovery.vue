@@ -1,8 +1,6 @@
 <template>
   <SolutionsList
-    v-if="
-      ['default', 'remote'].includes(type)
-    "
+    v-if="['default', 'remote'].includes(type)"
     show="available"
     :isFirstLoading="isFirstLoading"
     :activeNotifications="solutionsActiveStore"
@@ -40,10 +38,9 @@ const isFirstLoading = computed(() => {
   return props.type === 'default' ? loadingDefault : loadingRemote;
 });
 
-
 onMounted(() => {
   if (props.type === 'remote') {
-    import('host/sharedStore').then(({ useSharedStore }) => {
+    import('connect/sharedStore').then(({ useSharedStore }) => {
       const sharedStore = useSharedStore();
       const authStore = useAuthStore();
 
