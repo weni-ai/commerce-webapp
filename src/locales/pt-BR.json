@@ -101,6 +101,20 @@
       "title": "Indique e ganhe",
       "description": "Incentive os clientes a recomendar sua loja para amigos e familiares com um programa de recompensas.",
       "tip": "Com essa solução, é possível ampliar a base de clientes de forma orgânica e aumentar o engajamento, transformando consumidores satisfeitos em promotores ativos da sua marca."
+    },
+    "order_status_change_notification": {
+      "title": "Notificação de mudança de status do pedido",
+      "description": "Solução que notifica o cliente sempre que o status do pedido for alterado"
+    },
+    "menu_with_initial_greeting": {
+      "title": "Menu com saudação inicial"
+    },
+    "abandoned_cart_reminder": {
+      "title": "Lembrete de carrinho abandonado"
+    },
+    "closing": {
+      "title": "Encerramento",
+      "description": "O construtor de agentes encerra a conversa sempre que o cliente deseja terminar o atendimento"
     }
   }
 }
