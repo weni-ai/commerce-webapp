@@ -11,7 +11,8 @@
     "build-only": "rspack build",
     "type-check": "vue-tsc --build --force",
     "type-check-t": "vue-tsc --noEmit",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "prepare": "git config core.hooksPath .githooks || true"
   },
   "dependencies": {
     "@sentry/vue": "^8.34.0-internal.0",
@@ -49,7 +50,9 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-vue": "^9.23.0",
     "globals": "^15.11.0",
+    "js-yaml": "^4.1.0",
     "jsdom": "^24.1.0",
+    "micromatch": "^4.0.5",
     "npm-run-all2": "^6.2.0",
     "prettier": "^3.3.3",
     "sass": "^1.81.0",
